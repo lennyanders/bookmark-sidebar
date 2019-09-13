@@ -1,0 +1,34 @@
+{
+  "default_locale": "de",
+  "name": "__MSG_extensionName__",
+  "version": "1.0",
+  "description": "Bookmarkbar backend",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "bookmarks",
+    "file:///*",
+    "chrome://favicon/*/"
+  ],
+  "content_security_policy": "img-src chrome://favicon/;",
+  "background": {
+    "scripts": ["background/main.js"],
+    "persistent": true
+  },
+  "browser_action": {
+    "default_icon": {
+      "16": "icons/browser-action-16.png",
+      "24": "icons/browser-action-24.png",
+      "32": "icons/browser-action-32.png"
+    },
+    "default_title": "Lesezeichen"
+  },
+  "options_page": "options/index.html",
+  "web_accessible_resources": [
+    "content/main.css",
+    "options/index.html",
+    "fonts/lato-v16-latin-regular.woff",
+    "fonts/lato-v16-latin-regular.woff2"
+  ],
+  "manifest_version": 2
+}
