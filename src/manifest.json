@@ -1,7 +1,6 @@
 {
   "default_locale": "de",
   "name": "__MSG_extensionName__",
-  "version": "1.0",
   "description": "Bookmarkbar backend",
   "permissions": [
     "storage",

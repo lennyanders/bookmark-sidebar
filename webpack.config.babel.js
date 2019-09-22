@@ -7,10 +7,15 @@ import CopyPlugin from 'copy-webpack-plugin';
 import VueLoaderPlugin from 'vue-loader/lib/plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import HtmlPlugin from 'html-webpack-plugin';
+import WebpackExtensionManifestPlugin from 'webpack-extension-manifest-plugin';
+
+import manifest from './src/manifest';
+import pkg from './package';
 
 const resolve = dir => path.resolve(__dirname, dir);
 
-module.exports = {
+module.exports = ({ NODE_ENV }) => ({
+  mode: NODE_ENV,
   entry: {
     background: './src/background/main.js',
     content: './src/content/main.js',
@@ -65,6 +70,19 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin({ cleanStaleWebpackAssets: false }),
     new CopyPlugin([{ from: 'public', to: resolve('dist'), force: true }]),
+    new WebpackExtensionManifestPlugin({
+      config: {
+        base: manifest,
+        extend: {
+          version: pkg.version,
+          content_security_policy:
+            NODE_ENV !== 'production'
+              ? (manifest.content_security_policy +=
+                  "script-src 'self' 'unsafe-eval'; object-src 'self'")
+              : manifest.content_security_policy
+        }
+      }
+    }),
     new VueLoaderPlugin(),
     new MiniCssExtractPlugin({ filename: '[name]/main.css' }),
     new HtmlPlugin({
@@ -84,4 +102,4 @@ module.exports = {
       fonts: resolve('src/assets/fonts')
     }
   }
-};
+});
