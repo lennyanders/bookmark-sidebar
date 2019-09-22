@@ -1,8 +1,7 @@
 <template>
-  <li class="bookmark">
+  <li class="bookmark" @keyup.left="hideChildren">
     <div
       class="bookmark__content"
-      @keydown.down.up.prevent
       @keyup.down="selectNextBm"
       @keyup.up="selectPrevBm"
       ref="dragHandle"
@@ -10,15 +9,15 @@
       <button
         @click="showChildren = !showChildren"
         @keyup.right="showChildren = true"
-        @keyup.left.stop="hideChildren"
         @mousedown.middle.prevent
         @click.middle="openChildren"
+        :title="bm.title"
         ref="focusableBmPart"
       >
         <div class="bookmark__link">
           <svg class="bookmark__icon" viewBox="0 0 24 24">
             <path
-              v-if="bm.children.length > 0"
+              v-if="bm.children.length"
               d="M10 4H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-8l-2-2z"
             />
             <path
@@ -32,20 +31,22 @@
       <add-bm :parentId="bm.id" />
       <edit-bm :id="bm.id" :title="bm.title" />
     </div>
-    <transition-expand v-if="bm.children" :name="'bookmark__children'">
-      <ul
-        class="bookmark__children"
-        v-show="showChildren"
-        @keyup.left.stop="hideChildren"
-      >
-        <bookmark v-for="bm in bm.children" :bm="bm" :key="bm.id" />
+    <transition-expand v-if="bm.children.length" :name="'bookmark__children'">
+      <ul class="bookmark__children" v-show="showChildren">
+        <bookmark
+          v-for="(bm, i) of bm.children"
+          :key="bm.id"
+          :index="i"
+          :parentId="_uid"
+          :bm="bm"
+        />
       </ul>
     </transition-expand>
   </li>
 </template>
 
 <script>
-  import Mixin from './Mixin';
+  import Mixin from './Mixin.vue';
 
   import AddBm from '../actions/AddBm.vue';
   import TransitionExpand from '../TransitionExpand.vue';
@@ -60,33 +61,21 @@
     },
     data() {
       return {
-        showChildren: false,
-        childrenHeight: 0
+        showChildren: false
       };
     },
     methods: {
       openChildren() {
-        const urls = [];
-        JSON.stringify(this.bm.children, (_, nestedBm) => {
-          if (nestedBm && nestedBm.url) urls.push(nestedBm.url);
-          return nestedBm;
+        this.bm.children.map(({ url }) => {
+          if (url) window.open(url);
         });
-        console.log(urls);
-        if (!urls.length) {
-          if (confirm('Dieser Ordner ist leer, möchten Sie ihn löschen?'))
-            store.port.postMessage({ type: 'remove', id: this.bm.id });
-        } else if (urls.length > 5) {
-          if (confirm(`Sie sind dabei ${urls.length} Seiten zu öffnen.`))
-            for (const url of urls) window.open(url, '_blank');
-        }
       },
-      hideChildren() {
-        const childrenToHide = this.showChildren
-          ? this
-          : this.$parent.$parent.$parent;
-
-        childrenToHide.showChildren = false;
-        childrenToHide.$refs.focusableBmPart.focus();
+      hideChildren(e) {
+        if (this.showChildren) {
+          e.stopPropagation();
+          this.showChildren = false;
+          this.$refs.focusableBmPart.focus();
+        }
       }
     }
   };

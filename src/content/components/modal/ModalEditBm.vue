@@ -21,7 +21,7 @@
       <button type="button" class="modal__action" @click="$emit('close-modal')">
         cancel
       </button>
-      <button type="button" class="modal__action" @click="deleteBm">
+      <button type="button" class="modal__action" @click="removeBm">
         delete
       </button>
       <button type="submit" class="modal__action">update</button>
@@ -30,8 +30,6 @@
 </template>
 
 <script>
-  import store from '../../store';
-
   export default {
     props: ['id', 'title', 'url'],
     data() {
@@ -42,16 +40,15 @@
     },
     methods: {
       updateBm() {
-        store.port.postMessage({
-          type: 'update',
+        this.$store.commit('editBm', {
           id: this.id,
           title: this.newTitle,
-          ...(this.url && { url: this.newUrl })
+          url: this.newUrl
         });
         this.$emit('close-modal');
       },
-      deleteBm() {
-        store.port.postMessage({ type: 'remove', id: this.id });
+      removeBm() {
+        this.$store.commit('removeBm', this.id);
         this.$emit('close-modal');
       }
     }

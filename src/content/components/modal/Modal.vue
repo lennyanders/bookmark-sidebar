@@ -82,7 +82,7 @@
 
     &__content {
       padding: 16px;
-      background-color: #333;
+      background-color: var(--bg-color);
       box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
       cursor: auto;
     }
@@ -98,11 +98,11 @@
     &__input {
       width: 100%;
       margin-bottom: 16px;
-      color: #ccc;
+      color: var(--input-color);
       transition: color 0.2s ease;
 
       &:disabled {
-        color: #666;
+        color: var(--disabled-input-color);
       }
     }
 
@@ -115,7 +115,7 @@
       &:not(&--option) {
         padding: 5px;
         margin-left: 8px;
-        background-color: #666;
+        background-color: var(--bm-focus-color);
       }
 
       &--option {
@@ -143,7 +143,7 @@
           margin-top: -8px;
           width: 16px;
           height: 16px;
-          border: 1px solid #666;
+          border: 1px solid var(--bm-focus-color);
         }
 
         &::after {
@@ -151,7 +151,7 @@
           margin-top: -4px;
           width: 8px;
           height: 8px;
-          background-color: #666;
+          background-color: var(--bm-focus-color);
           opacity: 0;
           transition: opacity 0.2s ease;
         }

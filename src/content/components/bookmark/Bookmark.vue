@@ -1,18 +1,11 @@
-<template>
-  <bookmark-bookmark v-if="bm.url" :bm="bm" />
-  <bookmark-folder v-else :bm="bm" />
-</template>
-
 <script>
   import BookmarkBookmark from './BookmarkBookmark.vue';
   import BookmarkFolder from './BookmarkFolder.vue';
 
   export default {
-    components: {
-      BookmarkBookmark,
-      BookmarkFolder
-    },
-    props: ['bm']
+    functional: true,
+    render: (createElement, { data, props }) =>
+      createElement(props.bm.url ? BookmarkBookmark : BookmarkFolder, data)
   };
 </script>
 
@@ -28,7 +21,7 @@
 
       &:hover,
       &:focus-within {
-        background-color: #666;
+        background-color: var(--bm-focus-color);
 
         #{$bm}__option {
           display: inherit;
@@ -56,7 +49,7 @@
       width: 16px;
       height: 16px;
       margin: 7px;
-      fill: #ccc;
+      fill: var(--folder-icon);
     }
     &__title {
       white-space: nowrap;
@@ -70,8 +63,6 @@
 
     &__children {
       padding-left: 18px;
-      overflow: hidden;
-      transition: height 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
 
       &-enter-active,
       &-leave-active {

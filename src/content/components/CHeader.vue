@@ -7,18 +7,18 @@
     <input
       class="header__search"
       type="text"
-      :placeholder="$chrome.i18n.getMessage('searchPlaceholder')"
+      :placeholder="placeholder"
       :value="searchQuery"
       @keyup.esc="leaveSearchView"
       @input="updateSearchQuery"
-      @focus="enterSearchView"
+      @focus="$store.commit('startSearching')"
       ref="searchInput"
     />
     <div class="header__icons header__icons--right">
       <add-bm
         :btn-classes="['header__icon', 'header__icon--primary']"
         :icn-classes="[]"
-        :parentId="bm.id"
+        :parentId="bmId"
       />
       <svg class="header__icon header__icon--secondary" viewBox="0 0 24 24">
         <path d="M3 13h12v-2H3m0-5v2h18V6M3 18h6v-2H3v2z" />
@@ -38,18 +38,20 @@
       LeaveSearch,
       AddBm
     },
-    props: ['searchQuery', 'bm'],
-    data() {
-      return {
-        isSearching: false
-      };
+    props: ['searchQuery', 'bmId'],
+    computed: {
+      isSearching() {
+        return this.$store.state.isSearching;
+      },
+      placeholder() {
+        return chrome.i18n.getMessage(
+          this.isSearching ? 'searchPlaceholderActive' : 'searchPlaceholder'
+        );
+      }
     },
     methods: {
-      enterSearchView() {
-        this.isSearching = true;
-      },
       leaveSearchView() {
-        this.isSearching = false;
+        this.$store.commit('stopSearching');
         this.$refs.searchInput.blur();
         this.$emit('update:searchQuery', '');
       },
@@ -108,6 +110,7 @@
         }
         &__search {
           transform: translateY(-4px);
+          animation: blink 0.125s cubic-bezier(0.47, 0, 0.745, 0.715);
         }
       }
     }
@@ -134,12 +137,23 @@
     }
 
     &__search {
+      color: #fafafa;
       transition: transform 0.125s;
       z-index: 1;
 
       &::placeholder {
-        color: #eee;
+        color: var(--search-placeholder-color);
       }
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+
+  @keyframes blink {
+    from {
+      opacity: 0.5;
     }
   }
 </style>

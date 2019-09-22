@@ -1,8 +1,6 @@
 import Vue from 'vue';
 import App from './App.vue';
-
-// make chrome API usable in templates
-Vue.prototype.$chrome = chrome;
+import store from './store';
 
 const bmBar = document.createElement('div');
 const shadow = bmBar.attachShadow({ mode: 'closed' });
@@ -18,8 +16,10 @@ document.body.appendChild(bmBar);
 
 style.onload = () =>
   new Vue({
+    store,
+    el: vueEl,
     render: h => h(App)
-  }).$mount(vueEl);
+  });
 
 document.body.addEventListener('click', () => {
   window.dispatchEvent(new CustomEvent('hideBar'));

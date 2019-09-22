@@ -8,5 +8,8 @@
 
   "searchPlaceholder": {
     "message": "Lesezeichen suchen"
+  },
+  "searchPlaceholderActive": {
+    "message": "Beginne zu tippen!"
   }
 }

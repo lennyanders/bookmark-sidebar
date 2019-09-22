@@ -39,24 +39,25 @@
 </template>
 
 <script>
-  import store from '../../store';
-
   export default {
     props: ['parentId'],
     data() {
       return {
         title: document.title,
-        url: location.href,
         createFolder: false
       };
     },
+    computed: {
+      url() {
+        return this.createFolder ? '' : location.href;
+      }
+    },
     methods: {
       createBm() {
-        store.port.postMessage({
-          type: 'create',
+        this.$store.commit('createBm', {
           parentId: this.parentId,
           title: this.title,
-          ...(!this.createFolder && { url: this.url })
+          url: this.url
         });
         this.$emit('close-modal');
       }
