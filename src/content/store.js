@@ -18,7 +18,7 @@ const store = new Vuex.Store({
   getters: {
     flattenedBms: state => {
       let children = [];
-      JSON.stringify(state.bm, (_, nested) => {
+      JSON.stringify(state.bm.children, (_, nested) => {
         if (nested && nested.title) children.push(nested);
         return nested;
       });

@@ -2,13 +2,7 @@
   "default_locale": "de",
   "name": "__MSG_extensionName__",
   "description": "Bookmarkbar backend",
-  "permissions": [
-    "storage",
-    "activeTab",
-    "bookmarks",
-    "file:///*",
-    "chrome://favicon/*/"
-  ],
+  "permissions": ["storage", "activeTab", "bookmarks", "chrome://favicon/*/"],
   "content_security_policy": "img-src chrome://favicon/;",
   "background": {
     "scripts": ["background/main.js"],
@@ -26,8 +20,7 @@
   "web_accessible_resources": [
     "content/main.css",
     "options/index.html",
-    "fonts/lato-v16-latin-regular.woff",
-    "fonts/lato-v16-latin-regular.woff2"
+    "fonts/*"
   ],
   "manifest_version": 2
 }

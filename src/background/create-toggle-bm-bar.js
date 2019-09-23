@@ -20,6 +20,7 @@ chrome.browserAction.onClicked.addListener(tab => {
           code: 'window.dispatchEvent(new CustomEvent("toggleBar"));'
         });
       } else {
+        chrome.tabs.insertCSS({ file: 'fonts/lato.css' });
         chrome.tabs.executeScript({
           file: 'content/main.js'
         });
