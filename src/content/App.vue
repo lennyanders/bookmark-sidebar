@@ -5,7 +5,7 @@
       v-show="barVisible"
       @click.stop
       @keydown.stop
-      @keydown.up.right.down.left.prevent
+      @keydown.up.down.prevent
     >
       <c-header :searchQuery.sync="searchQuery" :bmId="bm.id" />
       <main class="main">
