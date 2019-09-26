@@ -48,10 +48,12 @@
         } = this;
 
         if (!isSearching) {
+          dragHandle.draggable = true;
           dragHandle.addEventListener('dragstart', dragStart);
           dragHandle.addEventListener('dragenter', dragEnter);
           dragHandle.addEventListener('dragend', dragEnd);
         } else {
+          dragHandle.draggable = false;
           dragHandle.removeEventListener('dragstart', dragStart);
           dragHandle.removeEventListener('dragenter', dragEnter);
           dragHandle.removeEventListener('dragend', dragEnd);
