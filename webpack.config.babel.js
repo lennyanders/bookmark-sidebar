@@ -19,7 +19,6 @@ module.exports = ({ NODE_ENV }) => ({
   entry: {
     background: './src/background/main.js',
     content: './src/content/main.js',
-    options: './src/options/main.js',
     newtab: './src/newtab/main.js'
   },
   output: {
@@ -69,11 +68,6 @@ module.exports = ({ NODE_ENV }) => ({
     }),
     new VueLoaderPlugin(),
     new MiniCssExtractPlugin({ filename: '[name]/main.css' }),
-    new HtmlPlugin({
-      chunks: ['options'],
-      template: './src/options/index.html',
-      filename: 'options/index.html'
-    }),
     new HtmlPlugin({
       chunks: ['newtab'],
       template: './src/newtab/index.html',

@@ -3,7 +3,7 @@
   "name": "__MSG_extensionName__",
   "description": "Bookmarkbar backend",
   "permissions": ["storage", "activeTab", "bookmarks", "chrome://favicon/*/"],
-  "content_security_policy": "img-src chrome://favicon/;",
+  "content_security_policy": "img-src chrome://favicon/ data:;",
   "background": {
     "scripts": ["background/main.js"],
     "persistent": true
@@ -16,11 +16,9 @@
     },
     "default_title": "Lesezeichen"
   },
-  "options_page": "options/index.html",
-  "web_accessible_resources": [
-    "content/main.css",
-    "options/index.html",
-    "fonts/*"
-  ],
+  "chrome_url_overrides": {
+    "newtab": "newtab/index.html"
+  },
+  "web_accessible_resources": ["content/main.css", "fonts/*"],
   "manifest_version": 2
 }
