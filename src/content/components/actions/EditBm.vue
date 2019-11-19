@@ -1,5 +1,8 @@
 <template>
-  <button class="bookmark__option" @click="editBm">
+  <button
+    class="bookmark__option"
+    @click="$store.commit('showModal', { type: 'ModalEditBm', bm: bm })"
+  >
     <svg class="bookmark__icon" viewBox="0 0 24 24">
       <title>Edit bookmark</title>
       <path
@@ -10,18 +13,7 @@
 </template>
 
 <script>
-  import Event from '../../Event';
-
   export default {
-    props: ['id', 'title', 'url'],
-    methods: {
-      editBm() {
-        Event.$emit('show-modal', 'edit', {
-          id: this.id,
-          title: this.title,
-          ...(this.url && { url: this.url })
-        });
-      }
-    }
+    props: ['bm']
   };
 </script>

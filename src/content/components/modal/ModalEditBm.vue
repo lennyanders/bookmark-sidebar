@@ -8,7 +8,7 @@
       class="modal__input"
       v-model="newTitle"
     />
-    <template v-if="url">
+    <template v-if="newUrl">
       <label for="modal-edit-url" class="modal__title">Link</label>
       <input
         type="text"
@@ -18,9 +18,6 @@
       />
     </template>
     <div class="modal__actions">
-      <button type="button" class="modal__action" @click="$emit('close-modal')">
-        cancel
-      </button>
       <button type="button" class="modal__action" @click="removeBm">
         delete
       </button>
@@ -31,25 +28,29 @@
 
 <script>
   export default {
-    props: ['id', 'title', 'url'],
     data() {
       return {
-        newTitle: this.title,
-        newUrl: this.url
+        newTitle: this.$store.state.modalBm.title,
+        newUrl: this.$store.state.modalBm.url
       };
+    },
+    computed: {
+      bm() {
+        return this.$store.state.modalBm;
+      }
     },
     methods: {
       updateBm() {
-        this.$store.commit('editBm', {
-          id: this.id,
+        this.$store.dispatch('editBm', {
+          id: this.bm.id,
           title: this.newTitle,
           url: this.newUrl
         });
-        this.$emit('close-modal');
+        this.$store.commit('hideModal');
       },
       removeBm() {
-        this.$store.commit('removeBm', this.id);
-        this.$emit('close-modal');
+        this.$store.dispatch('removeBm', this.bm.id);
+        this.$store.commit('hideModal');
       }
     }
   };

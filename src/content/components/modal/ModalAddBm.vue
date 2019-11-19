@@ -30,9 +30,6 @@
           >create folder</label
         >
       </div>
-      <button type="button" class="modal__action" @click="$emit('close-modal')">
-        cancel
-      </button>
       <button type="submit" class="modal__action">create</button>
     </div>
   </form>
@@ -40,26 +37,26 @@
 
 <script>
   export default {
-    props: ['parentId'],
     data() {
       return {
         title: document.title,
+        url: location.href,
         createFolder: false
       };
     },
     computed: {
-      url() {
-        return this.createFolder ? '' : location.href;
+      bm() {
+        return this.$store.state.modalBm;
       }
     },
     methods: {
       createBm() {
-        this.$store.commit('createBm', {
-          parentId: this.parentId,
+        this.$store.dispatch('createBm', {
+          parentId: this.bm.id,
           title: this.title,
-          url: this.url
+          url: this.createFolder ? '' : this.url
         });
-        this.$emit('close-modal');
+        this.$store.commit('hideModal');
       }
     }
   };

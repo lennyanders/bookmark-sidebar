@@ -3,22 +3,28 @@ import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
+const port = chrome.runtime.connect({ name: 'bmBar' });
+
 const store = new Vuex.Store({
   // strict: process.env.NODE_ENV !== 'production',
   state: {
-    barVisible: true,
-    url: location.href,
-    isSearching: false,
+    barLeft: false,
+    barWidth: 320,
+    modalVisible: false,
+    // modalVisible: true,
+    modalType: '',
+    // modalType: 'ModalSettings',
+    modalBm: null,
     bm: null,
-    port: chrome.runtime.connect({ name: 'bmBar' }),
+    allFolders: null,
     dragY: null,
     dragEl: null,
     newBmParentId: null
   },
   getters: {
-    flattenedBms: state => {
+    flattenedBms: ({ bm: { children: bms } }) => {
       let children = [];
-      JSON.stringify(state.bm.children, (_, nested) => {
+      JSON.stringify(bms, (_, nested) => {
         if (nested && nested.title) children.push(nested);
         return nested;
       });
@@ -29,38 +35,29 @@ const store = new Vuex.Store({
     //
     // Sidebar appearance
     //
-    hideBar(state) {
-      state.barVisible = false;
+    showModal(state, { type, bm }) {
+      state.modalVisible = true;
+      state.modalType = type;
+      if (bm) state.modalBm = bm;
     },
-    toggleBarVisibility(state) {
-      state.barVisible = !state.barVisible;
+    hideModal(state) {
+      state.modalVisible = false;
     },
-    updateUrl(state) {
-      state.url = location.href;
+    setBarLeft(state, barLeft) {
+      state.barLeft = barLeft;
     },
-    startSearching(state) {
-      state.isSearching = true;
-    },
-    stopSearching(state) {
-      state.isSearching = false;
+    setBarWidth(state, width) {
+      if (width >= 280 && width <= window.screen.width / 2)
+        state.barWidth = width;
     },
     //
     // Bookmark modifications
     //
+    setAllFolders(state, allFolders) {
+      state.allFolders = allFolders;
+    },
     setRootBm(state, bm) {
       state.bm = bm;
-    },
-    createBm(state, bm) {
-      state.port.postMessage({ type: 'create', ...bm });
-    },
-    editBm(state, bm) {
-      state.port.postMessage({ type: 'update', ...bm });
-    },
-    moveBm(state, bm) {
-      state.port.postMessage({ type: 'move', ...bm });
-    },
-    removeBm(state, id) {
-      state.port.postMessage({ type: 'remove', id });
     },
     //
     // Bookmark drag and drop
@@ -74,20 +71,38 @@ const store = new Vuex.Store({
     setNewBmParentId(state, parentId) {
       state.newBmParentId = parentId;
     }
+  },
+  actions: {
+    updateRootBm(_, id) {
+      port.postMessage({ type: 'setShownBm', id: id });
+    },
+    createBm(_, bm) {
+      port.postMessage({ type: 'create', ...bm });
+    },
+    editBm(_, bm) {
+      port.postMessage({ type: 'update', ...bm });
+    },
+    moveBm(_, bm) {
+      port.postMessage({ type: 'move', ...bm });
+    },
+    removeBm(_, id) {
+      port.postMessage({ type: 'remove', id });
+    },
+
+    saveBarLeft({ state: { barLeft } }) {
+      port.postMessage({ type: 'setBarLeft', barLeft });
+    },
+    saveBarWidth({ state: { barWidth } }) {
+      port.postMessage({ type: 'setBarWidth', barWidth });
+    }
   }
 });
 
-store.state.port.onMessage.addListener(({ tree }) => {
-  if (tree) store.commit('setRootBm', tree);
-});
-
-window.addEventListener('toggleBar', () => {
-  store.commit('updateUrl');
-  store.commit('toggleBarVisibility');
-});
-
-window.addEventListener('hideBar', () => {
-  store.commit('hideBar');
+port.onMessage.addListener(({ bm, allFolders, barLeft, barWidth }) => {
+  store.commit('setRootBm', bm);
+  store.commit('setAllFolders', allFolders);
+  store.commit('setBarLeft', barLeft);
+  store.commit('setBarWidth', barWidth);
 });
 
 export default store;

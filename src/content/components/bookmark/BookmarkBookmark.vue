@@ -16,7 +16,7 @@
         <img class="bookmark__icon" :src="bm.faviconDataUrl" />
         <span class="bookmark__title">{{ bm.title }}</span>
       </a>
-      <edit-bm :id="bm.id" :title="bm.title" :url="bm.url" />
+      <edit-bm :bm="bm" />
     </div>
   </li>
 </template>
@@ -28,7 +28,7 @@
     mixins: [Mixin],
     computed: {
       isActive() {
-        return this.bm.url === this.$store.state.url;
+        return this.bm.url === this.url;
       }
     }
   };

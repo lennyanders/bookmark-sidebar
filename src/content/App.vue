@@ -1,13 +1,19 @@
 <template>
   <transition name="bookmark-bar" v-if="bm" appear>
     <div
-      class="bookmark-bar"
       v-show="barVisible"
+      class="bookmark-bar"
+      :class="{ 'bookmark-bar--left': barLeft }"
+      :style="{ width: barWidth + 'px' }"
       @click.stop
       @keydown.stop
       @keydown.up.down.prevent
     >
-      <c-header :searchQuery.sync="searchQuery" :bmId="bm.id" />
+      <c-header
+        :isSearching.sync="isSearching"
+        :searchQuery.sync="searchQuery"
+        :bm="bm"
+      />
       <main class="main">
         <ul v-if="bm.children.length" @keyup.esc="stopSearching">
           <bookmark
@@ -16,181 +22,216 @@
             :index="i"
             :parentId="_uid"
             :bm="bm"
+            :isSearching="isSearching"
+            :url="url"
           />
         </ul>
         <span v-else>Nothing found</span>
       </main>
       <modal />
+      <resize />
     </div>
   </transition>
 </template>
 
 <script>
-  import CHeader from './components/CHeader.vue';
-  import Bookmark from './components/bookmark/Bookmark.vue';
-  import Modal from './components/modal/Modal.vue';
+import CHeader from './components/CHeader.vue';
+import Bookmark from './components/bookmark/Bookmark.vue';
+import Modal from './components/modal/Modal.vue';
+import Resize from './components/Resize.vue';
 
-  import { fuzzy } from 'fast-fuzzy';
+import { mapState } from 'vuex';
+import { fuzzy } from 'fast-fuzzy';
 
-  export default {
-    components: {
-      CHeader,
-      Bookmark,
-      Modal
-    },
-    data() {
-      return {
-        searchQuery: '',
-        filters: ['-t', '-u', '-b', '-f']
+export default {
+  components: {
+    CHeader,
+    Bookmark,
+    Modal,
+    Resize
+  },
+  data() {
+    return {
+      barVisible:
+        !location.href.startsWith('chrome-extension') ||
+        location.href.endsWith('?bar=open'),
+      url: location.href,
+      isSearching: false,
+      searchQuery: '',
+      filters: ['-t', '-u', '-b', '-f']
+    };
+  },
+  computed: {
+    ...mapState(['barLeft', 'barWidth']),
+    bm() {
+      let searchQuery = this.searchQuery.trim();
 
-        // group 1: title, url:
-        // only title => search by title
-        // only url => search by url
+      if (!searchQuery) return this.$store.state.bm;
 
-        // group 2: bookmark, folder:
-        // only bookmark => remove folders
-        // only folder => remove bookmarks
-      };
-    },
-    computed: {
-      bm() {
-        let searchQuery = this.searchQuery.trim();
+      let activeFilters = this.filters.filter(filter => {
+        if (
+          searchQuery.indexOf(`${filter} `) === 0 ||
+          searchQuery.includes(` ${filter} `) ||
+          searchQuery.indexOf(` ${filter}`) ===
+            searchQuery.length - filter.length - 1
+        ) {
+          searchQuery = searchQuery.replace(new RegExp(filter, 'gi'), '');
+          return true;
+        }
+      });
+      console.log(activeFilters);
 
-        if (!searchQuery) return this.$store.state.bm;
+      let res = this.$store.getters.flattenedBms
+        .reduce((bms, bm) => {
+          const titleScore = fuzzy(searchQuery, bm.title),
+            urlScore = bm.url ? fuzzy(searchQuery, bm.url) : 0,
+            score = Math.max(titleScore, urlScore);
 
-        let activeFilters = this.filters.filter(filter => {
-          if (
-            searchQuery.indexOf(`${filter} `) === 0 ||
-            searchQuery.includes(` ${filter} `) ||
-            searchQuery.indexOf(` ${filter}`) ===
-              searchQuery.length - filter.length - 1
-          ) {
-            searchQuery = searchQuery.replace(new RegExp(filter, 'gi'), '');
-            return true;
+          if (score < 0.8) return bms;
+          bm.score = score;
+
+          if (!activeFilters.includes('-u') && activeFilters.includes('-t')) {
+            if (titleScore < 0.8) return bms;
+            bm.score = titleScore;
           }
+          if (!activeFilters.includes('-t') && activeFilters.includes('-u')) {
+            if (urlScore < 0.8) return bms;
+            bm.score = urlScore;
+          }
+          if (!activeFilters.includes('-f') && activeFilters.includes('-b')) {
+            if (!bm.url) return bms;
+          }
+          if (!activeFilters.includes('-b') && activeFilters.includes('-f')) {
+            if (bm.url) return bms;
+          }
+          return [...bms, bm];
+        }, [])
+        .sort((a, b) => {
+          // sort by best match
+          return b.score - a.score;
         });
-        console.log(activeFilters);
 
-        let res = this.$store.getters.flattenedBms
-          .reduce((bms, bm) => {
-            const titleScore = fuzzy(searchQuery, bm.title),
-              urlScore = bm.url ? fuzzy(searchQuery, bm.url) : 0,
-              score = Math.max(titleScore, urlScore);
-
-            if (score < 0.8) return bms;
-            bm.score = score;
-
-            if (!activeFilters.includes('-u') && activeFilters.includes('-t')) {
-              if (titleScore < 0.8) return bms;
-              bm.score = titleScore;
-            }
-            if (!activeFilters.includes('-t') && activeFilters.includes('-u')) {
-              if (urlScore < 0.8) return bms;
-              bm.score = urlScore;
-            }
-            if (!activeFilters.includes('-f') && activeFilters.includes('-b')) {
-              if (!bm.url) return bms;
-            }
-            if (!activeFilters.includes('-b') && activeFilters.includes('-f')) {
-              if (bm.url) return bms;
-            }
-            return [...bms, bm];
-          }, [])
-          .sort((a, b) => {
-            // sort by best match
-            return b.score - a.score;
-          });
-
-        return { ...this.$store.state.bm, children: res };
-      },
-      barVisible() {
-        return this.$store.state.barVisible;
-      }
-    },
-    methods: {
-      stopSearching() {
-        this.$store.commit('stopSearching');
-        this.searchQuery = '';
-      }
+      return { ...this.$store.state.bm, children: res };
     }
-  };
+  },
+  methods: {
+    hideBar(e) {
+      if (e.type === 'blur' && document.activeElement.tagName !== 'IFRAME')
+        return;
+
+      this.barVisible = false;
+    },
+    toggleBarVisibility() {
+      this.url = location.href;
+      this.barVisible = !this.barVisible;
+    },
+    stopSearching() {
+      this.isSearching = false;
+      this.searchQuery = '';
+    }
+  },
+  created() {
+    window.addEventListener('toggleBar', this.toggleBarVisibility);
+
+    document.body.addEventListener('click', this.hideBar);
+    window.addEventListener('blur', this.hideBar);
+  },
+  beforeDestroy() {
+    window.removeEventListener('toggleBar', this.toggleBarVisibility);
+
+    document.body.removeEventListener('click', this.hideBar);
+    window.removeEventListener('blur', this.hideBar);
+  }
+};
 </script>
 
 <style lang="scss">
-  @import 'reset';
+@import 'reset';
 
-  :host {
-    $bg-color: #fff;
-    $font-color: #333;
+:host,
+body {
+  $bg-color: #fff;
+  $font-color: #333;
 
-    --search-placeholder-color: #{scale-color(#fafafa, $lightness: -5%)};
+  --search-placeholder-color: #{scale-color(#fafafa, $lightness: -5%)};
+
+  --font-color: #{$font-color};
+  --input-color: #{scale-color($font-color, $lightness: 15%)};
+  --disabled-input-color: #{scale-color($font-color, $lightness: 50%)};
+
+  --bg-color: #{$bg-color};
+  --scrollbar-color: #{scale-color($bg-color, $lightness: -15%)};
+  --bm-focus-color: #{scale-color($bg-color, $lightness: -15%)};
+
+  --folder-icon: #{scale-color($font-color, $lightness: 10%)};
+
+  @media (prefers-color-scheme: dark) {
+    $bg-color: #323639;
+    $font-color: #fafafa;
 
     --font-color: #{$font-color};
-    --input-color: #{scale-color($font-color, $lightness: 15%)};
-    --disabled-input-color: #{scale-color($font-color, $lightness: 50%)};
+    --input-color: #{scale-color($font-color, $lightness: -15%)};
+    --disabled-input-color: #{scale-color($font-color, $lightness: -50%)};
 
     --bg-color: #{$bg-color};
-    --scrollbar-color: #{scale-color($bg-color, $lightness: -15%)};
-    --bm-focus-color: #{scale-color($bg-color, $lightness: -15%)};
+    --scrollbar-color: #{scale-color($bg-color, $lightness: 15%)};
+    --bm-focus-color: #{scale-color($bg-color, $lightness: 15%)};
 
-    --folder-icon: #{scale-color($font-color, $lightness: 10%)};
+    --folder-icon: #{scale-color($font-color, $lightness: -10%)};
+  }
+}
 
-    @media (prefers-color-scheme: dark) {
-      $bg-color: #323639;
-      $font-color: #fafafa;
+:host,
+* {
+  font-family: 'Lato', Arial, Helvetica, sans-serif;
+  color: var(--font-color);
+  font-size: 15px;
+}
 
-      --font-color: #{$font-color};
-      --input-color: #{scale-color($font-color, $lightness: -15%)};
-      --disabled-input-color: #{scale-color($font-color, $lightness: -50%)};
+.bookmark-bar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: grid;
+  grid-template-rows: 50px 1fr;
+  background-color: var(--bg-color);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+  z-index: 999999999;
+  will-change: scroll-position;
 
-      --bg-color: #{$bg-color};
-      --scrollbar-color: #{scale-color($bg-color, $lightness: 15%)};
-      --bm-focus-color: #{scale-color($bg-color, $lightness: 15%)};
+  $bar: &;
 
-      --folder-icon: #{scale-color($font-color, $lightness: -10%)};
-    }
+  &--left {
+    right: auto;
+    left: 0;
   }
 
-  :host,
-  * {
-    font-family: 'Lato', Arial, Helvetica, sans-serif;
-    color: var(--font-color);
-    font-size: 15px;
+  &-enter-active,
+  &-leave-active {
+    transition: transform 0.25s ease;
   }
 
-  .bookmark-bar {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: 320px;
-    display: grid;
-    grid-template-rows: 50px 1fr;
-    background-color: var(--bg-color);
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
-    z-index: 999999999;
+  &-enter,
+  &-leave-to {
+    transform: translateX(calc(100% + 10px));
 
-    &-enter-active,
-    &-leave-active {
-      transition: transform 0.25s ease;
-    }
-
-    &-enter,
-    &-leave-to {
-      transform: translateX(calc(100% + 10px));
+    &#{$bar}--left {
+      transform: translateX(calc(-100% - 10px));
     }
   }
+}
 
-  .main {
-    overflow: hidden scroll;
-    padding: 8px 4px 8px 8px;
+.main {
+  overflow: hidden scroll;
+  padding: 8px 4px 8px 8px;
 
-    &::-webkit-scrollbar {
-      width: 4px;
-    }
-    &::-webkit-scrollbar-thumb {
-      background-color: var(--scrollbar-color);
-      box-shadow: inset 0 8px var(--bg-color), inset 0 -8px var(--bg-color);
-    }
+  &::-webkit-scrollbar {
+    width: 4px;
   }
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-color);
+    box-shadow: inset 0 8px var(--bg-color), inset 0 -8px var(--bg-color);
+  }
+}
 </style>

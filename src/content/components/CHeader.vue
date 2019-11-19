@@ -11,14 +11,14 @@
       :value="searchQuery"
       @keyup.esc="leaveSearchView"
       @input="updateSearchQuery"
-      @focus="$store.commit('startSearching')"
+      @focus="$emit('update:isSearching', true)"
       ref="searchInput"
     />
     <div class="header__icons header__icons--right">
       <add-bm
         :btn-classes="['header__icon', 'header__icon--primary']"
         :icn-classes="[]"
-        :parentId="bmId"
+        :bm="bm"
       />
       <svg class="header__icon header__icon--secondary" viewBox="0 0 24 24">
         <path d="M3 13h12v-2H3m0-5v2h18V6M3 18h6v-2H3v2z" />
@@ -38,11 +38,8 @@
       LeaveSearch,
       AddBm
     },
-    props: ['searchQuery', 'bmId'],
+    props: ['isSearching', 'searchQuery', 'bm'],
     computed: {
-      isSearching() {
-        return this.$store.state.isSearching;
-      },
       placeholder() {
         return chrome.i18n.getMessage(
           this.isSearching ? 'searchPlaceholderActive' : 'searchPlaceholder'
@@ -51,8 +48,8 @@
     },
     methods: {
       leaveSearchView() {
-        this.$store.commit('stopSearching');
         this.$refs.searchInput.blur();
+        this.$emit('update:isSearching', false);
         this.$emit('update:searchQuery', '');
       },
       updateSearchQuery(e) {

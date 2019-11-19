@@ -1,60 +1,39 @@
 <template>
   <transition name="modal">
     <div
-      v-if="showModal"
-      @click="close"
-      @keyup.esc="close"
-      tabindex="0"
+      v-if="modalVisible"
       class="modal"
+      tabindex="0"
+      @click="hideModal"
+      @keyup.esc="hideModal"
     >
       <div @click.stop class="modal__content">
-        <modal-edit-bm
-          v-if="type === 'edit'"
-          @close-modal="close"
-          :id="data.id"
-          :title="data.title"
-          :url="data.url"
-        ></modal-edit-bm>
-        <modal-add-bm
-          v-else
-          @close-modal="close"
-          :parent-id="data.parentId"
-        ></modal-add-bm>
+        <button class="modal__close" @click="hideModal" title="Close"></button>
+        <component :is="modalType" />
       </div>
     </div>
   </transition>
 </template>
 
 <script>
-  import Event from '../../Event';
+  import { mapState, mapMutations } from 'vuex';
 
   import ModalEditBm from './ModalEditBm.vue';
   import ModalAddBm from './ModalAddBm.vue';
+  import ModalSettings from './ModalSettings.vue';
 
   export default {
     components: {
       ModalEditBm,
-      ModalAddBm
+      ModalAddBm,
+      ModalSettings
     },
-    data() {
-      return {
-        showModal: false,
-        type: null,
-        data: null
-      };
-    },
-    methods: {
-      close() {
-        this.showModal = false;
+    computed: mapState(['modalVisible', 'modalType']),
+    methods: mapMutations(['hideModal']),
+    watch: {
+      modalVisible(val) {
+        if (val) this.$nextTick(() => this.$el.focus());
       }
-    },
-    created() {
-      Event.$on('show-modal', (type, data) => {
-        this.type = type;
-        this.data = data;
-        this.showModal = true;
-        this.$nextTick(() => this.$el.focus());
-      });
     }
   };
 </script>
@@ -68,23 +47,78 @@
     left: 0;
     background-color: rgba(0, 0, 0, 0.25);
     cursor: pointer;
-    z-index: 2;
+    z-index: 1;
+
+    $mdl: &;
 
     &-enter-active,
     &-leave-active {
-      transition: opacity 0.2s ease;
+      transition: opacity 0.25s ease;
+
+      #{$mdl}__content {
+        transition: transform 0.25s ease;
+      }
     }
 
     &-enter,
     &-leave-to {
       opacity: 0;
+
+      #{$mdl}__content {
+        transform: translateY(100%);
+      }
     }
 
     &__content {
-      padding: 16px;
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      padding: 8px 16px 64px 16px;
       background-color: var(--bg-color);
       box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
       cursor: auto;
+    }
+
+    &__close {
+      position: relative;
+      display: block;
+      height: 20px;
+      width: 40px;
+      margin: 0 auto;
+
+      &::before,
+      &::after {
+        content: '';
+        position: absolute;
+        top: 7px;
+        width: 18px;
+        height: 6px;
+        border-radius: 2px;
+        background-color: #fff;
+        transition: transform 0.25s cubic-bezier(0.5, -0.5, 0.5, 1.5);
+      }
+
+      &::before {
+        right: 50%;
+        margin-right: -2px;
+        transform: rotate(-20deg);
+      }
+
+      &::after {
+        left: 50%;
+        margin-left: -2px;
+        transform: rotate(20deg);
+      }
+
+      &:hover {
+        &::before {
+          transform: rotate(20deg);
+        }
+        &::after {
+          transform: rotate(-20deg);
+        }
+      }
     }
 
     &__headline {

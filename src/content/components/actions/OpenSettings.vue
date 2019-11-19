@@ -1,5 +1,8 @@
 <template>
-  <button class="header__icon header__icon--primary" @click="openSettings">
+  <button
+    class="header__icon header__icon--primary"
+    @click="$store.commit('showModal', { type: 'ModalSettings' })"
+  >
     <svg viewBox="0 0 24 24">
       <title>Open Settings</title>
       <path
@@ -8,13 +11,3 @@
     </svg>
   </button>
 </template>
-
-<script>
-  export default {
-    methods: {
-      openSettings() {
-        window.open(chrome.runtime.getURL('options/index.html'));
-      }
-    }
-  };
-</script>

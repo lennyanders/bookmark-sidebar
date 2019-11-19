@@ -28,8 +28,8 @@
           <span class="bookmark__title">{{ bm.title }}</span>
         </div>
       </button>
-      <add-bm :parentId="bm.id" />
-      <edit-bm :id="bm.id" :title="bm.title" />
+      <add-bm :bm="bm" />
+      <edit-bm :bm="bm" />
     </div>
     <transition-expand v-if="bm.children.length" :name="'bookmark__children'">
       <ul class="bookmark__children" v-show="showChildren">
@@ -39,6 +39,7 @@
           :index="i"
           :parentId="_uid"
           :bm="bm"
+          :isSearching="isSearching"
         />
       </ul>
     </transition-expand>
@@ -46,37 +47,38 @@
 </template>
 
 <script>
-  import Mixin from './Mixin.vue';
+import Mixin from './Mixin.vue';
 
-  import AddBm from '../actions/AddBm.vue';
-  import TransitionExpand from '../TransitionExpand.vue';
-  const Bookmark = () => import('./Bookmark.vue');
+import AddBm from '../actions/AddBm.vue';
+import TransitionExpand from '../TransitionExpand.vue';
+const Bookmark = () => import('./Bookmark.vue');
+// import Bookmark from './Bookmark.vue';
 
-  export default {
-    mixins: [Mixin],
-    components: {
-      AddBm,
-      TransitionExpand,
-      Bookmark
+export default {
+  mixins: [Mixin],
+  components: {
+    AddBm,
+    TransitionExpand,
+    Bookmark
+  },
+  data() {
+    return {
+      showChildren: false
+    };
+  },
+  methods: {
+    openChildren() {
+      this.bm.children.map(({ url }) => {
+        if (url) window.open(url);
+      });
     },
-    data() {
-      return {
-        showChildren: false
-      };
-    },
-    methods: {
-      openChildren() {
-        this.bm.children.map(({ url }) => {
-          if (url) window.open(url);
-        });
-      },
-      hideChildren(e) {
-        if (this.showChildren) {
-          e.stopPropagation();
-          this.showChildren = false;
-          this.$refs.focusableBmPart.focus();
-        }
+    hideChildren(e) {
+      if (this.showChildren) {
+        e.stopPropagation();
+        this.showChildren = false;
+        this.$refs.focusableBmPart.focus();
       }
     }
-  };
+  }
+};
 </script>
