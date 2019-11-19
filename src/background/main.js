@@ -1,5 +1,5 @@
 import { scriptRunsOnTab } from './create-toggle-bm-bar';
-import { tree } from './tree';
+import { data } from './data';
 
 const userColorScheme = matchMedia('(prefers-color-scheme: dark)').matches
   ? 'dark/'
@@ -40,20 +40,29 @@ export default chrome.runtime.onConnect.addListener(port => {
           ...(msg.url && { url: msg.url })
         });
         break;
+      case 'setBarLeft':
+        chrome.storage.sync.set({ barLeft: msg.barLeft });
+        break;
+      case 'setShownBm':
+        chrome.storage.sync.set({ shownBmId: msg.id });
+        break;
+      case 'setBarWidth':
+        chrome.storage.sync.set({ barWidth: msg.barWidth });
+        break;
       default:
         break;
     }
   });
 
-  const postTree = () => {
-    port.postMessage({ tree: tree });
+  const postData = () => {
+    port.postMessage(data);
   };
 
-  postTree();
-  window.addEventListener('treeUpdated', postTree);
+  postData();
+  window.addEventListener('treeUpdated', postData);
 
   port.onDisconnect.addListener(() => {
-    window.removeEventListener('treeUpdated', postTree);
+    window.removeEventListener('treeUpdated', postData);
 
     chrome.tabs.query({ lastFocusedWindow: true, active: true }, ([tab]) => {
       scriptRunsOnTab.delete(tab.id);

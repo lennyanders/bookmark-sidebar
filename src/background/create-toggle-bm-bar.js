@@ -8,11 +8,11 @@ chrome.browserAction.onClicked.addListener(tab => {
         'https://chrome.google.com/webstore/',
         'view-source:',
         'file:///'
-      ].find(a => tab.url.includes(a))
+      ].some(url => tab.url.includes(url))
     ) {
       chrome.tabs.create({
         index: tab.index + 1,
-        url: 'chrome://newtab'
+        url: 'chrome://newtab?bar=open'
       });
     } else {
       if (scriptRunsOnTab.has(tab.id)) {
