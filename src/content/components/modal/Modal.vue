@@ -16,11 +16,11 @@
 </template>
 
 <script>
-  import { mapState, mapMutations } from 'vuex';
-
   import ModalEditBm from './ModalEditBm.vue';
   import ModalAddBm from './ModalAddBm.vue';
   import ModalSettings from './ModalSettings.vue';
+
+  import { store, mutations } from '../../store/index';
 
   export default {
     components: {
@@ -28,11 +28,18 @@
       ModalAddBm,
       ModalSettings
     },
-    computed: mapState(['modalVisible', 'modalType']),
-    methods: mapMutations(['hideModal']),
+    computed: {
+      modalVisible: () => store.modalVisible,
+      modalType: () => store.modalType
+    },
+    methods: {
+      hideModal: mutations.hideModal
+    },
     watch: {
       modalVisible(val) {
-        if (val) this.$nextTick(() => this.$el.focus());
+        if (!val) return;
+
+        this.$nextTick(() => this.$el.focus());
       }
     }
   };

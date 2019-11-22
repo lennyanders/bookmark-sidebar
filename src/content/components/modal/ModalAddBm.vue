@@ -36,6 +36,9 @@
 </template>
 
 <script>
+  import { mutations, store } from '../../store/index';
+  import { actions } from '../../api/index';
+
   export default {
     data() {
       return {
@@ -45,18 +48,16 @@
       };
     },
     computed: {
-      bm() {
-        return this.$store.state.modalBm;
-      }
+      bm: () => store.modalBm
     },
     methods: {
       createBm() {
-        this.$store.dispatch('createBm', {
+        actions.createBm({
           parentId: this.bm.id,
           title: this.title,
           url: this.createFolder ? '' : this.url
         });
-        this.$store.commit('hideModal');
+        mutations.hideModal();
       }
     }
   };

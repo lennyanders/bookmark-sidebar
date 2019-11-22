@@ -1,7 +1,7 @@
-<template>
+<template functional>
   <button
     class="header__icon header__icon--primary"
-    @click="$store.commit('showModal', { type: 'ModalSettings' })"
+    @click="$options.methods.showSettings"
   >
     <svg viewBox="0 0 24 24">
       <title>Open Settings</title>
@@ -11,3 +11,13 @@
     </svg>
   </button>
 </template>
+
+<script>
+  import { mutations } from '../../store/index';
+
+  export default {
+    methods: {
+      showSettings: () => mutations.showModal('ModalSettings')
+    }
+  };
+</script>

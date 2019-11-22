@@ -27,30 +27,31 @@
 </template>
 
 <script>
+  import { store, mutations } from '../../store/index';
+  import { actions } from '../../api/index';
+
   export default {
     data() {
       return {
-        newTitle: this.$store.state.modalBm.title,
-        newUrl: this.$store.state.modalBm.url
+        newTitle: store.modalBm.title,
+        newUrl: store.modalBm.url
       };
     },
     computed: {
-      bm() {
-        return this.$store.state.modalBm;
-      }
+      bmId: () => store.modalBm.id
     },
     methods: {
       updateBm() {
-        this.$store.dispatch('editBm', {
-          id: this.bm.id,
+        actions.editBm({
+          id: this.bmId,
           title: this.newTitle,
           url: this.newUrl
         });
-        this.$store.commit('hideModal');
+        mutations.hideModal();
       },
       removeBm() {
-        this.$store.dispatch('removeBm', this.bm.id);
-        this.$store.commit('hideModal');
+        actions.removeBm(this.bmId);
+        mutations.hideModal();
       }
     }
   };

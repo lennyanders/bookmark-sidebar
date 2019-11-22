@@ -16,35 +16,30 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex';
+  import { store, mutations } from '../../store/index';
+  import { actions } from '../../api/index';
 
   export default {
     computed: {
-      ...mapState(['allFolders']),
+      allFolders: () => store.allFolders,
       shownBm: {
-        get() {
-          return this.$store.state.bm.id;
-        },
+        get: () => store.bm.id,
         set(val) {
-          this.$store.dispatch('updateRootBm', val);
+          actions.updateRootBm(val);
         }
       },
       barLeft: {
-        get() {
-          return this.$store.state.barLeft;
-        },
+        get: () => store.barLeft,
         set(val) {
-          this.$store.commit('setBarLeft', val);
-          this.$store.dispatch('saveBarLeft');
+          mutations.setBarLeft(val);
+          actions.saveBarLeft();
         }
       },
       barWidth: {
-        get() {
-          return this.$store.state.barWidth;
-        },
+        get: () => store.barWidth,
         set(val) {
-          this.$store.commit('setBarWidth', val);
-          this.$store.dispatch('saveBarWidth');
+          mutations.setBarWidth(val);
+          actions.saveBarWidth();
         }
       }
     }
