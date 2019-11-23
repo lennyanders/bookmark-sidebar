@@ -70,7 +70,7 @@ module.exports = [
       rules: [
         {
           test: /\.vue$/,
-          loader: 'vue-loader?shadowMode'
+          loader: 'vue-loader'
         },
         {
           test: /\.js$/,
@@ -78,11 +78,30 @@ module.exports = [
         },
         {
           test: /\.css$/,
-          use: ['vue-style-loader?shadowMode', 'css-loader']
+          use: [
+            {
+              loader: 'style-loader',
+              options: {
+                injectType: 'singletonStyleTag',
+                insert: element => (window.styles = element)
+              }
+            },
+            'css-loader'
+          ]
         },
         {
           test: /\.scss$/,
-          use: ['vue-style-loader?shadowMode', 'css-loader', 'sass-loader']
+          use: [
+            {
+              loader: 'style-loader',
+              options: {
+                injectType: 'singletonStyleTag',
+                insert: element => (window.styles = element)
+              }
+            },
+            'css-loader',
+            'sass-loader'
+          ]
         }
       ]
     },

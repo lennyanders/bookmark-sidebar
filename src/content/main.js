@@ -6,6 +6,7 @@ const bmBar = document.createElement('div'),
   vueEl = document.createElement('div');
 
 console.clear();
+shadowRoot.append(styles);
 shadowRoot.append(vueEl);
 document.body.append(bmBar);
 

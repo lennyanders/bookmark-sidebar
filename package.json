@@ -5,17 +5,18 @@
   "private": true,
   "scripts": {
     "build": "webpack --env.NODE_ENV=production",
+    "build:dev": "webpack --env.NODE_ENV=development",
     "serve": "webpack --env.NODE_ENV=development -w"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@babel/core": "^7.7.2",
-    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.4.4",
-    "@babel/plugin-proposal-optional-chaining": "^7.6.0",
-    "@babel/preset-env": "^7.7.1",
-    "@babel/register": "^7.7.0",
-    "@babel/runtime": "^7.7.2",
+    "@babel/core": "^7.7.4",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.7.4",
+    "@babel/plugin-proposal-optional-chaining": "^7.7.4",
+    "@babel/preset-env": "^7.7.4",
+    "@babel/register": "^7.7.4",
+    "@babel/runtime": "^7.7.4",
     "babel-loader": "^8.0.6",
     "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^5.0.5",
@@ -24,13 +25,14 @@
     "mini-css-extract-plugin": "^0.8.0",
     "node-sass": "^4.13.0",
     "sass-loader": "^8.0.0",
+    "style-loader": "^1.0.0",
     "vue-loader": "^15.7.2",
     "vue-template-compiler": "^2.6.10",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10"
   },
   "dependencies": {
-    "fast-fuzzy": "^1.9.0",
+    "fast-fuzzy": "^1.9.1",
     "vue": "^2.6.10"
   },
   "browserslist": [
