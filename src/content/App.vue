@@ -9,7 +9,7 @@
       @keydown.stop
       @keydown.up.down.prevent
     >
-      <c-header
+      <top-bar
         :isSearching.sync="isSearching"
         :searchQuery.sync="searchQuery"
         :bm="bm"
@@ -20,7 +20,7 @@
             v-for="(bm, i) of bm.children"
             :key="bm.id"
             :index="i"
-            :parentId="_uid"
+            :parentId="uid"
             :bm="bm"
             :isSearching="isSearching"
             :url="url"
@@ -35,18 +35,18 @@
 </template>
 
 <script>
-  import { fuzzy } from 'fast-fuzzy';
-
-  import CHeader from './components/CHeader.vue';
+  import TopBar from './components/TopBar.vue';
   import Bookmark from './components/bookmark/Bookmark.vue';
   import Modal from './components/modal/Modal.vue';
   import Resize from './components/Resize.vue';
 
+  import { fuzzy } from 'fast-fuzzy';
   import { store, getters } from './store/index';
+  import { request } from './api';
 
   export default {
     components: {
-      CHeader,
+      TopBar,
       Bookmark,
       Modal,
       Resize
@@ -132,6 +132,9 @@
         this.isSearching = false;
         this.searchQuery = '';
       }
+    },
+    beforeCreate() {
+      this.uid = request.uid();
     },
     created() {
       window.addEventListener('toggleBar', this.toggleBarVisibility);
@@ -226,8 +229,9 @@
   }
 
   .main {
-    overflow: hidden scroll;
     padding: 8px 4px 8px 8px;
+    overflow: hidden scroll;
+    will-change: transform;
 
     &::-webkit-scrollbar {
       width: 4px;

@@ -37,3 +37,9 @@ export const actions = {
     port.postMessage({ type: 'setBarWidth', barWidth: store.barWidth });
   }
 };
+
+let count = -1;
+
+export const request = {
+  uid: () => count++
+};

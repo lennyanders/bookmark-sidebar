@@ -37,7 +37,7 @@
           v-for="(bm, i) of bm.children"
           :key="bm.id"
           :index="i"
-          :parentId="_uid"
+          :parentId="uid"
           :bm="bm"
           :isSearching="isSearching"
         />
@@ -47,38 +47,42 @@
 </template>
 
 <script>
-import Mixin from './Mixin.vue';
+  import Mixin from './Mixin.vue';
 
-import AddBm from '../actions/AddBm.vue';
-import TransitionExpand from '../TransitionExpand.vue';
-const Bookmark = () => import('./Bookmark.vue');
-// import Bookmark from './Bookmark.vue';
+  import AddBm from '../actions/AddBm.vue';
+  import TransitionExpand from '../TransitionExpand.vue';
+  const Bookmark = () => import('./Bookmark.vue');
 
-export default {
-  mixins: [Mixin],
-  components: {
-    AddBm,
-    TransitionExpand,
-    Bookmark
-  },
-  data() {
-    return {
-      showChildren: false
-    };
-  },
-  methods: {
-    openChildren() {
-      this.bm.children.map(({ url }) => {
-        if (url) window.open(url);
-      });
+  import { request } from '../../api';
+
+  export default {
+    mixins: [Mixin],
+    components: {
+      AddBm,
+      TransitionExpand,
+      Bookmark
     },
-    hideChildren(e) {
-      if (this.showChildren) {
-        e.stopPropagation();
-        this.showChildren = false;
-        this.$refs.focusableBmPart.focus();
+    data() {
+      return {
+        showChildren: false
+      };
+    },
+    methods: {
+      openChildren() {
+        this.bm.children.map(({ url }) => {
+          if (url) window.open(url);
+        });
+      },
+      hideChildren(e) {
+        if (this.showChildren) {
+          e.stopPropagation();
+          this.showChildren = false;
+          this.$refs.focusableBmPart.focus();
+        }
       }
+    },
+    beforeCreate() {
+      this.uid = request.uid();
     }
-  }
-};
+  };
 </script>

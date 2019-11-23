@@ -1,7 +1,7 @@
 <template>
   <header class="header" :class="{ 'header--searching': isSearching }">
     <div class="header__icons header__icons--left">
-      <open-setting />
+      <open-settings />
       <leave-search :click="leaveSearchView" />
     </div>
     <input
@@ -12,6 +12,7 @@
       @keyup.esc="leaveSearchView"
       @input="updateSearchQuery"
       @focus="$emit('update:isSearching', true)"
+      @blur="!searchQuery.trim() && leaveSearchView()"
       ref="searchInput"
     />
     <div class="header__icons header__icons--right">
@@ -28,13 +29,13 @@
 </template>
 
 <script>
-  import OpenSetting from './actions/OpenSettings.vue';
+  import OpenSettings from './actions/OpenSettings.vue';
   import LeaveSearch from './actions/LeaveSearch.vue';
   import AddBm from './actions/AddBm.vue';
 
   export default {
     components: {
-      OpenSetting,
+      OpenSettings,
       LeaveSearch,
       AddBm
     },
@@ -75,7 +76,9 @@
       right: 8px;
       bottom: 0;
       left: 8px;
-      background-color: rgb(51, 103, 214);
+      // background-color: rgb(51, 103, 214);
+      background: linear-gradient(45deg, #304ffe, #2979ff);
+
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
       transform-origin: center bottom;
       transition: transform 0.125s;
