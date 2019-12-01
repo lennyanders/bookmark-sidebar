@@ -7,9 +7,9 @@
       @click="hideModal"
       @keyup.esc="hideModal"
     >
-      <div @click.stop class="modal__content">
+      <div @click.stop class="modal__layer">
         <button class="modal__close" @click="hideModal" title="Close"></button>
-        <component :is="modalType" />
+        <component :is="modalType" class="modal__content" />
       </div>
     </div>
   </transition>
@@ -62,7 +62,7 @@
     &-leave-active {
       transition: opacity 0.25s ease;
 
-      #{$mdl}__content {
+      #{$mdl}__layer {
         transition: transform 0.25s ease;
       }
     }
@@ -71,12 +71,12 @@
     &-leave-to {
       opacity: 0;
 
-      #{$mdl}__content {
+      #{$mdl}__layer {
         transform: translateY(100%);
       }
     }
 
-    &__content {
+    &__layer {
       position: absolute;
       right: 0;
       bottom: 0;
@@ -102,7 +102,7 @@
         width: 18px;
         height: 6px;
         border-radius: 2px;
-        background-color: #fff;
+        background-color: var(--font-color);
         transition: transform 0.25s cubic-bezier(0.5, -0.5, 0.5, 1.5);
       }
 
@@ -128,83 +128,16 @@
       }
     }
 
-    &__headline {
-      margin-bottom: 16px;
-    }
-
-    &__title {
-      display: block;
-    }
-
-    &__input {
-      width: 100%;
-      margin-bottom: 16px;
-      color: var(--input-color);
-      transition: color 0.2s ease;
-
-      &:disabled {
-        color: var(--disabled-input-color);
-      }
-    }
-
     &__actions {
       display: flex;
       justify-content: flex-end;
+      align-items: center;
     }
 
-    &__action {
-      &:not(&--option) {
-        padding: 5px;
-        margin-left: 8px;
-        background-color: var(--bm-focus-color);
-      }
-
-      &--option {
-        flex: 1;
-      }
-
-      &__label {
-        display: block;
-        position: relative;
-        padding: 5px 8px;
-        margin-left: 16px;
-
-        &::before,
-        &::after {
-          content: '';
-          display: block;
-          position: absolute;
-          top: 50%;
-          cursor: pointer;
-        }
-
-        &::before {
-          box-sizing: border-box;
-          left: -16px;
-          margin-top: -8px;
-          width: 16px;
-          height: 16px;
-          border: 1px solid var(--bm-focus-color);
-        }
-
-        &::after {
-          left: -12px;
-          margin-top: -4px;
-          width: 8px;
-          height: 8px;
-          background-color: var(--bm-focus-color);
-          opacity: 0;
-          transition: opacity 0.2s ease;
-        }
-      }
-
-      &__checkbox:focus + &__label::before {
-        outline: -webkit-focus-ring-color auto 1px;
-      }
-
-      &__checkbox:checked + &__label::after {
-        opacity: 1;
-      }
+    &__content {
+      display: grid;
+      grid-auto-flow: row;
+      grid-row-gap: 20px;
     }
   }
 </style>
