@@ -3,13 +3,17 @@
     <div
       v-show="barVisible"
       class="bookmark-bar"
-      :class="{ 'bookmark-bar--left': barLeft }"
+      :class="{
+        'bookmark-bar--left': barLeft,
+        'bookmark-bar--light': activeTheme === 'light',
+        'bookmark-bar--dark': activeTheme === 'dark'
+      }"
       :style="{ width: barWidth + 'px' }"
       @click.stop
       @keydown.stop
       @keydown.up.down.prevent
     >
-      <top-bar
+      <TheHeader
         :isSearching.sync="isSearching"
         :searchQuery.sync="searchQuery"
         :bm="bm"
@@ -35,7 +39,7 @@
 </template>
 
 <script>
-  import TopBar from './components/TopBar.vue';
+  import TheHeader from './components/TheHeader.vue';
   import Bookmark from './components/bookmark/Bookmark.vue';
   import Modal from './components/modal/Modal.vue';
   import Resize from './components/Resize.vue';
@@ -46,7 +50,7 @@
 
   export default {
     components: {
-      TopBar,
+      TheHeader,
       Bookmark,
       Modal,
       Resize
@@ -65,6 +69,7 @@
     computed: {
       barWidth: () => store.barWidth,
       barLeft: () => store.barLeft,
+      activeTheme: () => store.activeTheme,
       bm() {
         let searchQuery = this.searchQuery.trim();
 
@@ -154,8 +159,7 @@
 <style lang="scss">
   @import 'reset';
 
-  :host,
-  body {
+  @mixin lightTheme() {
     $bg-color: #fff;
     $font-color: #333;
 
@@ -170,21 +174,21 @@
     --bm-focus-color: #{scale-color($bg-color, $lightness: -15%)};
 
     --folder-icon: #{scale-color($font-color, $lightness: 10%)};
+  }
 
-    @media (prefers-color-scheme: dark) {
-      $bg-color: #323639;
-      $font-color: #fafafa;
+  @mixin darkTheme() {
+    $bg-color: #323639;
+    $font-color: #fafafa;
 
-      --font-color: #{$font-color};
-      --input-color: #{scale-color($font-color, $lightness: -15%)};
-      --disabled-input-color: #{scale-color($font-color, $lightness: -50%)};
+    --font-color: #{$font-color};
+    --input-color: #{scale-color($font-color, $lightness: -15%)};
+    --disabled-input-color: #{scale-color($font-color, $lightness: -50%)};
 
-      --bg-color: #{$bg-color};
-      --scrollbar-color: #{scale-color($bg-color, $lightness: 15%)};
-      --bm-focus-color: #{scale-color($bg-color, $lightness: 15%)};
+    --bg-color: #{$bg-color};
+    --scrollbar-color: #{scale-color($bg-color, $lightness: 15%)};
+    --bm-focus-color: #{scale-color($bg-color, $lightness: 15%)};
 
-      --folder-icon: #{scale-color($font-color, $lightness: -10%)};
-    }
+    --folder-icon: #{scale-color($font-color, $lightness: -10%)};
   }
 
   :host,
@@ -207,6 +211,21 @@
     will-change: scroll-position;
 
     $bar: &;
+
+    &,
+    &--light {
+      @include lightTheme();
+    }
+
+    &--dark {
+      @include darkTheme();
+    }
+
+    &:not(&--light) {
+      @media (prefers-color-scheme: dark) {
+        @include darkTheme();
+      }
+    }
 
     &--left {
       right: auto;
