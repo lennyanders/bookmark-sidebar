@@ -4,13 +4,16 @@ import { store, mutations } from '../store/index';
 const port = chrome.runtime.connect({ name: 'bmBar' });
 
 // listen to events and update data
-port.onMessage.addListener(({ bm, allFolders, barLeft, barWidth }) => {
-  mutations.setRootBm(bm);
-  mutations.setAllFolders(allFolders);
+port.onMessage.addListener(
+  ({ bm, allFolders, barLeft, barWidth, barTheme }) => {
+    mutations.setRootBm(bm);
+    mutations.setAllFolders(allFolders);
 
-  mutations.setBarLeft(barLeft);
-  mutations.setBarWidth(barWidth);
-});
+    mutations.setBarLeft(barLeft);
+    mutations.setBarWidth(barWidth);
+    mutations.setActiveTheme(barTheme);
+  }
+);
 
 // communicate with backend (background script)
 export const actions = {
@@ -35,11 +38,13 @@ export const actions = {
   },
   saveBarWidth() {
     port.postMessage({ type: 'setBarWidth', barWidth: store.barWidth });
+  },
+  saveActiveTheme() {
+    port.postMessage({ type: 'setBarTheme', barTheme: store.activeTheme });
   }
 };
 
-let count = -1;
-
+let count = 0;
 export const request = {
   uid: () => count++
 };

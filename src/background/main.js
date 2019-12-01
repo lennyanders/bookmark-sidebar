@@ -49,6 +49,9 @@ export default chrome.runtime.onConnect.addListener(port => {
       case 'setBarWidth':
         chrome.storage.sync.set({ barWidth: msg.barWidth });
         break;
+      case 'setBarTheme':
+        chrome.storage.sync.set({ barTheme: msg.barTheme });
+        break;
       default:
         break;
     }

@@ -95,24 +95,28 @@ const updateTree = () => {
 
 chrome.storage.sync.get(
   ['barLeft', 'shownBmId', 'barWidth'],
-  ({ shownBmId, barLeft, barWidth }) => {
+  ({ shownBmId, barLeft, barWidth, barTheme }) => {
     _shownBmId = shownBmId ? shownBmId : '0';
 
     data.barLeft = barLeft;
     data.barWidth = barWidth ? barWidth : 320;
+    data.barTheme = barTheme ? barTheme : 'system';
 
     updateTree();
   }
 );
-chrome.storage.onChanged.addListener(({ shownBmId, barLeft, barWidth }, _) => {
-  if (shownBmId) {
-    _shownBmId = shownBmId.newValue;
-    updateTree();
-  }
+chrome.storage.onChanged.addListener(
+  ({ shownBmId, barLeft, barWidth, barTheme }) => {
+    if (shownBmId) {
+      _shownBmId = shownBmId.newValue;
+      updateTree();
+    }
 
-  if (barLeft) data.barLeft = barLeft.newValue;
-  if (barWidth) data.barWidth = barWidth.newValue;
-});
+    if (barLeft) data.barLeft = barLeft.newValue;
+    if (barWidth) data.barWidth = barWidth.newValue;
+    if (barTheme) data.barTheme = barTheme.newValue;
+  }
+);
 
 chrome.bookmarks.onRemoved.addListener(updateTree);
 chrome.bookmarks.onCreated.addListener(updateTree);
