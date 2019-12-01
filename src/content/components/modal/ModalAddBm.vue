@@ -1,45 +1,31 @@
 <template>
   <form @submit.prevent="createBm">
     <h2 class="modal__headline">Lesezeichen hinzufügen</h2>
-    <label for="modal-add-title" class="modal__title">Titel</label>
-    <input
-      type="text"
-      id="modal-add-title"
-      class="modal__input"
-      required
-      v-model="title"
-    />
-    <label for="modal-add-url" class="modal__title">Link</label>
-    <input
-      type="text"
-      id="modal-add-url"
-      class="modal__input"
-      v-model="url"
-      :disabled="createFolder"
-      :required="!createFolder"
-    />
+
+    <BaseInput v-model="title" text="Titel" required />
+    <BaseInput v-model="url" text="Link" :disabled="createFolder" />
+
     <div class="modal__actions">
-      <div class="modal__action modal__action--option">
-        <input
-          type="checkbox"
-          id="modal-add-folder"
-          class="modal__action__checkbox"
-          v-model="createFolder"
-        />
-        <label for="modal-add-folder" class="modal__action__label"
-          >create folder</label
-        >
-      </div>
-      <button type="submit" class="modal__action">create</button>
+      <BaseCheckbox v-model="createFolder" text="create folder" />
+      <BaseButton type="submit" text="create" />
     </div>
   </form>
 </template>
 
 <script>
+  import BaseInput from '../form/BaseInput.vue';
+  import BaseCheckbox from '../form/BaseCheckbox.vue';
+  import BaseButton from '../form/BaseButton.vue';
+
   import { mutations, store } from '../../store/index';
   import { actions } from '../../api/index';
 
   export default {
+    components: {
+      BaseInput,
+      BaseCheckbox,
+      BaseButton
+    },
     data() {
       return {
         title: document.title,

@@ -1,27 +1,54 @@
 <template>
   <div>
-    <label for="bla">Choose the folder that you want to display:</label>
-    <select id="bla" v-model="shownBm">
-      <option v-for="{ title, id } of allFolders" :key="id" :value="id">{{
-        title
-      }}</option>
-    </select>
+    <BaseSelect
+      v-model="shownBm"
+      :options="allFolders"
+      text="Choose the folder that you want to display:"
+    />
 
-    <br /><label for="">Should the Sidebar be on the left side?</label>
-    <input type="checkbox" id="" v-model="barLeft" />
+    <BaseCheckbox
+      v-model="barLeft"
+      text="Should the Sidebar be on the left side?"
+    />
 
-    <label for="">Set width of Sidebar</label>
-    <input type="number" v-model="barWidth" name="" id="" />
+    <BaseRadio
+      v-model="activeTheme"
+      :options="themes"
+      text="Choose your preferred color theme"
+    />
+
+    <BaseInput v-model="barWidth" text="Set width of Sidebar" type="number" />
   </div>
 </template>
 
 <script>
-  import { store, mutations } from '../../store/index';
+  import BaseInput from '../form/BaseInput.vue';
+  import BaseSelect from '../form/BaseSelect.vue';
+  import BaseCheckbox from '../form/BaseCheckbox.vue';
+  import BaseRadio from '../form/BaseRadio.vue';
+
+  import { staticStore, store, mutations } from '../../store/index';
   import { actions } from '../../api/index';
 
   export default {
+    components: {
+      BaseInput,
+      BaseSelect,
+      BaseCheckbox,
+      BaseRadio
+    },
+    data() {
+      return {
+        themes: staticStore.themes
+      };
+    },
     computed: {
-      allFolders: () => store.allFolders,
+      allFolders: () =>
+        store.allFolders.map(folder => {
+          folder.value = folder.id;
+          folder.text = folder.title;
+          return folder;
+        }),
       shownBm: {
         get: () => store.bm.id,
         set(val) {
@@ -35,6 +62,13 @@
           actions.saveBarLeft();
         }
       },
+      activeTheme: {
+        get: () => store.activeTheme,
+        set(val) {
+          mutations.setActiveTheme(val);
+          actions.saveActiveTheme();
+        }
+      },
       barWidth: {
         get: () => store.barWidth,
         set(val) {
@@ -45,16 +79,3 @@
     }
   };
 </script>
-
-<style lang="scss" scoped>
-  input[type='checkbox'] {
-    display: block;
-    width: 20px;
-    height: 20px;
-    background-color: #fff;
-  }
-
-  select {
-    background-color: #333;
-  }
-</style>
