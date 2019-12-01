@@ -1,8 +1,26 @@
 import Vue from 'vue';
 
+export const staticStore = {
+  themes: [
+    {
+      value: 'system',
+      text: 'System Oriented'
+    },
+    {
+      value: 'light',
+      text: 'light'
+    },
+    {
+      value: 'dark',
+      text: 'dark'
+    }
+  ]
+};
+
 export const store = Vue.observable({
   barLeft: false,
   barWidth: 320,
+  activeTheme: 'system',
 
   bm: {},
   allFolders: [],
@@ -36,6 +54,9 @@ export const mutations = {
     if (width < 280 || width > window.screen.width / 2) return;
 
     store.barWidth = width;
+  },
+  setActiveTheme(option) {
+    store.activeTheme = option;
   },
 
   setRootBm(bm) {
