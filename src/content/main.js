@@ -5,7 +5,6 @@ const bmBar = document.createElement('div'),
   shadowRoot = bmBar.attachShadow({ mode: 'closed' }),
   vueEl = document.createElement('div');
 
-console.clear();
 shadowRoot.append(styles);
 shadowRoot.append(vueEl);
 document.body.append(bmBar);
