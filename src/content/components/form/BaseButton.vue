@@ -1,0 +1,41 @@
+<template functional>
+  <button
+    class="button"
+    :data-text="props.text"
+    :type="data.attrs.type || 'button'"
+    v-on="listeners"
+  >
+    {{ props.text }}
+  </button>
+</template>
+
+<style lang="scss">
+  .button {
+    position: relative;
+    padding: 7px 12px;
+    box-shadow: inset 0 0 0 2px var(--font-color);
+    overflow: hidden;
+
+    &::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      padding: inherit;
+      background: linear-gradient(45deg, #304ffe, #2979ff);
+      clip-path: inset(100% 0 0 0);
+      transition: clip-path 0.2s ease;
+    }
+
+    &:hover,
+    &:focus {
+      &::after {
+        clip-path: inset(0 0 0 0);
+      }
+    }
+
+    & + & {
+      margin-left: 15px;
+    }
+  }
+</style>
