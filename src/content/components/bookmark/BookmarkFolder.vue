@@ -2,8 +2,10 @@
   <li class="bookmark" @keyup.left="hideChildren">
     <div
       class="bookmark__content"
-      @keyup.down="selectNextBm"
-      @keyup.up="selectPrevBm"
+      @keydown.down.exact="selectNextBm"
+      @keydown.up.exact="selectPrevBm"
+      @keydown.shift.down="moveBookmarkBy(1)"
+      @keydown.shift.up="moveBookmarkBy(-1)"
       ref="dragHandle"
     >
       <button

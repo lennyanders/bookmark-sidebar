@@ -1,6 +1,6 @@
 <script>
   import EditBm from '../actions/EditBm.vue';
-  import Event from '../../Event';
+  import EventBus from '../../eventBus';
 
   import { store, mutations } from '../../store/index';
   import { actions } from '../../api/index';
@@ -11,26 +11,39 @@
     },
     props: ['bm', 'isSearching', 'url', 'index', 'parentId'],
     methods: {
+      moveBookmarkBy(delta) {
+        if (delta > 0) delta++;
+
+        actions.moveBm({
+          id: this.bm.id,
+          index: this.bm.index + delta
+        });
+
+        EventBus.$once('bookmarks-updated', async () => {
+          await this.$nextTick();
+          this.$refs.focusableBmPart.focus();
+        });
+      },
       //
       // functions for arrow navigation
       //
       selectPrevBm() {
         if (this.index) {
-          Event.$emit('select-bm', this.parentId, this.index - 1);
+          EventBus.$emit('select-bm', this.parentId, this.index - 1);
         } else {
-          Event.$emit('select-bm', this.$parent.parentId, this.$parent.index);
+          EventBus.$emit('select-bm', this.$parent.parentId, this.$parent.index);
         }
       },
       selectNextBm() {
         if (this.showChildren) {
-          Event.$emit('select-bm', this.uid, 0);
+          EventBus.$emit('select-bm', this.uid, 0);
         } else {
           const { parentId, index } =
             this.index + 1 === this.$parent.bm.children.length
               ? this.$parent
               : this;
 
-          Event.$emit('select-bm', parentId, index + 1);
+          EventBus.$emit('select-bm', parentId, index + 1);
         }
       },
       selectBm(parentId, index) {
@@ -97,10 +110,10 @@
     },
     mounted() {
       this.setDragAndDrop();
-      Event.$on('select-bm', this.selectBm);
+      EventBus.$on('select-bm', this.selectBm);
     },
     beforeDestroy() {
-      Event.$off('select-bm', this.selectBm);
+      EventBus.$off('select-bm', this.selectBm);
     }
   };
 </script>

@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import EventBus from '../eventBus';
 
 export const staticStore = {
   themes: [
@@ -61,6 +62,7 @@ export const mutations = {
 
   setRootBm(bm) {
     store.bm = bm;
+    EventBus.$emit('bookmarks-updated');
   },
   setAllFolders(folders) {
     store.allFolders = folders;
