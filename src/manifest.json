@@ -4,6 +4,15 @@
   "description": "Bookmarkbar backend",
   "permissions": ["storage", "activeTab", "bookmarks", "chrome://favicon/*/"],
   "content_security_policy": "img-src chrome://favicon/ data:;",
+  "commands": {
+    "toogle-bm-bar": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Y",
+        "mac": "Command+Shift+Y"
+      },
+      "description": "toogle Bookmarkbar visibility"
+    }
+  },
   "background": {
     "scripts": ["background/main.js"],
     "persistent": true
