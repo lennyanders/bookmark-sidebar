@@ -4,8 +4,10 @@
       class="bookmark__content"
       @keydown.down.exact="goBy(1)"
       @keydown.up.exact="goBy(-1)"
-      @keydown.down.alt.exact="moveBookmarkBy(1)"
-      @keydown.up.alt.exact="moveBookmarkBy(-1)"
+      @keydown.down.alt.exact="moveBy(1)"
+      @keydown.up.alt.exact="moveBy(-1)"
+      @keydown.down.alt.ctrl.exact="moveBookmarkIn(1)"
+      @keydown.up.alt.ctrl.exact="moveBookmarkIn(-1)"
       ref="dragHandle"
     >
       <a

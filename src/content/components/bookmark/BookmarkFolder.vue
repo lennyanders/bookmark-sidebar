@@ -4,13 +4,13 @@
       class="bookmark__content"
       @keydown.down.exact="goBy(1)"
       @keydown.up.exact="goBy(-1)"
-      @keydown.alt.down="moveBookmarkBy(1)"
-      @keydown.alt.up="moveBookmarkBy(-1)"
+      @keydown.alt.down="moveBy(1)"
+      @keydown.alt.up="moveBy(-1)"
       ref="dragHandle"
     >
       <button
-        @click="bm.childrenVisible = !bm.childrenVisible"
-        @keyup.right="bm.childrenVisible = true"
+        @click="childrenVisible = !childrenVisible"
+        @keyup.right="childrenVisible = true"
         @mousedown.middle.prevent
         @click.middle="openChildren"
         :title="bm.title"
@@ -35,7 +35,7 @@
       <edit-bm :bm="bm" />
     </div>
     <transition-expand v-if="bm.children.length" :name="'bookmark__children'">
-      <ul class="bookmark__children" v-show="bm.childrenVisible">
+      <ul class="bookmark__children" v-show="childrenVisible">
         <BaseBookmark
           v-for="(bm, i) of bm.children"
           :key="bm.id"
@@ -64,6 +64,11 @@
       TransitionExpand,
       BaseBookmark
     },
+    data() {
+      return {
+        childrenVisible: false
+      };
+    },
     methods: {
       openChildren() {
         if (this.bm.children.length > 4) return;
@@ -72,15 +77,23 @@
         });
       },
       hideChildren(e) {
-        if (!this.bm.childrenVisible) return;
+        if (!this.childrenVisible) return;
 
         e.stopPropagation();
-        this.bm.childrenVisible = false;
+        this.childrenVisible = false;
         this.$refs.focusableBmPart.focus();
+      },
+      updateBmChildrenVisible() {
+        this.bm.childrenVisible = this.childrenVisible;
       }
     },
-    beforeMount() {
-      this.$set(this.bm, 'childrenVisible', false);
+    watch: {
+      childrenVisible: {
+        handler: 'updateBmChildrenVisible'
+      },
+      bm: {
+        handler: 'updateBmChildrenVisible'
+      }
     }
   };
 </script>

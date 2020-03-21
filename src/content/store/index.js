@@ -1,5 +1,3 @@
-import merge from 'lodash/merge';
-
 import Vue from 'vue';
 import { $root } from '../main';
 
@@ -105,7 +103,7 @@ export const mutations = {
   },
 
   setRootBm(bm) {
-    store.bm = merge({}, store.bm, bm);
+    store.bm = bm;
     $root.$emit('bookmarks-updated');
   },
   setAllFolders(folders) {

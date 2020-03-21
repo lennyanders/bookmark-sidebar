@@ -18,7 +18,13 @@
       setActiveBm() {
         store.activeBm = this.bm.id;
       },
-      moveBookmarkBy(delta) {
+      //
+      // functions for arrow navigation
+      //
+      goBy(delta) {
+        mutations.walkActiveBmBy(delta);
+      },
+      moveBy(delta) {
         if (!delta) return;
         if (delta > 0) delta++;
 
@@ -29,17 +35,11 @@
 
         this.$root.$once('bookmarks-updated', async () => {
           await this.$nextTick();
-          this.$refs.focusableBmPart.focus();
+          this.$refs.focusableBmPart?.focus();
         });
       },
       moveBookmarkIn(delta) {
         console.log(delta, store);
-      },
-      //
-      // functions for arrow navigation
-      //
-      goBy(delta) {
-        mutations.walkActiveBmBy(delta);
       },
 
       //
