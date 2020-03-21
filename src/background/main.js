@@ -15,64 +15,61 @@ chrome.browserAction.setIcon({
   }
 });
 
+const actions = {
+  remove({ id }) {
+    chrome.bookmarks.removeTree(id);
+  },
+  create({ parentId, title, url }) {
+    chrome.bookmarks.create({
+      parentId,
+      title,
+      ...(url && { url })
+    });
+  },
+  move({ id, index, parentId }) {
+    chrome.bookmarks.move(id, {
+      ...(index !== undefined && { index }),
+      ...(parentId && { parentId })
+    });
+  },
+  update({ id, title, url }) {
+    chrome.bookmarks.update(id, {
+      ...(title && { title }),
+      ...(url && { url })
+    });
+  },
+  setBarLeft({ barLeft }) {
+    chrome.storage.sync.set({ barLeft });
+  },
+  setShownBm({ id: shownBmId }) {
+    chrome.storage.sync.set({ shownBmId });
+  },
+  setBarWidth({ barWidth }) {
+    chrome.storage.sync.set({ barWidth });
+  },
+  setBarTheme({ barTheme }) {
+    chrome.storage.sync.set({ barTheme });
+  }
+};
+
 export default chrome.runtime.onConnect.addListener(port => {
   console.assert(port.name === 'bmBar');
 
-  port.onMessage.addListener(msg => {
-    switch (msg.type) {
-      case 'remove':
-        chrome.bookmarks.removeTree(msg.id);
-        break;
-      case 'create':
-        chrome.bookmarks.create({
-          parentId: msg.parentId,
-          title: msg.title,
-          ...(msg.url && { url: msg.url })
-        });
-        break;
-      case 'move':
-        chrome.bookmarks.move(msg.id, {
-          ...(typeof msg.index !== undefined && { index: msg.index }),
-          ...(msg.parentId && { parentId: msg.parentId })
-        });
-        break;
-      case 'update':
-        chrome.bookmarks.update(msg.id, {
-          ...(msg.title && { title: msg.title }),
-          ...(msg.url && { url: msg.url })
-        });
-        break;
-      case 'setBarLeft':
-        chrome.storage.sync.set({ barLeft: msg.barLeft });
-        break;
-      case 'setShownBm':
-        chrome.storage.sync.set({ shownBmId: msg.id });
-        break;
-      case 'setBarWidth':
-        chrome.storage.sync.set({ barWidth: msg.barWidth });
-        break;
-      case 'setBarTheme':
-        chrome.storage.sync.set({ barTheme: msg.barTheme });
-        break;
-      default:
-        break;
-    }
-  });
+  port.onMessage.addListener(msg => actions[msg.type]?.(msg));
 
-  const postData = () => {
-    port.postMessage(data);
-  };
-
+  const postData = () => port.postMessage(data);
   postData();
   window.addEventListener('treeUpdated', postData);
 
   port.onDisconnect.addListener(async () => {
     window.removeEventListener('treeUpdated', postData);
 
-    const [tab] = await chrome.tabs.query({
-      lastFocusedWindow: true,
-      active: true
-    });
-    scriptRunsOnTab.delete(tab.id);
+    try {
+      const [tab] = await chrome.tabs.query({
+        lastFocusedWindow: true,
+        active: true
+      });
+      scriptRunsOnTab.delete(tab.id);
+    } catch (r) {}
   });
 });
