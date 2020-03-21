@@ -1,7 +1,7 @@
 export let scriptRunsOnTab = new Set([]);
 
 const createToggleBmBar = tab => {
-  tab = Array.isArray(tab) ? tab[0] : tab;
+  tab = tab[0] || tab;
 
   if (tab.url.includes('chrome://newtab')) return;
 

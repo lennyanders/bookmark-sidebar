@@ -1,3 +1,5 @@
+import 'chrome-extension-async';
+
 import { scriptRunsOnTab } from './create-toggle-bm-bar';
 import { data } from './data';
 
@@ -64,11 +66,13 @@ export default chrome.runtime.onConnect.addListener(port => {
   postData();
   window.addEventListener('treeUpdated', postData);
 
-  port.onDisconnect.addListener(() => {
+  port.onDisconnect.addListener(async () => {
     window.removeEventListener('treeUpdated', postData);
 
-    chrome.tabs.query({ lastFocusedWindow: true, active: true }, ([tab]) => {
-      scriptRunsOnTab.delete(tab.id);
+    const [tab] = await chrome.tabs.query({
+      lastFocusedWindow: true,
+      active: true
     });
+    scriptRunsOnTab.delete(tab.id);
   });
 });
