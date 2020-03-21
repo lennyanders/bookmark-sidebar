@@ -2,18 +2,19 @@
   <li class="bookmark" @keyup.left="hideChildren">
     <div
       class="bookmark__content"
-      @keydown.down.exact="selectNextBm"
-      @keydown.up.exact="selectPrevBm"
-      @keydown.shift.down="moveBookmarkBy(1)"
-      @keydown.shift.up="moveBookmarkBy(-1)"
+      @keydown.down.exact="goBy(1)"
+      @keydown.up.exact="goBy(-1)"
+      @keydown.alt.down="moveBookmarkBy(1)"
+      @keydown.alt.up="moveBookmarkBy(-1)"
       ref="dragHandle"
     >
       <button
-        @click="showChildren = !showChildren"
-        @keyup.right="showChildren = true"
+        @click="bm.childrenVisible = !bm.childrenVisible"
+        @keyup.right="bm.childrenVisible = true"
         @mousedown.middle.prevent
         @click.middle="openChildren"
         :title="bm.title"
+        @focus="setActiveBm"
         ref="focusableBmPart"
       >
         <div class="bookmark__link">
@@ -34,12 +35,11 @@
       <edit-bm :bm="bm" />
     </div>
     <transition-expand v-if="bm.children.length" :name="'bookmark__children'">
-      <ul class="bookmark__children" v-show="showChildren">
+      <ul class="bookmark__children" v-show="bm.childrenVisible">
         <BaseBookmark
           v-for="(bm, i) of bm.children"
           :key="bm.id"
           :index="i"
-          :parentId="uid"
           :bm="bm"
           :isSearching="isSearching"
         />
@@ -64,27 +64,23 @@
       TransitionExpand,
       BaseBookmark
     },
-    data() {
-      return {
-        showChildren: false
-      };
-    },
     methods: {
       openChildren() {
+        if (this.bm.children.length > 4) return;
         this.bm.children.map(({ url }) => {
           if (url) window.open(url);
         });
       },
       hideChildren(e) {
-        if (this.showChildren) {
-          e.stopPropagation();
-          this.showChildren = false;
-          this.$refs.focusableBmPart.focus();
-        }
+        if (!this.bm.childrenVisible) return;
+
+        e.stopPropagation();
+        this.bm.childrenVisible = false;
+        this.$refs.focusableBmPart.focus();
       }
     },
-    beforeCreate() {
-      this.uid = request.uid();
+    beforeMount() {
+      this.$set(this.bm, 'childrenVisible', false);
     }
   };
 </script>

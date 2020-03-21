@@ -1,18 +1,19 @@
 <template>
-  <li class="bookmark">
+  <li class="bookmark" ref="bm">
     <div
       class="bookmark__content"
-      @keydown.down.exact="selectNextBm"
-      @keydown.up.exact="selectPrevBm"
-      @keydown.shift.down="moveBookmarkBy(1)"
-      @keydown.shift.up="moveBookmarkBy(-1)"
+      @keydown.down.exact="goBy(1)"
+      @keydown.up.exact="goBy(-1)"
+      @keydown.down.alt.exact="moveBookmarkBy(1)"
+      @keydown.up.alt.exact="moveBookmarkBy(-1)"
       ref="dragHandle"
     >
       <a
         class="bookmark__link"
-        :class="{ 'bookmark__link--active': isActive }"
+        :class="{ 'bookmark__link--active': isOpen }"
         :href="bm.url"
         :title="bm.title + ' | ' + bm.url"
+        @focus="setActiveBm"
         ref="focusableBmPart"
       >
         <img class="bookmark__icon" :src="bm.faviconDataUrl" />
@@ -29,7 +30,7 @@
   export default {
     mixins: [Mixin],
     computed: {
-      isActive() {
+      isOpen() {
         return this.bm.url === this.url;
       }
     }

@@ -24,7 +24,6 @@
             v-for="(bm, i) of bm.children"
             :key="bm.id"
             :index="i"
-            :parentId="uid"
             :bm="bm"
             :isSearching="isSearching"
             :url="url"
@@ -137,9 +136,6 @@
         this.isSearching = false;
         this.searchQuery = '';
       }
-    },
-    beforeCreate() {
-      this.uid = request.uid();
     },
     created() {
       window.addEventListener('toggleBar', this.toggleBarVisibility);

@@ -1,5 +1,7 @@
+import merge from 'lodash/merge';
+
 import Vue from 'vue';
-import EventBus from '../eventBus';
+import { $root } from '../main';
 
 export const staticStore = {
   themes: [
@@ -25,6 +27,7 @@ export const store = Vue.observable({
 
   bm: {},
   allFolders: [],
+  activeBm: '0',
 
   modalVisible: false,
   modalType: '',
@@ -47,6 +50,47 @@ export const getters = {
   }
 };
 
+const findBm = (
+  id,
+  delta = 0,
+  includeChildren = true,
+  bms = store.bm.children
+) => {
+  for (let i = 0; i < bms.length; i++) {
+    if (bms[i].id === id) {
+      if (delta > 0) {
+        // select first children when children are open
+        if (
+          includeChildren &&
+          bms[i].childrenVisible &&
+          bms[i].children.length
+        ) {
+          return bms[i].children[0];
+        }
+        const res = bms[i + delta];
+        if (res) return res;
+
+        const res2 = findBm(bms[i].parentId, 1, false);
+        if (res2) return res2;
+      }
+
+      if (delta < 0) {
+        const res = bms[i + delta];
+        if (res) return res;
+
+        const res2 = findBm(bms[i].parentId, 0);
+        if (res2) return res2;
+      }
+
+      return bms[i];
+    }
+    if (bms[i].children) {
+      const res = findBm(id, delta, includeChildren, bms[i].children);
+      if (res) return res;
+    }
+  }
+};
+
 export const mutations = {
   setBarLeft(barLeft) {
     store.barLeft = barLeft;
@@ -61,11 +105,17 @@ export const mutations = {
   },
 
   setRootBm(bm) {
-    store.bm = bm;
-    EventBus.$emit('bookmarks-updated');
+    store.bm = merge({}, store.bm, bm);
+    $root.$emit('bookmarks-updated');
   },
   setAllFolders(folders) {
     store.allFolders = folders;
+  },
+  setActiveBm(id) {
+    store.activeBm = id;
+  },
+  walkActiveBmBy(delta) {
+    store.activeBm = findBm(store.activeBm, delta)?.id;
   },
 
   showModal(type, bm) {

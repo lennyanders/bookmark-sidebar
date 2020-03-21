@@ -34,6 +34,7 @@
   "dependencies": {
     "chrome-extension-async": "^3.4.1",
     "fast-fuzzy": "^1.9.2",
+    "lodash": "^4.17.15",
     "vue": "^2.6.11"
   },
   "browserslist": [

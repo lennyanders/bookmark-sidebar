@@ -1,6 +1,5 @@
 <script>
   import EditBm from '../actions/EditBm.vue';
-  import EventBus from '../../eventBus';
 
   import { store, mutations } from '../../store/index';
   import { actions } from '../../api/index';
@@ -10,8 +9,17 @@
       EditBm
     },
     props: ['bm', 'isSearching', 'url', 'index', 'parentId'],
+    computed: {
+      isActive() {
+        return this.bm.id === store.activeBm;
+      }
+    },
     methods: {
+      setActiveBm() {
+        store.activeBm = this.bm.id;
+      },
       moveBookmarkBy(delta) {
+        if (!delta) return;
         if (delta > 0) delta++;
 
         actions.moveBm({
@@ -19,36 +27,19 @@
           index: this.bm.index + delta
         });
 
-        EventBus.$once('bookmarks-updated', async () => {
+        this.$root.$once('bookmarks-updated', async () => {
           await this.$nextTick();
           this.$refs.focusableBmPart.focus();
         });
       },
+      moveBookmarkIn(delta) {
+        console.log(delta, store);
+      },
       //
       // functions for arrow navigation
       //
-      selectPrevBm() {
-        if (this.index) {
-          EventBus.$emit('select-bm', this.parentId, this.index - 1);
-        } else {
-          EventBus.$emit('select-bm', this.$parent.parentId, this.$parent.index);
-        }
-      },
-      selectNextBm() {
-        if (this.showChildren) {
-          EventBus.$emit('select-bm', this.uid, 0);
-        } else {
-          const { parentId, index } =
-            this.index + 1 === this.$parent.bm.children.length
-              ? this.$parent
-              : this;
-
-          EventBus.$emit('select-bm', parentId, index + 1);
-        }
-      },
-      selectBm(parentId, index) {
-        if (this.parentId === parentId && this.index === index)
-          this.$refs.focusableBmPart.focus();
+      goBy(delta) {
+        mutations.walkActiveBmBy(delta);
       },
 
       //
@@ -106,14 +97,13 @@
     watch: {
       isSearching: {
         handler: 'setDragAndDrop'
+      },
+      isActive(newVal) {
+        if (newVal) this.$refs.focusableBmPart.focus();
       }
     },
     mounted() {
       this.setDragAndDrop();
-      EventBus.$on('select-bm', this.selectBm);
-    },
-    beforeDestroy() {
-      EventBus.$off('select-bm', this.selectBm);
     }
   };
 </script>
