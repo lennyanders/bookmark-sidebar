@@ -27,6 +27,9 @@
           display: inherit;
         }
       }
+      &:hover {
+        background-color: var(--bm-hover-color);
+      }
     }
     &__link {
       display: grid;

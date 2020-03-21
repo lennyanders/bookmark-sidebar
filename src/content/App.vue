@@ -171,7 +171,8 @@
 
     --bg-color: #{$bg-color};
     --scrollbar-color: #{scale-color($bg-color, $lightness: -15%)};
-    --bm-focus-color: #{scale-color($bg-color, $lightness: -15%)};
+    --bm-focus-color: #{scale-color($bg-color, $lightness: -10%)};
+    --bm-hover-color: #{scale-color($bg-color, $lightness: -15%)};
 
     --folder-icon: #{scale-color($font-color, $lightness: 10%)};
   }
@@ -186,7 +187,8 @@
 
     --bg-color: #{$bg-color};
     --scrollbar-color: #{scale-color($bg-color, $lightness: 15%)};
-    --bm-focus-color: #{scale-color($bg-color, $lightness: 15%)};
+    --bm-focus-color: #{scale-color($bg-color, $lightness: 10%)};
+    --bm-hover-color: #{scale-color($bg-color, $lightness: 15%)};
 
     --folder-icon: #{scale-color($font-color, $lightness: -10%)};
   }
