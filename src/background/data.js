@@ -47,6 +47,7 @@ const updateTree = async () => {
     if (!nested.id || !nested.title) return nested;
     if (!nested.url) {
       if (nested.id === '0') nested.title = 'root';
+      if (shownFolder) nested.childrenVisible = false;
       if (nested.id === _shownBmId) shownFolder = nested;
 
       folders.push({

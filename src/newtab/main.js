@@ -2,7 +2,7 @@ import Vue from 'vue';
 import App from '../content/App.vue';
 
 const vueEl = document.createElement('div');
-document.body.appendChild(vueEl);
+document.body.append(vueEl);
 
 new Vue({
   el: vueEl,
