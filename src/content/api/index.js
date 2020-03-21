@@ -1,6 +1,6 @@
 import { store, mutations } from '../store/index';
 
-// connect to backend (background script)
+// connect to middleware (background script)
 const port = chrome.runtime.connect({ name: 'bmBar' });
 
 // listen to events and update data
@@ -15,7 +15,7 @@ port.onMessage.addListener(
   }
 );
 
-// communicate with backend (background script)
+// communicate with middleware (background script)
 export const actions = {
   updateRootBm(id) {
     port.postMessage({ type: 'setShownBm', id: id });
