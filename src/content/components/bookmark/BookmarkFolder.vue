@@ -35,7 +35,7 @@
     </div>
     <transition-expand v-if="bm.children.length" :name="'bookmark__children'">
       <ul class="bookmark__children" v-show="showChildren">
-        <bookmark
+        <BaseBookmark
           v-for="(bm, i) of bm.children"
           :key="bm.id"
           :index="i"
@@ -53,7 +53,7 @@
 
   import AddBm from '../actions/AddBm.vue';
   import TransitionExpand from '../TransitionExpand.vue';
-  const Bookmark = () => import('./Bookmark.vue');
+  const BaseBookmark = () => import('./BaseBookmark.vue');
 
   import { request } from '../../api';
 
@@ -62,7 +62,7 @@
     components: {
       AddBm,
       TransitionExpand,
-      Bookmark
+      BaseBookmark
     },
     data() {
       return {

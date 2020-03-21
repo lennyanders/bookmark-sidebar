@@ -20,7 +20,7 @@
       />
       <main class="main">
         <ul v-if="bm.children.length" @keyup.esc="stopSearching">
-          <bookmark
+          <BaseBookmark
             v-for="(bm, i) of bm.children"
             :key="bm.id"
             :index="i"
@@ -32,17 +32,17 @@
         </ul>
         <span v-else>Nothing found</span>
       </main>
-      <modal />
-      <resize />
+      <TheModal />
+      <TheResizer />
     </div>
   </transition>
 </template>
 
 <script>
   import TheHeader from './components/TheHeader.vue';
-  import Bookmark from './components/bookmark/Bookmark.vue';
-  import Modal from './components/modal/Modal.vue';
-  import Resize from './components/Resize.vue';
+  import BaseBookmark from './components/bookmark/BaseBookmark.vue';
+  import TheModal from './components/modal/TheModal.vue';
+  import TheResizer from './components/TheResizer.vue';
 
   import { fuzzy } from 'fast-fuzzy';
   import { store, getters } from './store/index';
@@ -51,9 +51,9 @@
   export default {
     components: {
       TheHeader,
-      Bookmark,
-      Modal,
-      Resize
+      BaseBookmark,
+      TheModal,
+      TheResizer
     },
     data() {
       return {

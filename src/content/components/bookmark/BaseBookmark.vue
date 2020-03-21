@@ -4,8 +4,8 @@
 
   export default {
     functional: true,
-    render: (createElement, { data, props }) =>
-      createElement(props.bm.url ? BookmarkBookmark : BookmarkFolder, data)
+    render: (h, { data, props }) =>
+      h(props.bm.url ? BookmarkBookmark : BookmarkFolder, data)
   };
 </script>
 
