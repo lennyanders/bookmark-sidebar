@@ -1,5 +1,3 @@
-import 'chrome-extension-async';
-
 export let data = {};
 
 let faviconUrls = new Set([]);
@@ -46,8 +44,7 @@ const updateTree = async () => {
   let folders = [];
 
   JSON.stringify(bookmarks, (_, nested) => {
-    if (!nested.id) return nested;
-
+    if (!nested.id || !nested.title) return nested;
     if (!nested.url) {
       if (nested.id === '0') nested.title = 'root';
       if (nested.id === _shownBmId) shownFolder = nested;
@@ -59,7 +56,6 @@ const updateTree = async () => {
     } else if (shownFolder) {
       bmsToLoad.push(nested);
     }
-
     return nested;
   });
 
@@ -83,7 +79,7 @@ const updateTree = async () => {
   window.dispatchEvent(new CustomEvent('treeUpdated'));
 };
 
-(async () => {
+export const generateData = async () => {
   const {
     shownBmId = '0',
     barLeft,
@@ -94,22 +90,21 @@ const updateTree = async () => {
   _shownBmId = shownBmId;
   Object.assign(data, { barLeft, barWidth, barTheme });
   updateTree();
-})();
 
-chrome.storage.onChanged.addListener(
-  ({ shownBmId, barLeft, barWidth, barTheme }) => {
-    if (shownBmId) {
-      _shownBmId = shownBmId.newValue;
-      updateTree();
+  chrome.storage.onChanged.addListener(
+    ({ shownBmId, barLeft, barWidth, barTheme }) => {
+      if (shownBmId) {
+        _shownBmId = shownBmId.newValue;
+        updateTree();
+      }
+
+      if (barLeft) data.barLeft = barLeft.newValue;
+      if (barWidth) data.barWidth = barWidth.newValue;
+      if (barTheme) data.barTheme = barTheme.newValue;
     }
-
-    if (barLeft) data.barLeft = barLeft.newValue;
-    if (barWidth) data.barWidth = barWidth.newValue;
-    if (barTheme) data.barTheme = barTheme.newValue;
-  }
-);
-
-chrome.bookmarks.onRemoved.addListener(updateTree);
-chrome.bookmarks.onCreated.addListener(updateTree);
-chrome.bookmarks.onMoved.addListener(updateTree);
-chrome.bookmarks.onChanged.addListener(updateTree);
+  );
+  chrome.bookmarks.onRemoved.addListener(updateTree);
+  chrome.bookmarks.onCreated.addListener(updateTree);
+  chrome.bookmarks.onMoved.addListener(updateTree);
+  chrome.bookmarks.onChanged.addListener(updateTree);
+};
