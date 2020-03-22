@@ -1,5 +1,4 @@
 import Vue from 'vue';
-import { $root } from '../main';
 
 export const staticStore = {
   themes: [
@@ -104,7 +103,6 @@ export const mutations = {
 
   setRootBm(bm) {
     store.bm = bm;
-    $root.$emit('bookmarks-updated');
   },
   setAllFolders(folders) {
     store.allFolders = folders;

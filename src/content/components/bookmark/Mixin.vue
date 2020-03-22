@@ -16,7 +16,10 @@
     },
     methods: {
       setActiveBm() {
-        store.activeBm = this.bm.id;
+        mutations.setActiveBm(this.bm.id);
+      },
+      setFocus() {
+        if (this.isActive) this.$refs.focusableBmPart.focus();
       },
       //
       // functions for arrow navigation
@@ -31,11 +34,6 @@
         actions.moveBm({
           id: this.bm.id,
           index: this.bm.index + delta
-        });
-
-        this.$root.$once('bookmarks-updated', async () => {
-          await this.$nextTick();
-          this.$refs.focusableBmPart?.focus();
         });
       },
       moveBookmarkIn(delta) {
@@ -98,12 +96,15 @@
       isSearching: {
         handler: 'setDragAndDrop'
       },
-      isActive(newVal) {
-        if (newVal) this.$refs.focusableBmPart.focus();
+      isActive: {
+        handler: 'setFocus'
       }
     },
     mounted() {
       this.setDragAndDrop();
+    },
+    updated() {
+      this.setFocus();
     }
   };
 </script>

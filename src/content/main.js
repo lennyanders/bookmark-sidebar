@@ -9,7 +9,7 @@ shadowRoot.append(styles);
 shadowRoot.append(vueEl);
 document.body.append(bmBar);
 
-export const $root = new Vue({
+new Vue({
   shadowRoot,
   el: vueEl,
   render: h => h(App)
