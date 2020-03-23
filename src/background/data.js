@@ -44,7 +44,7 @@ const updateTree = async () => {
   let folders = [];
 
   JSON.stringify(bookmarks, (_, nested) => {
-    if (!nested.id || !nested.title) return nested;
+    if (!nested.id) return nested;
     if (!nested.url) {
       if (nested.id === '0') nested.title = 'root';
       if (nested.id === _shownBmId) shownFolder = nested;
