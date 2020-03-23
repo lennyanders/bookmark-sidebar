@@ -10,7 +10,6 @@ shadowRoot.append(vueEl);
 document.body.append(bmBar);
 
 new Vue({
-  shadowRoot,
   el: vueEl,
   render: h => h(App)
 });
