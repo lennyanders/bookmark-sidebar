@@ -27,7 +27,7 @@
   import BaseCheckbox from '../form/BaseCheckbox.vue';
   import BaseRadio from '../form/BaseRadio.vue';
 
-  import { staticStore, store, mutations } from '../../store/index';
+  import { store, mutations } from '../../store/index';
   import { actions } from '../../api/index';
 
   export default {
@@ -39,7 +39,7 @@
     },
     data() {
       return {
-        themes: staticStore.themes
+        themes: store.themes
       };
     },
     computed: {
@@ -58,14 +58,14 @@
       barLeft: {
         get: () => store.barLeft,
         set(val) {
-          mutations.setBarLeft(val);
+          store.barLeft = val;
           actions.saveBarLeft();
         }
       },
       activeTheme: {
         get: () => store.activeTheme,
         set(val) {
-          mutations.setActiveTheme(val);
+          store.activeTheme = val;
           actions.saveActiveTheme();
         }
       },

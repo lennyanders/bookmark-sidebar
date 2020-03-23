@@ -1,5 +1,5 @@
 <template>
-  <header class="header" :class="{ 'header--searching': isSearching }">
+  <header class="header" :class="{ 'header--searching': searchFocused }">
     <div class="header__icons header__icons--left">
       <open-settings />
       <leave-search :click="leaveSearchView" />
@@ -8,11 +8,10 @@
       class="header__search"
       type="text"
       :placeholder="placeholder"
-      :value="searchQuery"
+      v-model="searchQuery"
+      @focus="searchFocused = true"
       @keyup.esc="leaveSearchView"
-      @input="updateSearchQuery"
-      @focus="$emit('update:isSearching', true)"
-      @blur="!searchQuery.trim() && leaveSearchView()"
+      @blur="!searchQuery && (searchFocused = false)"
       ref="searchInput"
     />
     <div class="header__icons header__icons--right">
@@ -29,6 +28,8 @@
 </template>
 
 <script>
+  import { store } from '../store';
+
   import OpenSettings from './actions/OpenSettings.vue';
   import LeaveSearch from './actions/LeaveSearch.vue';
   import AddBm from './actions/AddBm.vue';
@@ -39,22 +40,30 @@
       LeaveSearch,
       AddBm
     },
-    props: ['isSearching', 'searchQuery', 'bm'],
+    props: ['bm'],
+    data() {
+      return {
+        placeholder: chrome.i18n.getMessage('searchPlaceholder')
+      };
+    },
     computed: {
-      placeholder() {
-        return chrome.i18n.getMessage(
-          this.isSearching ? 'searchPlaceholderActive' : 'searchPlaceholder'
-        );
+      searchFocused: {
+        get: () => store.searchFocused,
+        set(val) {
+          store.searchFocused = val;
+        }
+      },
+      searchQuery: {
+        get: () => store.searchQuery,
+        set(val) {
+          store.searchQuery = val.trim();
+        }
       }
     },
     methods: {
       leaveSearchView() {
         this.$refs.searchInput.blur();
-        this.$emit('update:isSearching', false);
-        this.$emit('update:searchQuery', '');
-      },
-      updateSearchQuery(e) {
-        this.$emit('update:searchQuery', e.target.value);
+        store.stopSearching();
       }
     }
   };

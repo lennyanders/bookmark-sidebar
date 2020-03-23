@@ -13,21 +13,10 @@
       @keydown.stop
       @keydown.up.down.prevent
     >
-      <TheHeader
-        :isSearching.sync="isSearching"
-        :searchQuery.sync="searchQuery"
-        :bm="bm"
-      />
+      <TheHeader :bm="bm" />
       <main class="main">
         <ul v-if="bm.children.length" @keyup.esc="stopSearching">
-          <BaseBookmark
-            v-for="(bm, i) of bm.children"
-            :key="bm.id"
-            :index="i"
-            :bm="bm"
-            :isSearching="isSearching"
-            :url="url"
-          />
+          <BaseBookmark v-for="bm of bm.children" :key="bm.id" :bm="bm" />
         </ul>
         <span v-else>Nothing found</span>
       </main>
@@ -43,8 +32,7 @@
   import TheModal from './components/modal/TheModal.vue';
   import TheResizer from './components/TheResizer.vue';
 
-  import { fuzzy } from 'fast-fuzzy';
-  import { store, getters } from './store/index';
+  import { store } from './store/index';
   import { request } from './api';
 
   export default {
@@ -58,68 +46,14 @@
       return {
         barVisible:
           !location.href.startsWith('chrome-extension') ||
-          location.href.endsWith('?bar=open'),
-        url: location.href,
-        isSearching: false,
-        searchQuery: '',
-        filters: ['-t', '-u', '-b', '-f']
+          location.href.endsWith('?bar=open')
       };
     },
     computed: {
       barWidth: () => store.barWidth,
       barLeft: () => store.barLeft,
       activeTheme: () => store.activeTheme,
-      bm() {
-        let searchQuery = this.searchQuery.trim();
-
-        if (!searchQuery) return store.bm;
-
-        const activeFilters = this.filters.filter(filter => {
-          if (
-            searchQuery.indexOf(`${filter} `) === 0 ||
-            searchQuery.includes(` ${filter} `) ||
-            searchQuery.indexOf(` ${filter}`) ===
-              searchQuery.length - filter.length - 1
-          ) {
-            searchQuery = searchQuery.replace(new RegExp(filter, 'gi'), '');
-            return true;
-          }
-        });
-        console.log(activeFilters);
-
-        const res = getters
-          .flattenedBms()
-          .reduce((bms, bm) => {
-            const titleScore = fuzzy(searchQuery, bm.title),
-              urlScore = bm.url ? fuzzy(searchQuery, bm.url) : 0,
-              score = Math.max(titleScore, urlScore);
-
-            if (score < 0.8) return bms;
-            bm.score = score;
-
-            if (!activeFilters.includes('-u') && activeFilters.includes('-t')) {
-              if (titleScore < 0.8) return bms;
-              bm.score = titleScore;
-            }
-            if (!activeFilters.includes('-t') && activeFilters.includes('-u')) {
-              if (urlScore < 0.8) return bms;
-              bm.score = urlScore;
-            }
-            if (!activeFilters.includes('-f') && activeFilters.includes('-b')) {
-              if (!bm.url) return bms;
-            }
-            if (!activeFilters.includes('-b') && activeFilters.includes('-f')) {
-              if (bm.url) return bms;
-            }
-            return [...bms, bm];
-          }, [])
-          .sort((a, b) => {
-            // sort by best match
-            return b.score - a.score;
-          });
-
-        return { ...store.bm, children: res };
-      }
+      bm: () => store.filteredBms
     },
     methods: {
       hideBar(e) {
@@ -129,13 +63,10 @@
         this.barVisible = false;
       },
       toggleBarVisibility() {
-        this.url = location.href;
+        store.url = location.href;
         this.barVisible = !this.barVisible;
       },
-      stopSearching() {
-        this.isSearching = false;
-        this.searchQuery = '';
-      }
+      stopSearching: store.stopSearching
     },
     created() {
       window.addEventListener('toggleBar', this.toggleBarVisibility);

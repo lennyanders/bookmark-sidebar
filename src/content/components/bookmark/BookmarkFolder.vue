@@ -36,13 +36,7 @@
     </div>
     <transition-expand v-if="bm.children.length" :name="'bookmark__children'">
       <ul class="bookmark__children" v-show="childrenVisible">
-        <BaseBookmark
-          v-for="(bm, i) of bm.children"
-          :key="bm.id"
-          :index="i"
-          :bm="bm"
-          :isSearching="isSearching"
-        />
+        <BaseBookmark v-for="bm of bm.children" :key="bm.id" :bm="bm" />
       </ul>
     </transition-expand>
   </li>

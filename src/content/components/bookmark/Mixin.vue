@@ -8,15 +8,16 @@
     components: {
       EditBm
     },
-    props: ['bm', 'isSearching', 'url', 'index', 'parentId'],
+    props: ['bm'],
     computed: {
+      isSearching: () => store.isSearching,
       isActive() {
         return this.bm.id === store.activeBm;
       }
     },
     methods: {
       setActiveBm() {
-        mutations.setActiveBm(this.bm.id);
+        store.activeBm = this.bm.id;
       },
       setFocus() {
         if (this.isActive) this.$refs.focusableBmPart.focus();
@@ -28,12 +29,15 @@
         mutations.walkActiveBmBy(delta);
       },
       moveBy(delta) {
-        if (!delta) return;
+        if (!delta || this.isSearching) return;
         if (delta > 0) delta++;
+
+        const newIndex = this.bm.index + delta;
+        if (newIndex < 0) return;
 
         actions.moveBm({
           id: this.bm.id,
-          index: this.bm.index + delta
+          index: newIndex
         });
       },
       moveBookmarkIn(delta) {
@@ -66,12 +70,11 @@
       },
       dragStart(e) {
         this.showChildren = false;
-        mutations.setDragY(e.offsetY);
-        mutations.setDragEl(this.$el);
+        store.dragY = e.offsetY;
+        store.dragEl = this.$el;
       },
       dragEnter(e) {
-        if (store.dragEl !== this.$el)
-          mutations.setNewBmParentId(this.bm.parentId);
+        if (store.dragEl !== this.$el) store.newBmParentId = this.bm.parentId;
 
         this.$el.parentNode.insertBefore(
           store.dragEl,

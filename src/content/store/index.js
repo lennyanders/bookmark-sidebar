@@ -1,57 +1,143 @@
 import Vue from 'vue';
+import { fuzzy } from 'fast-fuzzy';
 
-export const staticStore = {
-  themes: [
-    {
-      value: 'system',
-      text: 'System Oriented'
+export const store = new Vue({
+  data() {
+    return {
+      barLeft: false,
+      barWidth: 320,
+      themes: [
+        {
+          value: 'system',
+          text: 'System Oriented'
+        },
+        {
+          value: 'light',
+          text: 'light'
+        },
+        {
+          value: 'dark',
+          text: 'dark'
+        }
+      ],
+      activeTheme: 'system',
+
+      url: location.href,
+
+      searchQuery: '',
+      searchFocused: false,
+      filters: ['-t', '-u', '-b', '-f'],
+
+      bm: {},
+      allFolders: [],
+      activeBm: '0',
+
+      modalVisible: false,
+      modalType: '',
+      modalBm: {},
+
+      dragY: null,
+      dragEl: null,
+      newBmParentId: null
+    };
+  },
+  computed: {
+    isSearching() {
+      return !!this.searchQuery;
     },
-    {
-      value: 'light',
-      text: 'light'
+    flattenedBms() {
+      let children = [];
+      JSON.stringify(this.bm.children, (_, nested) => {
+        if (nested && nested.title) children.push(nested);
+        return nested;
+      });
+      return children;
     },
-    {
-      value: 'dark',
-      text: 'dark'
+    filteredBms() {
+      let searchQuery = this.searchQuery;
+      if (!searchQuery) return this.bm;
+
+      const activeFilters = this.filters.filter(filter => {
+        if (
+          searchQuery.indexOf(`${filter} `) === 0 ||
+          searchQuery.includes(` ${filter} `) ||
+          searchQuery.indexOf(` ${filter}`) ===
+            searchQuery.length - filter.length - 1
+        ) {
+          searchQuery = searchQuery.replace(new RegExp(filter, 'gi'), '');
+          return true;
+        }
+      });
+      console.log(activeFilters);
+
+      const res = this.flattenedBms
+        .reduce((bms, bm) => {
+          const titleScore = fuzzy(searchQuery, bm.title),
+            urlScore = bm.url ? fuzzy(searchQuery, bm.url) : 0,
+            score = Math.max(titleScore, urlScore);
+
+          if (score < 0.8) return bms;
+          bm.score = score;
+
+          if (!activeFilters.includes('-u') && activeFilters.includes('-t')) {
+            if (titleScore < 0.8) return bms;
+            bm.score = titleScore;
+          }
+          if (!activeFilters.includes('-t') && activeFilters.includes('-u')) {
+            if (urlScore < 0.8) return bms;
+            bm.score = urlScore;
+          }
+          if (!activeFilters.includes('-f') && activeFilters.includes('-b')) {
+            if (!bm.url) return bms;
+          }
+          if (!activeFilters.includes('-b') && activeFilters.includes('-f')) {
+            if (bm.url) return bms;
+          }
+          return [...bms, bm];
+        }, [])
+        .sort((a, b) => {
+          // sort by best match
+          return b.score - a.score;
+        });
+
+      return { ...this.bm, children: res };
     }
-  ]
-};
+  },
+  methods: {
+    stopSearching() {
+      this.searchQuery = '';
+      this.searchFocused = false;
+    },
+    setBarWidth(width) {
+      if (width < 280 || width > window.screen.width / 2) return;
+      this.barWidth = width;
+    },
 
-export const store = Vue.observable({
-  barLeft: false,
-  barWidth: 320,
-  activeTheme: 'system',
+    walkActiveBmBy(delta) {
+      this.activeBm = findBm(this.activeBm, delta)?.id;
+    },
 
-  bm: {},
-  allFolders: [],
-  activeBm: '0',
-
-  modalVisible: false,
-  modalType: '',
-  modalBm: {},
-
-  dragY: null,
-  dragEl: null,
-  newBmParentId: null
+    showModal(type, bm) {
+      this.modalVisible = true;
+      this.modalType = type;
+      if (bm) this.modalBm = bm;
+    },
+    hideModal() {
+      this.modalVisible = false;
+    }
+  }
 });
 
-// uff
-export const getters = {
-  flattenedBms: () => {
-    let children = [];
-    JSON.stringify(store.bm.children, (_, nested) => {
-      if (nested && nested.title) children.push(nested);
-      return nested;
-    });
-    return children;
-  }
-};
+export let mutations = {};
+for (const method in store.$options.methods) {
+  mutations[method] = store.$options.methods[method].bind(store);
+}
 
 const findBm = (
   id,
   delta = 0,
   includeChildren = true,
-  bms = store.bm.children
+  bms = store.filteredBms.children
 ) => {
   for (let i = 0; i < bms.length; i++) {
     if (bms[i].id === id) {
@@ -85,52 +171,5 @@ const findBm = (
       const res = findBm(id, delta, includeChildren, bms[i].children);
       if (res) return res;
     }
-  }
-};
-
-export const mutations = {
-  setBarLeft(barLeft) {
-    store.barLeft = barLeft;
-  },
-  setBarWidth(width) {
-    if (width < 280 || width > window.screen.width / 2) return;
-
-    store.barWidth = width;
-  },
-  setActiveTheme(option) {
-    store.activeTheme = option;
-  },
-
-  setRootBm(bm) {
-    store.bm = bm;
-  },
-  setAllFolders(folders) {
-    store.allFolders = folders;
-  },
-  setActiveBm(id) {
-    store.activeBm = id;
-  },
-  walkActiveBmBy(delta) {
-    store.activeBm = findBm(store.activeBm, delta)?.id;
-  },
-
-  showModal(type, bm) {
-    store.modalVisible = true;
-    store.modalType = type;
-
-    if (bm) store.modalBm = bm;
-  },
-  hideModal() {
-    store.modalVisible = false;
-  },
-
-  setDragY(y) {
-    store.dragY = y;
-  },
-  setDragEl(el) {
-    store.dragEl = el;
-  },
-  setNewBmParentId(id) {
-    store.newBmParentId = id;
   }
 };

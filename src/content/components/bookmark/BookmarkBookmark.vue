@@ -27,13 +27,14 @@
 </template>
 
 <script>
+  import { store } from '../../store';
   import Mixin from './Mixin.vue';
 
   export default {
     mixins: [Mixin],
     computed: {
       isOpen() {
-        return this.bm.url === this.url;
+        return this.bm.url === store.url;
       }
     }
   };

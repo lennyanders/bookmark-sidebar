@@ -6,12 +6,12 @@ const port = chrome.runtime.connect({ name: 'bmBar' });
 // listen to events and update data
 port.onMessage.addListener(
   ({ bm, allFolders, barLeft, barWidth, barTheme }) => {
-    mutations.setRootBm(bm);
-    mutations.setAllFolders(allFolders);
+    store.bm = bm;
+    store.allFolders = allFolders;
 
-    mutations.setBarLeft(barLeft);
+    store.barLeft = barLeft;
     mutations.setBarWidth(barWidth);
-    mutations.setActiveTheme(barTheme);
+    store.activeTheme = barTheme;
   }
 );
 
