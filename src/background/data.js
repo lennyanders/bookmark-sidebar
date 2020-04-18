@@ -84,15 +84,22 @@ export const generateData = async () => {
     shownBmId = '0',
     barLeft,
     barWidth = 320,
-    barTheme = 'system'
-  } = await chrome.storage.sync.get(['barLeft', 'shownBmId', 'barWidth']);
+    barTheme = 'system',
+    showOptionsOnRightClick
+  } = await chrome.storage.sync.get([
+    'barLeft',
+    'shownBmId',
+    'barWidth',
+    'barTheme',
+    'showOptionsOnRightClick'
+  ]);
 
   _shownBmId = shownBmId;
-  Object.assign(data, { barLeft, barWidth, barTheme });
+  Object.assign(data, { barLeft, barWidth, barTheme, showOptionsOnRightClick });
   updateTree();
 
   chrome.storage.onChanged.addListener(
-    ({ shownBmId, barLeft, barWidth, barTheme }) => {
+    ({ shownBmId, barLeft, barWidth, barTheme, showOptionsOnRightClick }) => {
       if (shownBmId) {
         _shownBmId = shownBmId.newValue;
         updateTree();
@@ -101,6 +108,8 @@ export const generateData = async () => {
       if (barLeft) data.barLeft = barLeft.newValue;
       if (barWidth) data.barWidth = barWidth.newValue;
       if (barTheme) data.barTheme = barTheme.newValue;
+      if (showOptionsOnRightClick)
+        data.showOptionsOnRightClick = showOptionsOnRightClick.newValue;
     }
   );
   chrome.bookmarks.onRemoved.addListener(updateTree);

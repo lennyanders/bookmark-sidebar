@@ -11,6 +11,11 @@
       text="Should the Sidebar be on the left side?"
     />
 
+    <BaseCheckbox
+      v-model="showOptionsOnRightClick"
+      text="Open boomark options on right click?"
+    />
+
     <BaseRadio
       v-model="activeTheme"
       :options="themes"
@@ -60,6 +65,13 @@
         set(val) {
           store.barLeft = val;
           actions.saveBarLeft();
+        }
+      },
+      showOptionsOnRightClick: {
+        get: () => store.showOptionsOnRightClick,
+        set(val) {
+          store.showOptionsOnRightClick = val;
+          actions.saveShowOptionsOnRightClick(val);
         }
       },
       activeTheme: {

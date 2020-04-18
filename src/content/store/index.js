@@ -21,6 +21,7 @@ export const store = new Vue({
         }
       ],
       activeTheme: 'system',
+      showOptionsOnRightClick: false,
 
       url: location.href,
 

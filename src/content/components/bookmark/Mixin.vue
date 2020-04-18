@@ -16,6 +16,12 @@
       }
     },
     methods: {
+      editBm(e) {
+        if (!store.showOptionsOnRightClick) return;
+
+        e.preventDefault();
+        mutations.showModal('ModalEditBm', this.bm);
+      },
       setActiveBm() {
         store.activeBm = this.bm.id;
       },

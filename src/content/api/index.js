@@ -5,13 +5,21 @@ const port = chrome.runtime.connect({ name: 'bmBar' });
 
 // listen to events and update data
 port.onMessage.addListener(
-  ({ bm, allFolders, barLeft, barWidth, barTheme }) => {
+  ({
+    bm,
+    allFolders,
+    barLeft,
+    barWidth,
+    barTheme,
+    showOptionsOnRightClick
+  }) => {
     store.bm = bm;
     store.allFolders = allFolders;
 
     store.barLeft = barLeft;
     mutations.setBarWidth(barWidth);
     store.activeTheme = barTheme;
+    store.showOptionsOnRightClick = showOptionsOnRightClick;
   }
 );
 
@@ -40,7 +48,16 @@ export const actions = {
     port.postMessage({ type: 'setBarWidth', barWidth: store.barWidth });
   },
   saveActiveTheme() {
-    port.postMessage({ type: 'setBarTheme', barTheme: store.activeTheme });
+    port.postMessage({
+      type: 'setBarTheme',
+      barTheme: store.activeTheme
+    });
+  },
+  saveShowOptionsOnRightClick() {
+    port.postMessage({
+      type: 'setShowOptionsOnRightClick',
+      showOptionsOnRightClick: store.showOptionsOnRightClick
+    });
   }
 };
 

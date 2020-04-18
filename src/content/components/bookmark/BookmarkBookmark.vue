@@ -8,6 +8,7 @@
       @keydown.up.alt.exact="moveBy(-1)"
       @keydown.down.alt.ctrl.exact="moveBookmarkIn(1)"
       @keydown.up.alt.ctrl.exact="moveBookmarkIn(-1)"
+      @click.right.exact="editBm"
       ref="dragHandle"
     >
       <a

@@ -35,6 +35,9 @@ const actions = {
   },
   setBarTheme({ barTheme }) {
     chrome.storage.sync.set({ barTheme });
+  },
+  setShowOptionsOnRightClick({ showOptionsOnRightClick }) {
+    chrome.storage.sync.set({ showOptionsOnRightClick });
   }
 };
 

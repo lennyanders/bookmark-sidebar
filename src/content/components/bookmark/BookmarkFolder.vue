@@ -6,6 +6,7 @@
       @keydown.up.exact="goBy(-1)"
       @keydown.alt.down="moveBy(1)"
       @keydown.alt.up="moveBy(-1)"
+      @click.right.exact="editBm"
       ref="dragHandle"
     >
       <button
