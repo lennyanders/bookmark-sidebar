@@ -12,11 +12,13 @@ const actions = {
       ...(url && { url })
     });
   },
-  move({ id, index, parentId }) {
-    chrome.bookmarks.move(id, {
-      ...(index !== undefined && { index }),
-      ...(parentId && { parentId })
-    });
+  async move({ id, index, parentId }) {
+    try {
+      await chrome.bookmarks.move(id, {
+        ...(index !== undefined && { index }),
+        ...(parentId && { parentId })
+      });
+    } catch (err) {}
   },
   update({ id, title, url }) {
     chrome.bookmarks.update(id, {
