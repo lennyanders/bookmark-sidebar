@@ -9,6 +9,16 @@ new Vue({
   render: h => h(App)
 });
 
-chrome.browserAction.onClicked.addListener(() => {
+const toggleBmBar = tabOrTabs => {
+  const tab = tabOrTabs[0] || tabOrTabs;
+  if (!tab.url.includes('chrome://newtab')) return;
+
   window.dispatchEvent(new CustomEvent('toggleBar'));
+};
+
+chrome.commands.onCommand.addListener(async command => {
+  if (command !== 'toogle-bm-bar') return;
+  chrome.tabs.query({ active: true, currentWindow: true }, toggleBmBar);
 });
+
+chrome.browserAction.onClicked.addListener(toggleBmBar);
