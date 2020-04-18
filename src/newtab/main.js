@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import App from '../content/App.vue';
+import App from '../content/App';
 
 const vueEl = document.createElement('div');
 document.body.append(vueEl);

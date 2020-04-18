@@ -13,8 +13,8 @@
 </template>
 
 <script>
-  import BaseInput from '../form/BaseInput.vue';
-  import BaseButton from '../form/BaseButton.vue';
+  import BaseInput from '../form/BaseInput';
+  import BaseButton from '../form/BaseButton';
 
   import { store, mutations } from '../../store/index';
   import { actions } from '../../api/index';

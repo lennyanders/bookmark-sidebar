@@ -30,9 +30,9 @@
 <script>
   import { store } from '../store';
 
-  import OpenSettings from './actions/OpenSettings.vue';
-  import LeaveSearch from './actions/LeaveSearch.vue';
-  import AddBm from './actions/AddBm.vue';
+  import OpenSettings from './actions/OpenSettings';
+  import LeaveSearch from './actions/LeaveSearch';
+  import AddBm from './actions/AddBm';
 
   export default {
     components: {

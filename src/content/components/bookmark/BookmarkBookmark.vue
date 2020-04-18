@@ -21,14 +21,14 @@
         <img class="bookmark__icon" :src="bm.faviconDataUrl" />
         <span class="bookmark__title">{{ bm.title }}</span>
       </a>
-      <edit-bm :bm="bm" />
+      <EditBm :bm="bm" />
     </div>
   </li>
 </template>
 
 <script>
   import { store } from '../../store';
-  import Mixin from './Mixin.vue';
+  import Mixin from './Mixin';
 
   export default {
     mixins: [Mixin],

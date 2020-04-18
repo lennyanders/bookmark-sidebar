@@ -43,11 +43,11 @@
 </template>
 
 <script>
-  import Mixin from './Mixin.vue';
+  import Mixin from './Mixin';
 
-  import AddBm from '../actions/AddBm.vue';
-  import TransitionExpand from '../TransitionExpand.vue';
-  const BaseBookmark = () => import('./BaseBookmark.vue');
+  import AddBm from '../actions/AddBm';
+  import TransitionExpand from '../TransitionExpand';
+  const BaseBookmark = () => import('./BaseBookmark');
 
   import { request } from '../../api';
 

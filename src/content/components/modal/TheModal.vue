@@ -16,9 +16,9 @@
 </template>
 
 <script>
-  import ModalEditBm from './ModalEditBm.vue';
-  import ModalAddBm from './ModalAddBm.vue';
-  import ModalSettings from './ModalSettings.vue';
+  import ModalEditBm from './ModalEditBm';
+  import ModalAddBm from './ModalAddBm';
+  import ModalSettings from './ModalSettings';
 
   import { store, mutations } from '../../store/index';
 

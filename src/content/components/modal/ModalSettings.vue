@@ -22,10 +22,10 @@
 </template>
 
 <script>
-  import BaseInput from '../form/BaseInput.vue';
-  import BaseSelect from '../form/BaseSelect.vue';
-  import BaseCheckbox from '../form/BaseCheckbox.vue';
-  import BaseRadio from '../form/BaseRadio.vue';
+  import BaseInput from '../form/BaseInput';
+  import BaseSelect from '../form/BaseSelect';
+  import BaseCheckbox from '../form/BaseCheckbox';
+  import BaseRadio from '../form/BaseRadio';
 
   import { store, mutations } from '../../store/index';
   import { actions } from '../../api/index';

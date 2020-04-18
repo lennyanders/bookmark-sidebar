@@ -105,7 +105,10 @@ module.exports = [
         }
       ]
     },
-    plugins: [new Vue(), new Clean()]
+    plugins: [new Vue(), new Clean()],
+    resolve: {
+      extensions: ['.js', '.json', '.vue']
+    }
   }),
   //
   // new tab page
@@ -145,6 +148,9 @@ module.exports = [
         filename: 'index.html'
       }),
       new Clean()
-    ]
+    ],
+    resolve: {
+      extensions: ['.js', '.json', '.vue']
+    }
   })
 ];

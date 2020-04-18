@@ -13,9 +13,9 @@
 </template>
 
 <script>
-  import BaseInput from '../form/BaseInput.vue';
-  import BaseCheckbox from '../form/BaseCheckbox.vue';
-  import BaseButton from '../form/BaseButton.vue';
+  import BaseInput from '../form/BaseInput';
+  import BaseCheckbox from '../form/BaseCheckbox';
+  import BaseButton from '../form/BaseButton';
 
   import { mutations, store } from '../../store/index';
   import { actions } from '../../api/index';

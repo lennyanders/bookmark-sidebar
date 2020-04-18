@@ -1,6 +1,6 @@
 <script>
-  import BookmarkBookmark from './BookmarkBookmark.vue';
-  import BookmarkFolder from './BookmarkFolder.vue';
+  import BookmarkBookmark from './BookmarkBookmark';
+  import BookmarkFolder from './BookmarkFolder';
 
   export default {
     functional: true,

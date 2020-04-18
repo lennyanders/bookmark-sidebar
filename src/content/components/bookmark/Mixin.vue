@@ -1,5 +1,5 @@
 <script>
-  import EditBm from '../actions/EditBm.vue';
+  import EditBm from '../actions/EditBm';
 
   import { store, mutations } from '../../store/index';
   import { actions } from '../../api/index';
