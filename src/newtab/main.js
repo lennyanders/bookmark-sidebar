@@ -9,9 +9,15 @@ new Vue({
   render: h => h(App)
 });
 
+let tabId;
+chrome.tabs.query({ active: true, currentWindow: true }, ([{ id }]) => {
+  tabId = id;
+});
 const toggleBmBar = tabOrTabs => {
   const tab = tabOrTabs[0] || tabOrTabs;
-  if (!tab.url.includes('chrome://newtab')) return;
+  console.log(tab);
+
+  if (!tab.url.includes('chrome://newtab') || tab.id !== tabId) return;
 
   window.dispatchEvent(new CustomEvent('toggleBar'));
 };
