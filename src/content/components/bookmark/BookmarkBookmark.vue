@@ -1,5 +1,5 @@
 <template>
-  <li class="bookmark" ref="bm">
+  <li class="bookmark">
     <div
       class="bookmark__content"
       @keydown.down.exact="goBy(1)"
