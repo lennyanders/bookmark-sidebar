@@ -4,6 +4,8 @@
   import { store, mutations } from '../../store/index';
   import { actions } from '../../api/index';
 
+  import { findFocusableBm, findBmToMoveIn } from '../../utils';
+
   export default {
     components: {
       EditBm
@@ -32,22 +34,41 @@
       // functions for arrow navigation
       //
       goBy(delta) {
-        mutations.walkActiveBmBy(delta);
+        const bm = findFocusableBm(this.bm.id, delta);
+        if (bm.id) store.activeBm = bm.id;
       },
       moveBy(delta) {
         if (!delta || this.isSearching) return;
         if (delta > 0) delta++;
 
-        const newIndex = this.bm.index + delta;
-        if (newIndex < 0) return;
-
         actions.moveBm({
           id: this.bm.id,
-          index: newIndex
+          index: this.bm.index + delta
         });
       },
-      moveBookmarkIn(delta) {
-        console.log(delta, store);
+      moveIn(delta) {
+        if (!delta || this.isSearching) return;
+
+        const { id, parentId, children, index } = findBmToMoveIn(
+          this.bm.id,
+          delta
+        );
+
+        if (!children) return this.moveBy(delta);
+
+        if (children.some(bm => bm.id === this.bm.id)) {
+          return actions.moveBm({
+            id: this.bm.id,
+            parentId: parentId,
+            index: delta > 0 ? index + 1 : index
+          });
+        }
+
+        return actions.moveBm({
+          id: this.bm.id,
+          parentId: id,
+          ...(delta > 0 && { index: 0 })
+        });
       },
 
       //
@@ -107,13 +128,13 @@
       },
       isActive: {
         handler: 'setFocus'
+      },
+      'bm.index': {
+        handler: 'setFocus'
       }
     },
     mounted() {
       this.setDragAndDrop();
-    },
-    updated() {
-      this.setFocus();
     }
   };
 </script>
