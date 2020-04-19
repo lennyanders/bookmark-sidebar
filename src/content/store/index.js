@@ -114,10 +114,6 @@ export const store = new Vue({
       this.barWidth = width;
     },
 
-    walkActiveBmBy(delta) {
-      this.activeBm = findBm(this.activeBm, delta)?.id;
-    },
-
     showModal(type, bm) {
       this.modalVisible = true;
       this.modalType = type;
@@ -133,44 +129,3 @@ export let mutations = {};
 for (const method in store.$options.methods) {
   mutations[method] = store.$options.methods[method].bind(store);
 }
-
-const findBm = (
-  id,
-  delta = 0,
-  includeChildren = true,
-  bms = store.filteredBms.children
-) => {
-  for (let i = 0; i < bms.length; i++) {
-    if (bms[i].id === id) {
-      if (delta > 0) {
-        // select first children when children are open
-        if (
-          includeChildren &&
-          bms[i].childrenVisible &&
-          bms[i].children.length
-        ) {
-          return bms[i].children[0];
-        }
-        const res = bms[i + delta];
-        if (res) return res;
-
-        const res2 = findBm(bms[i].parentId, 1, false);
-        if (res2) return res2;
-      }
-
-      if (delta < 0) {
-        const res = bms[i + delta];
-        if (res) return res;
-
-        const res2 = findBm(bms[i].parentId, 0);
-        if (res2) return res2;
-      }
-
-      return bms[i];
-    }
-    if (bms[i].children) {
-      const res = findBm(id, delta, includeChildren, bms[i].children);
-      if (res) return res;
-    }
-  }
-};
