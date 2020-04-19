@@ -15,8 +15,6 @@ chrome.tabs.query({ active: true, currentWindow: true }, ([{ id }]) => {
 });
 const toggleBmBar = tabOrTabs => {
   const tab = tabOrTabs[0] || tabOrTabs;
-  console.log(tab);
-
   if (!tab.url.includes('chrome://newtab') || tab.id !== tabId) return;
 
   window.dispatchEvent(new CustomEvent('toggleBar'));
