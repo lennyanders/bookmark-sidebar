@@ -24,8 +24,9 @@
     flex: 1;
 
     &__label {
-      padding-left: 24px;
       position: relative;
+      display: block;
+      padding-left: 24px;
 
       &::before,
       &::after {
