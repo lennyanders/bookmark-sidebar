@@ -20,6 +20,11 @@ port.onMessage.addListener(
     mutations.setBarWidth(barWidth);
     store.activeTheme = barTheme;
     store.showOptionsOnRightClick = showOptionsOnRightClick;
+
+    // unset and set activeBm to maintain focus
+    const activeBm = store.activeBm;
+    store.activeBm = null;
+    requestAnimationFrame(() => (store.activeBm = activeBm));
   }
 );
 

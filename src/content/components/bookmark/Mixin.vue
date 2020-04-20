@@ -99,9 +99,6 @@
     watch: {
       isActive: {
         handler: 'setFocus'
-      },
-      'bm.index': {
-        handler: 'setFocus'
       }
     }
   };
