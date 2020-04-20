@@ -1,7 +1,6 @@
 <template>
-  <transition name="bookmark-bar" v-if="bm.id" appear>
+  <transition name="bookmark-bar" v-if="barVisible && bm.id" appear>
     <div
-      v-show="barVisible"
       class="bookmark-bar"
       :class="{
         'bookmark-bar--left': barLeft,
