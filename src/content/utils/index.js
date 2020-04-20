@@ -55,3 +55,6 @@ export const findBmToMoveIn = (
     }
   }
 };
+
+let count = 0;
+export const getUid = () => count++;

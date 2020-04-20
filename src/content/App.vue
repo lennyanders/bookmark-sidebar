@@ -33,7 +33,6 @@
   import TheResizer from './components/TheResizer';
 
   import { store } from './store/index';
-  import { request } from './api';
 
   export default {
     components: {

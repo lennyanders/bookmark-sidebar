@@ -20,9 +20,10 @@
 </template>
 
 <script>
-  import { request } from '../../api';
+  import { getUid } from '../../utils';
+
   export default {
-    getUid: request.uid,
+    getUid,
     props: {
       value: {
         type: String,

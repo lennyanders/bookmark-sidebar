@@ -54,8 +54,6 @@
   import TransitionExpand from '../TransitionExpand';
   const BaseBookmark = () => import('./BaseBookmark');
 
-  import { request } from '../../api';
-
   export default {
     mixins: [Mixin],
     components: {

@@ -65,8 +65,3 @@ export const actions = {
     });
   }
 };
-
-let count = 0;
-export const request = {
-  uid: () => count++
-};
