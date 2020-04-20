@@ -15,6 +15,7 @@
       @dragend="e => !isSearching && dragEnd(e)"
     >
       <button
+        class="bookmark__link"
         @click="childrenVisible = !childrenVisible"
         @keyup.right="childrenVisible = true"
         @mousedown.middle.prevent
@@ -23,19 +24,17 @@
         @focus="setActiveBm"
         ref="focusableBmPart"
       >
-        <div class="bookmark__link">
-          <svg class="bookmark__icon" viewBox="0 0 24 24">
-            <path
-              v-if="bm.children.length"
-              d="M10 4H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-8l-2-2z"
-            />
-            <path
-              v-else
-              d="M9.17 6l2 2H20v10H4V6h5.17M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"
-            />
-          </svg>
-          <span class="bookmark__title">{{ bm.title }}</span>
-        </div>
+        <svg class="bookmark__icon" viewBox="0 0 24 24">
+          <path
+            v-if="bm.children.length"
+            d="M10 4H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-8l-2-2z"
+          />
+          <path
+            v-else
+            d="M9.17 6l2 2H20v10H4V6h5.17M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"
+          />
+        </svg>
+        <span class="bookmark__title">{{ bm.title }}</span>
       </button>
       <add-bm :bm="bm" />
       <edit-bm :bm="bm" />

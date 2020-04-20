@@ -15,9 +15,7 @@
 
     &__content {
       line-height: 30px;
-      display: grid;
-      grid-auto-flow: column;
-      grid-template-columns: 1fr auto;
+      display: flex;
 
       &:hover,
       &:focus-within {
@@ -32,8 +30,9 @@
       }
     }
     &__link {
-      display: grid;
-      grid-template-columns: auto 1fr;
+      overflow: hidden;
+      display: flex;
+      flex: 1;
       position: relative;
 
       &--active::after {
