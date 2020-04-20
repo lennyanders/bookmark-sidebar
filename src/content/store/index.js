@@ -33,6 +33,7 @@ export const store = new Vue({
       allFolders: [],
       activeBm: '0',
 
+      modalPrevFocus: null,
       modalVisible: false,
       modalType: '',
       modalBm: {},
@@ -115,12 +116,18 @@ export const store = new Vue({
     },
 
     showModal(type, bm) {
+      this.modalPrevFocus =
+        document.activeElement
+          ?.closest('.bookmark')
+          ?.querySelector('.bookmark__link') || document.activeElement;
+
       this.modalVisible = true;
       this.modalType = type;
       if (bm) this.modalBm = bm;
     },
     hideModal() {
       this.modalVisible = false;
+      this.modalPrevFocus?.focus();
     }
   }
 });
