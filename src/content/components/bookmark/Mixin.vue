@@ -74,27 +74,6 @@
       //
       // functions for dragging and dropping bookmarks
       //
-      setDragAndDrop() {
-        const {
-          $refs: { dragHandle },
-          isSearching,
-          dragStart,
-          dragEnter,
-          dragEnd
-        } = this;
-
-        if (!isSearching) {
-          dragHandle.draggable = true;
-          dragHandle.addEventListener('dragstart', dragStart);
-          dragHandle.addEventListener('dragenter', dragEnter);
-          dragHandle.addEventListener('dragend', dragEnd);
-        } else {
-          dragHandle.draggable = false;
-          dragHandle.removeEventListener('dragstart', dragStart);
-          dragHandle.removeEventListener('dragenter', dragEnter);
-          dragHandle.removeEventListener('dragend', dragEnd);
-        }
-      },
       dragStart(e) {
         this.showChildren = false;
         store.dragY = e.offsetY;
@@ -123,18 +102,12 @@
       }
     },
     watch: {
-      isSearching: {
-        handler: 'setDragAndDrop'
-      },
       isActive: {
         handler: 'setFocus'
       },
       'bm.index': {
         handler: 'setFocus'
       }
-    },
-    mounted() {
-      this.setDragAndDrop();
     }
   };
 </script>

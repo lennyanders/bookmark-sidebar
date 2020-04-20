@@ -9,7 +9,10 @@
       @keydown.down.alt.ctrl.exact="moveIn(1)"
       @keydown.up.alt.ctrl.exact="moveIn(-1)"
       @click.right.exact="editBm"
-      ref="dragHandle"
+      :draggable="!isSearching"
+      @dragstart="e => !isSearching && dragStart(e)"
+      @dragenter="e => !isSearching && dragEnter(e)"
+      @dragend="e => !isSearching && dragEnd(e)"
     >
       <a
         class="bookmark__link"
