@@ -92,7 +92,8 @@
         handler: 'updateBmChildrenVisible'
       },
       'bm.children.length'(newVal, oldVal) {
-        if (!document.hidden && newVal > oldVal) this.childrenVisible = true;
+        // happens when moving bookmark into folder and adding new bookmark to folder
+        if (document.hasFocus() && newVal > oldVal) this.childrenVisible = true;
       }
     }
   };
