@@ -92,6 +92,9 @@
       },
       bm: {
         handler: 'updateBmChildrenVisible'
+      },
+      'bm.children.length'(newVal, oldVal) {
+        if (newVal > oldVal) this.childrenVisible = true;
       }
     }
   };
