@@ -92,7 +92,7 @@
         handler: 'updateBmChildrenVisible'
       },
       'bm.children.length'(newVal, oldVal) {
-        if (newVal > oldVal) this.childrenVisible = true;
+        if (!document.hidden && newVal > oldVal) this.childrenVisible = true;
       }
     }
   };
