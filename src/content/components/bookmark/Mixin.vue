@@ -13,14 +13,13 @@
     props: ['bm'],
     computed: {
       isSearching: () => store.isSearching,
+      showOptionsOnRightClick: () => store.showOptionsOnRightClick,
       isActive() {
         return this.bm.id === store.activeBm;
       }
     },
     methods: {
       editBm(e) {
-        if (!store.showOptionsOnRightClick) return;
-
         e.preventDefault();
         mutations.showModal('ModalEditBm', this.bm);
       },
