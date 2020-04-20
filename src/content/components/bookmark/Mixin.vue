@@ -26,9 +26,7 @@
       setActiveBm() {
         store.activeBm = this.bm.id;
       },
-      setFocus() {
-        if (this.isActive) this.$refs.focusableBmPart.focus();
-      },
+
       //
       // functions for arrow navigation
       //
@@ -97,8 +95,8 @@
       }
     },
     watch: {
-      isActive: {
-        handler: 'setFocus'
+      isActive(newVal) {
+        if (newVal) this.$refs.focusableBmPart.focus();
       }
     }
   };
