@@ -37,17 +37,13 @@
         if (bm.id) store.activeBm = bm.id;
       },
       moveBy(delta) {
-        if (!delta || this.isSearching) return;
         if (delta > 0) delta++;
-
         actions.moveBm({
           id: this.bm.id,
           index: this.bm.index + delta
         });
       },
       moveIn(delta) {
-        if (!delta || this.isSearching) return;
-
         const { id, parentId, children, index } = findBmToMoveIn(
           this.bm.id,
           delta
