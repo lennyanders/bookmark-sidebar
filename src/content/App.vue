@@ -1,5 +1,14 @@
 <template>
-  <transition name="bookmark-bar" v-if="barVisible && bm.id" appear>
+  <transition
+    name="bookmark-bar"
+    v-if="barVisible && bm.id"
+    @after-enter="focusBar"
+    enter-active-class="bookmark-bar--appearing"
+    leave-active-class="bookmark-bar--disappearing"
+    enter-class="bookmark-bar--invisible"
+    leave-to-class="bookmark-bar--invisible"
+    appear
+  >
     <div
       class="bookmark-bar"
       :class="{
@@ -7,7 +16,8 @@
         'bookmark-bar--light': activeTheme === 'light',
         'bookmark-bar--dark': activeTheme === 'dark'
       }"
-      :style="{ width: barWidth + 'px' }"
+      :style="{ width: `${barWidth}px` }"
+      tabindex="-1"
       @click.stop
       @keydown.stop
       @keydown.up.down.prevent
@@ -64,19 +74,22 @@
         store.url = location.href;
         this.barVisible = !this.barVisible;
       },
-      stopSearching: store.stopSearching
+      stopSearching: store.stopSearching,
+      focusBar() {
+        this.$el?.focus();
+      }
     },
     created() {
-      window.addEventListener('toggleBar', this.toggleBarVisibility);
+      addEventListener('toggleBar', this.toggleBarVisibility);
 
-      document.body.addEventListener('click', this.hideBar);
-      window.addEventListener('blur', this.hideBar);
+      addEventListener('click', this.hideBar);
+      addEventListener('blur', this.hideBar);
     },
     beforeDestroy() {
-      window.removeEventListener('toggleBar', this.toggleBarVisibility);
+      removeEventListener('toggleBar', this.toggleBarVisibility);
 
-      document.body.removeEventListener('click', this.hideBar);
-      window.removeEventListener('blur', this.hideBar);
+      removeEventListener('click', this.hideBar);
+      removeEventListener('blur', this.hideBar);
     }
   };
 </script>
@@ -159,13 +172,12 @@
       left: 0;
     }
 
-    &-enter-active,
-    &-leave-active {
+    &--appearing,
+    &--disappearing {
       transition: transform 0.25s ease;
     }
 
-    &-enter,
-    &-leave-to {
+    &--invisible {
       transform: translateX(calc(100% + 10px));
 
       &#{$bar}--left {
