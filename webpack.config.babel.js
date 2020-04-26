@@ -61,6 +61,7 @@ module.exports = [
   //
   ({ NODE_ENV }) => ({
     mode: NODE_ENV,
+    devtool: NODE_ENV === 'development' && 'inline-source-map',
     entry: './src/content/main.js',
     output: {
       filename: 'main.js',
@@ -115,6 +116,7 @@ module.exports = [
   //
   ({ NODE_ENV }) => ({
     mode: NODE_ENV,
+    devtool: NODE_ENV === 'development' && 'inline-source-map',
     entry: './src/newtab/main.js',
     output: {
       filename: 'main.js',
