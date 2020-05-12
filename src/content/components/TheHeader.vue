@@ -1,8 +1,8 @@
 <template>
   <header class="header" :class="{ 'header--searching': searchFocused }">
     <div class="header__icons header__icons--left">
-      <open-settings />
-      <leave-search :click="leaveSearchView" />
+      <OpenSettings />
+      <LeaveSearch @click="leaveSearchView" />
     </div>
     <input
       class="header__search"
@@ -15,7 +15,7 @@
       ref="searchInput"
     />
     <div class="header__icons header__icons--right">
-      <add-bm
+      <AddBm
         :btn-classes="['header__icon', 'header__icon--primary']"
         :icn-classes="[]"
         :bm="bm"

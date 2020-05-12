@@ -1,5 +1,5 @@
-<template functional>
-  <button class="header__icon header__icon--secondary" @click="props.click()">
+<template>
+  <button class="header__icon header__icon--secondary" v-bind="$attrs">
     <svg viewBox="0 0 24 24">
       <title>Leave Search View</title>
       <path
