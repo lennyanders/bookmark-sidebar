@@ -3,35 +3,31 @@
     <div
       v-if="modalVisible"
       class="modal"
-      tabindex="0"
+      tabindex="-1"
       @click="hideModal"
       @keyup.esc="hideModal"
       ref="modal"
     >
       <div @click.stop class="modal__layer">
         <button class="modal__close" @click="hideModal" title="Close"></button>
-        <component :is="modalType" class="modal__content" />
+        <component
+          :is="modalComponent"
+          v-bind="modalComponentProps"
+          class="modal__content"
+        />
       </div>
     </div>
   </transition>
 </template>
 
 <script>
-  import ModalEditBm from './ModalEditBm';
-  import ModalAddBm from './ModalAddBm';
-  import ModalSettings from './ModalSettings';
-
   import { store, mutations } from '../../store/index';
 
   export default {
-    components: {
-      ModalEditBm,
-      ModalAddBm,
-      ModalSettings
-    },
     computed: {
       modalVisible: () => store.modalVisible,
-      modalType: () => store.modalType
+      modalComponent: () => store.modalComponent,
+      modalComponentProps: () => store.modalComponentProps
     },
     methods: {
       hideModal: mutations.hideModal

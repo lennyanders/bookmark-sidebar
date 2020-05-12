@@ -24,26 +24,29 @@
       BaseInput,
       BaseButton
     },
+    props: {
+      bm: {
+        type: Object,
+        required: true
+      }
+    },
     data() {
       return {
-        newTitle: store.modalBm.title,
-        newUrl: store.modalBm.url
+        newTitle: this.bm.title,
+        newUrl: this.bm.url
       };
-    },
-    computed: {
-      bmId: () => store.modalBm.id
     },
     methods: {
       updateBm() {
         actions.editBm({
-          id: this.bmId,
+          id: this.bm.id,
           title: this.newTitle,
           url: this.newUrl
         });
         mutations.hideModal();
       },
       removeBm() {
-        actions.removeBm(this.bmId);
+        actions.removeBm(this.bm.id);
         mutations.hideModal();
       }
     }

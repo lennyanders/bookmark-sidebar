@@ -1,8 +1,5 @@
-<template functional>
-  <button
-    class="header__icon header__icon--primary"
-    @click="$options.methods.showSettings"
-  >
+<template>
+  <button class="header__icon header__icon--primary" @click="showSettings">
     <svg viewBox="0 0 24 24">
       <title>Open Settings</title>
       <path
@@ -13,11 +10,16 @@
 </template>
 
 <script>
+  import { markRaw } from 'vue';
+  import ModalSettings from '../modal/ModalSettings';
+
   import { mutations } from '../../store/index';
 
   export default {
     methods: {
-      showSettings: () => mutations.showModal('ModalSettings')
+      showSettings() {
+        mutations.showModal(markRaw(ModalSettings));
+      }
     }
   };
 </script>

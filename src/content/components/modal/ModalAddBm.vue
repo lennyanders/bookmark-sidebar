@@ -26,15 +26,18 @@
       BaseCheckbox,
       BaseButton
     },
+    props: {
+      bm: {
+        type: Object,
+        required: true
+      }
+    },
     data() {
       return {
         title: document.title,
         url: location.href,
         createFolder: false
       };
-    },
-    computed: {
-      bm: () => store.modalBm
     },
     methods: {
       createBm() {

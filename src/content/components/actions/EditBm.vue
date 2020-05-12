@@ -1,5 +1,5 @@
 <template>
-  <button class="bookmark__option" @click="editBm(bm)">
+  <button class="bookmark__option" @click="editBm">
     <svg class="bookmark__icon" viewBox="0 0 24 24">
       <title>Edit bookmark</title>
       <path
@@ -10,12 +10,22 @@
 </template>
 
 <script>
+  import { markRaw } from 'vue';
+  import ModalEditBm from '../modal/ModalEditBm';
+
   import { mutations } from '../../store/index';
 
   export default {
-    props: ['bm'],
+    props: {
+      bm: {
+        type: Object,
+        required: true
+      }
+    },
     methods: {
-      editBm: bm => mutations.showModal('ModalEditBm', bm)
+      editBm() {
+        mutations.showModal(markRaw(ModalEditBm), { bm: this.bm });
+      }
     }
   };
 </script>

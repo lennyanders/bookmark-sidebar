@@ -33,8 +33,8 @@ export const store = reactive({
 
   modalPrevFocus: null,
   modalVisible: false,
-  modalType: '',
-  modalBm: {},
+  modalComponent: null,
+  modalComponentProps: null,
 
   dragY: null,
   dragEl: null,
@@ -109,18 +109,21 @@ export let mutations = {
     store.barWidth = width;
   },
 
-  showModal(type, bm) {
+  showModal(component, componentProps) {
     store.modalPrevFocus =
       document.activeElement
         ?.closest('.bookmark')
         ?.querySelector('.bookmark__link') || document.activeElement;
 
     store.modalVisible = true;
-    store.modalType = type;
-    if (bm) store.modalBm = bm;
+    store.modalComponent = component;
+    store.modalComponentProps = componentProps;
   },
   hideModal() {
     store.modalVisible = false;
+    store.modalComponent = null;
+    store.modalComponentProps = null;
+
     store.modalPrevFocus?.focus();
   }
 };
