@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import { createApp } from 'vue';
 import App from './App';
 
 const bmBar = document.createElement('div'),
@@ -9,7 +9,4 @@ shadowRoot.append(styles);
 shadowRoot.append(vueEl);
 document.body.append(bmBar);
 
-new Vue({
-  el: vueEl,
-  render: h => h(App)
-});
+createApp(App).mount(vueEl);

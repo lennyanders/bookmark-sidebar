@@ -1,13 +1,20 @@
-<template functional>
-  <button
-    class="button"
-    :data-text="props.text"
-    :type="data.attrs.type || 'button'"
-    v-on="listeners"
-  >
-    {{ props.text }}
+// v-bind is more important than "type"
+<template>
+  <button class="button" :data-text="text" type="button" v-bind="$attrs">
+    {{ text }}
   </button>
 </template>
+
+<script>
+  export default {
+    props: {
+      text: {
+        type: String,
+        required: true
+      }
+    }
+  };
+</script>
 
 <style lang="scss">
   .button {

@@ -1,13 +1,10 @@
-import Vue from 'vue';
+import { createApp } from 'vue';
 import App from '../content/App';
 
 const vueEl = document.createElement('div');
 document.body.append(vueEl);
 
-new Vue({
-  el: vueEl,
-  render: h => h(App)
-});
+createApp(App).mount(vueEl);
 
 let tabId;
 chrome.tabs.query({ active: true, currentWindow: true }, ([{ id }]) => {
@@ -15,7 +12,7 @@ chrome.tabs.query({ active: true, currentWindow: true }, ([{ id }]) => {
 });
 const toggleBmBar = tabOrTabs => {
   const tab = tabOrTabs[0] || tabOrTabs;
-  if (!tab.url.includes('chrome://newtab') || tab.id !== tabId) return;
+  if (tab.id !== tabId) return;
 
   window.dispatchEvent(new CustomEvent('toggleBar'));
 };

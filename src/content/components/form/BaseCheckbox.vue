@@ -1,13 +1,14 @@
-<template functional>
+<template>
   <div class="checkbox">
     <input
       type="checkbox"
       class="checkbox__el"
-      :id="($options.uid = $options.getUid())"
-      :checked="props.value"
-      @change="listeners.input($event.target.checked)"
+      :id="uid"
+      v-bind="$attrs"
+      :checked="modelValue"
+      @change="$emit('update:modelValue', $event.target.checked)"
     />
-    <label :for="$options.uid" class="checkbox__label">{{ props.text }}</label>
+    <label :for="uid" class="checkbox__label">{{ text }}</label>
   </div>
 </template>
 
@@ -15,7 +16,22 @@
   import { getUid } from '../../utils';
 
   export default {
-    getUid
+    inheritAttrs: false,
+    props: {
+      text: {
+        type: String,
+        required: true
+      },
+      modelValue: {
+        type: Boolean,
+        required: true
+      }
+    },
+    data() {
+      return {
+        uid: getUid()
+      };
+    }
   };
 </script>
 

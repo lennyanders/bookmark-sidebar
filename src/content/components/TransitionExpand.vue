@@ -1,35 +1,30 @@
 <script>
-  export default {
-    functional: true,
-    render: (createElement, { props, children }) =>
-      createElement(
-        'transition',
-        {
-          props: {
-            name: props.name
-          },
-          on: {
-            enter(el) {
-              el.style.height = 'auto';
-              const height = el.scrollHeight;
-              el.style.height = 0;
-              setTimeout(() => {
-                el.style.height = height + 'px';
-              });
-            },
-            afterEnter(el) {
-              el.style.height = 'auto';
-            },
-            leave(el) {
-              const height = el.scrollHeight;
-              el.style.height = height + 'px';
-              setTimeout(() => {
-                el.style.height = 0;
-              });
-            }
-          }
+  import { h, Transition } from 'vue';
+
+  export default (props, { slots }) =>
+    h(
+      Transition,
+      {
+        ...props,
+        onEnter(el) {
+          el.style.height = 'auto';
+          const height = el.scrollHeight;
+          el.style.height = 0;
+          requestAnimationFrame(() => {
+            el.style.height = height + 'px';
+          });
         },
-        children
-      )
-  };
+        onAfterEnter(el) {
+          el.style.height = 'auto';
+        },
+        onLeave(el) {
+          const height = el.scrollHeight;
+          el.style.height = height + 'px';
+          requestAnimationFrame(() => {
+            el.style.height = 0;
+          });
+        }
+      },
+      slots
+    );
 </script>

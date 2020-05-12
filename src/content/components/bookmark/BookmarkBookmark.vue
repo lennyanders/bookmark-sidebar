@@ -18,7 +18,7 @@
         class="bookmark__link"
         :class="{ 'bookmark__link--active': isOpen }"
         :href="bm.url"
-        :title="bm.title + ' | ' + bm.url"
+        :title="`${bm.title} | ${bm.url}`"
         @focus="setActiveBm"
         ref="focusableBmPart"
       >
@@ -35,6 +35,7 @@
   import Mixin from './Mixin';
 
   export default {
+    props: ['bm'],
     mixins: [Mixin],
     computed: {
       isOpen() {

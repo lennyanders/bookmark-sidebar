@@ -1,5 +1,5 @@
 <template>
-  <li class="bookmark" @keyup.left="hideChildren">
+  <li class="bookmark" @keyup.arrow-left="hideChildren">
     <div
       class="bookmark__content"
       @keydown.down.exact="goBy(1)"
@@ -17,7 +17,7 @@
       <button
         class="bookmark__link"
         @click="childrenVisible = !childrenVisible"
-        @keyup.right="childrenVisible = true"
+        @keyup.arrow-right="childrenVisible = true"
         @mousedown.middle.prevent
         @click.middle="openChildren"
         :title="bm.title"
@@ -39,11 +39,11 @@
       <add-bm :bm="bm" />
       <edit-bm :bm="bm" />
     </div>
-    <transition-expand v-if="bm.children.length" :name="'bookmark__children'">
+    <TransitionExpand v-if="bm.children.length" name="bookmark__children">
       <ul class="bookmark__children" v-show="childrenVisible">
         <BaseBookmark v-for="bm of bm.children" :key="bm.id" :bm="bm" />
       </ul>
-    </transition-expand>
+    </TransitionExpand>
   </li>
 </template>
 
@@ -52,14 +52,17 @@
 
   import AddBm from '../actions/AddBm';
   import TransitionExpand from '../TransitionExpand';
-  const BaseBookmark = () => import('./BaseBookmark');
+
+  // const BaseBookmark = () => import('./BaseBookmark');
+  import BaseBookmark from './BaseBookmark';
 
   export default {
+    props: ['bm'],
     mixins: [Mixin],
     components: {
       AddBm,
-      TransitionExpand,
-      BaseBookmark
+      TransitionExpand
+      // BaseBookmark
     },
     data() {
       return {
@@ -75,7 +78,6 @@
       },
       hideChildren(e) {
         if (!this.childrenVisible) return;
-
         e.stopPropagation();
         this.childrenVisible = false;
         this.$refs.focusableBmPart.focus();
@@ -85,16 +87,24 @@
       }
     },
     watch: {
-      childrenVisible: {
-        handler: 'updateBmChildrenVisible'
+      childrenVisible() {
+        this.updateBmChildrenVisible();
       },
-      bm: {
-        handler: 'updateBmChildrenVisible'
-      },
-      'bm.children.length'(newVal, oldVal) {
-        // happens when moving bookmark into folder and adding new bookmark to folder
-        if (document.hasFocus() && newVal > oldVal) this.childrenVisible = true;
+      bm(newVal, oldVal) {
+        this.updateBmChildrenVisible();
+
+        // happens when moving/adding bookmark into folder
+        if (
+          document.hasFocus() &&
+          newVal.children.length > oldVal.children.length
+        ) {
+          this.childrenVisible = true;
+        }
       }
+    },
+    beforeCreate: function() {
+      // Vue 3 circula reference FOR NOW
+      this.$options.components.BaseBookmark = BaseBookmark;
     }
   };
 </script>

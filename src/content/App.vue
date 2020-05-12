@@ -1,15 +1,16 @@
 <template>
-  <transition
+  <Transition
     name="bookmark-bar"
-    v-if="barVisible && bm.id"
-    @after-enter="focusBar"
     enter-active-class="bookmark-bar--appearing"
     leave-active-class="bookmark-bar--disappearing"
-    enter-class="bookmark-bar--invisible"
+    enter-from-class="bookmark-bar--invisible"
     leave-to-class="bookmark-bar--invisible"
+    @after-enter="focusBar"
     appear
   >
     <div
+      v-if="bm && bm.id"
+      v-show="barVisible"
       class="bookmark-bar"
       :class="{
         'bookmark-bar--left': barLeft,
@@ -21,6 +22,7 @@
       @click.stop
       @keydown.stop
       @keydown.up.down.prevent
+      ref="root"
     >
       <TheHeader :bm="bm" />
       <main class="main">
@@ -32,7 +34,7 @@
       <TheModal />
       <TheResizer />
     </div>
-  </transition>
+  </Transition>
 </template>
 
 <script>
@@ -41,7 +43,7 @@
   import TheModal from './components/modal/TheModal';
   import TheResizer from './components/TheResizer';
 
-  import { store } from './store/index';
+  import { store, mutations } from './store/index';
 
   export default {
     components: {
@@ -74,9 +76,9 @@
         store.url = location.href;
         this.barVisible = !this.barVisible;
       },
-      stopSearching: store.stopSearching,
+      stopSearching: mutations.stopSearching,
       focusBar() {
-        this.$el?.focus();
+        this.$refs.root?.focus();
       }
     },
     created() {

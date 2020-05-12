@@ -1,20 +1,20 @@
-<template functional>
+<template>
   <div class="select">
-    <label class="select__label" :for="($options.uid = $options.getUid())">{{
-      props.text
-    }}</label>
+    <label class="select__label" :for="uid">{{ text }}</label>
     <select
       class="select__el"
-      :id="$options.uid"
-      :value="props.value"
-      @input="listeners.input($event.target.value)"
+      :id="uid"
+      v-bind="$attrs"
+      @change="$emit('update:modelValue', $event.target.value)"
     >
       <option
-        v-for="{ text, value } of props.options"
+        v-for="{ text, value } of options"
         :key="value"
         :value="value"
-        >{{ text }}</option
+        :selected="value === modelValue"
       >
+        {{ text }}
+      </option>
     </select>
   </div>
 </template>
@@ -23,12 +23,8 @@
   import { getUid } from '../../utils';
 
   export default {
-    getUid,
+    inheritAttrs: false,
     props: {
-      value: {
-        type: String,
-        required: true
-      },
       text: {
         type: String,
         required: true
@@ -37,7 +33,16 @@
         type: Array,
         required: true,
         validator: array => array.every(item => item.value && item.text)
+      },
+      modelValue: {
+        type: String,
+        required: true
       }
+    },
+    data() {
+      return {
+        uid: getUid()
+      };
     }
   };
 </script>

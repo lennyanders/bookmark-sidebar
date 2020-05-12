@@ -4,7 +4,7 @@ import path from 'path';
 
 import { CleanWebpackPlugin as Clean } from 'clean-webpack-plugin';
 import Copy from 'copy-webpack-plugin';
-import Vue from 'vue-loader/lib/plugin';
+import { VueLoaderPlugin as Vue } from 'vue-loader';
 import MiniCssExtract from 'mini-css-extract-plugin';
 import Html from 'html-webpack-plugin';
 

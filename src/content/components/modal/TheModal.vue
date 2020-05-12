@@ -6,6 +6,7 @@
       tabindex="0"
       @click="hideModal"
       @keyup.esc="hideModal"
+      ref="modal"
     >
       <div @click.stop class="modal__layer">
         <button class="modal__close" @click="hideModal" title="Close"></button>
@@ -39,7 +40,7 @@
       modalVisible(val) {
         if (!val) return;
 
-        this.$nextTick(() => this.$el.focus());
+        this.$nextTick(() => this.$refs.modal.focus());
       }
     }
   };
@@ -56,22 +57,20 @@
     cursor: pointer;
     z-index: 1;
 
-    $mdl: &;
-
     &-enter-active,
     &-leave-active {
       transition: opacity 0.25s ease;
 
-      #{$mdl}__layer {
+      .modal__layer {
         transition: transform 0.25s ease;
       }
     }
 
-    &-enter,
+    &-enter-from,
     &-leave-to {
       opacity: 0;
 
-      #{$mdl}__layer {
+      .modal__layer {
         transform: translateY(100%);
       }
     }

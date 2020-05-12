@@ -1,11 +1,18 @@
+<template>
+  <BookmarkBookmark v-if="bm.url" :bm="bm" />
+  <BookmarkFolder v-else :bm="bm" />
+</template>
+
 <script>
   import BookmarkBookmark from './BookmarkBookmark';
   import BookmarkFolder from './BookmarkFolder';
 
   export default {
-    functional: true,
-    render: (h, { data, props }) =>
-      h(props.bm.url ? BookmarkBookmark : BookmarkFolder, data)
+    props: ['bm'],
+    components: {
+      BookmarkBookmark,
+      BookmarkFolder
+    }
   };
 </script>
 
@@ -66,10 +73,11 @@
     &__children {
       padding-left: 18px;
       will-change: height;
+      height: 0;
+      overflow: hidden;
 
       &-enter-active,
       &-leave-active {
-        overflow: hidden;
         transition: height 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
       }
     }

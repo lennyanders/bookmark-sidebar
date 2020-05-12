@@ -1,5 +1,5 @@
-<template functional>
-  <button class="bookmark__option" @click="$options.methods.editBm(props.bm)">
+<template>
+  <button class="bookmark__option" @click="editBm(bm)">
     <svg class="bookmark__icon" viewBox="0 0 24 24">
       <title>Edit bookmark</title>
       <path
@@ -13,6 +13,7 @@
   import { mutations } from '../../store/index';
 
   export default {
+    props: ['bm'],
     methods: {
       editBm: bm => mutations.showModal('ModalEditBm', bm)
     }

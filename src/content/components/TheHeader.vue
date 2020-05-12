@@ -28,7 +28,7 @@
 </template>
 
 <script>
-  import { store } from '../store';
+  import { store, mutations } from '../store';
 
   import OpenSettings from './actions/OpenSettings';
   import LeaveSearch from './actions/LeaveSearch';
@@ -63,7 +63,7 @@
     methods: {
       leaveSearchView() {
         this.$refs.searchInput.blur();
-        store.stopSearching();
+        mutations.stopSearching();
       }
     }
   };

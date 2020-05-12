@@ -1,20 +1,18 @@
-<template functional>
+<template>
   <fieldset class="radios">
-    <legend class="radios__label">{{ props.text }}</legend>
-    <div
-      class="radio"
-      v-for="({ value, text }, i) of props.options"
-      :key="value"
-    >
+    <legend class="radios__label">{{ text }}</legend>
+    <div class="radio" v-for="{ value, text } of options" :key="value">
       <input
         class="radio__el"
         type="radio"
+        :id="name + value"
+        :name="name"
+        v-bind="$attrs"
         :value="value"
-        :id="($options.uids[i] = $options.getUid())"
-        :checked="props.value === value"
-        @change="listeners.input($event.target.value)"
+        :checked="value === modelValue"
+        @change="$emit('update:modelValue', $event.target.value)"
       />
-      <label class="radio__label" :for="$options.uids[i]">{{ text }}</label>
+      <label class="radio__label" :for="name + value">{{ text }}</label>
     </div>
   </fieldset>
 </template>
@@ -23,13 +21,8 @@
   import { getUid } from '../../utils';
 
   export default {
-    getUid,
-    uids: [],
+    inheritAttrs: false,
     props: {
-      value: {
-        type: String,
-        required: true
-      },
       text: {
         type: String,
         required: true
@@ -38,7 +31,16 @@
         type: Array,
         required: true,
         validator: array => array.every(item => item.value && item.text)
+      },
+      modelValue: {
+        type: [String, Number],
+        required: true
       }
+    },
+    data() {
+      return {
+        name: getUid()
+      };
     }
   };
 </script>
