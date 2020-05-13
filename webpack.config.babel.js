@@ -1,158 +1,147 @@
 'use strict';
 
-import path from 'path';
-
-import { CleanWebpackPlugin as Clean } from 'clean-webpack-plugin';
-import Copy from 'copy-webpack-plugin';
-import { VueLoaderPlugin as Vue } from 'vue-loader';
-import MiniCssExtract from 'mini-css-extract-plugin';
-import Html from 'html-webpack-plugin';
-
+import manifest from './src/manifest.json';
 import { version } from './package';
+
+import path from 'path';
+import { emptyDir, outputJson, copy } from 'fs-extra';
+
+import { VueLoaderPlugin } from 'vue-loader';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import HtmPlugin from 'html-webpack-plugin';
 
 const resolve = dir => path.resolve(__dirname, dir);
 
-module.exports = [
-  //
-  // background script + copy public files + generate manifest + clean
-  //
-  ({ NODE_ENV }) => ({
-    mode: NODE_ENV,
-    entry: './src/background/main.js',
-    output: {
-      filename: 'main.js',
-      path: resolve('dist/background')
-    },
-    module: {
-      rules: [
-        {
-          test: /\.js$/,
-          loader: 'babel-loader'
-        }
-      ]
-    },
-    plugins: [
-      new Copy([
-        { from: 'public', to: resolve('dist'), force: true },
-        {
-          from: 'src/manifest.json',
-          to: resolve('dist/manifest.json'),
-          toType: 'file',
-          force: true,
-          transform(content) {
-            const manifest = JSON.parse(content.toString());
-            return JSON.stringify({
-              ...manifest,
-              version,
-              ...(NODE_ENV !== 'production' && {
-                content_security_policy: `${manifest.content_security_policy} script-src 'self' 'unsafe-eval'; object-src 'self'`
-              })
-            });
+module.exports = async ({ NODE_ENV }) => {
+  await emptyDir('dist');
+
+  await outputJson('dist/manifest.json', {
+    ...manifest,
+    version,
+    ...(NODE_ENV !== 'production' && {
+      content_security_policy: `${manifest.content_security_policy} script-src 'self' 'unsafe-eval'; object-src 'self'`
+    })
+  });
+
+  await copy('public', 'dist');
+
+  return [
+    //
+    // background script + copy public files + generate manifest + clean
+    //
+    {
+      mode: NODE_ENV,
+      entry: './src/background/main.js',
+      output: {
+        filename: 'main.js',
+        path: resolve('dist/background')
+      },
+      module: {
+        rules: [
+          {
+            test: /\.js$/,
+            loader: 'babel-loader'
           }
-        }
-      ]),
-      new Clean({
-        cleanOnceBeforeBuildPatterns: [resolve('dist/**/*')]
-      })
-    ]
-  }),
-  //
-  // content script
-  //
-  ({ NODE_ENV }) => ({
-    mode: NODE_ENV,
-    devtool: NODE_ENV === 'development' && 'inline-source-map',
-    entry: './src/content/main.js',
-    output: {
-      filename: 'main.js',
-      path: resolve('dist/content')
+        ]
+      }
     },
-    module: {
-      rules: [
-        {
-          test: /\.vue$/,
-          loader: 'vue-loader'
-        },
-        {
-          test: /\.js$/,
-          loader: 'babel-loader'
-        },
-        {
-          test: /\.css$/,
-          use: [
-            {
-              loader: 'style-loader',
-              options: {
-                injectType: 'singletonStyleTag',
-                insert: element => (window.styles = element)
-              }
-            },
-            'css-loader'
-          ]
-        },
-        {
-          test: /\.scss$/,
-          use: [
-            {
-              loader: 'style-loader',
-              options: {
-                injectType: 'singletonStyleTag',
-                insert: element => (window.styles = element)
-              }
-            },
-            'css-loader',
-            'sass-loader'
-          ]
-        }
-      ]
+    //
+    // content script
+    //
+    {
+      mode: NODE_ENV,
+      devtool: NODE_ENV === 'development' && 'inline-source-map',
+      entry: './src/content/main.js',
+      output: {
+        filename: 'main.js',
+        path: resolve('dist/content')
+      },
+      module: {
+        rules: [
+          {
+            test: /\.vue$/,
+            loader: 'vue-loader'
+          },
+          {
+            test: /\.js$/,
+            loader: 'babel-loader'
+          },
+          {
+            test: /\.css$/,
+            use: [
+              {
+                loader: 'style-loader',
+                options: {
+                  injectType: 'singletonStyleTag',
+                  insert: element => (window.styles = element)
+                }
+              },
+              'css-loader'
+            ]
+          },
+          {
+            test: /\.scss$/,
+            use: [
+              {
+                loader: 'style-loader',
+                options: {
+                  injectType: 'singletonStyleTag',
+                  insert: element => (window.styles = element)
+                }
+              },
+              'css-loader',
+              'sass-loader'
+            ]
+          }
+        ]
+      },
+      plugins: [new VueLoaderPlugin()],
+      resolve: {
+        extensions: ['.js', '.json', '.vue']
+      }
     },
-    plugins: [new Vue(), new Clean()],
-    resolve: {
-      extensions: ['.js', '.json', '.vue']
+    //
+    // new tab page
+    //
+    {
+      mode: NODE_ENV,
+      devtool: NODE_ENV === 'development' && 'inline-source-map',
+      entry: './src/newtab/main.js',
+      output: {
+        filename: 'main.js',
+        path: resolve('dist/newtab')
+      },
+      module: {
+        rules: [
+          {
+            test: /\.vue$/,
+            loader: 'vue-loader'
+          },
+          {
+            test: /\.js$/,
+            loader: 'babel-loader'
+          },
+          {
+            test: /\.css$/,
+            use: [MiniCssExtractPlugin.loader, 'css-loader']
+          },
+          {
+            test: /\.scss$/,
+            use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
+          }
+        ]
+      },
+      plugins: [
+        new VueLoaderPlugin(),
+        new MiniCssExtractPlugin({ filename: 'main.css' }),
+        new HtmPlugin({
+          template: './src/newtab/index.html',
+          filename: 'index.html'
+        })
+      ],
+      resolve: {
+        extensions: ['.js', '.json', '.vue']
+      }
     }
-  }),
-  //
-  // new tab page
-  //
-  ({ NODE_ENV }) => ({
-    mode: NODE_ENV,
-    devtool: NODE_ENV === 'development' && 'inline-source-map',
-    entry: './src/newtab/main.js',
-    output: {
-      filename: 'main.js',
-      path: resolve('dist/newtab')
-    },
-    module: {
-      rules: [
-        {
-          test: /\.vue$/,
-          loader: 'vue-loader'
-        },
-        {
-          test: /\.js$/,
-          loader: 'babel-loader'
-        },
-        {
-          test: /\.css$/,
-          use: [MiniCssExtract.loader, 'css-loader']
-        },
-        {
-          test: /\.scss$/,
-          use: [MiniCssExtract.loader, 'css-loader', 'sass-loader']
-        }
-      ]
-    },
-    plugins: [
-      new Vue(),
-      new MiniCssExtract({ filename: 'main.css' }),
-      new Html({
-        template: './src/newtab/index.html',
-        filename: 'index.html'
-      }),
-      new Clean()
-    ],
-    resolve: {
-      extensions: ['.js', '.json', '.vue']
-    }
-  })
-];
+  ];
+};
