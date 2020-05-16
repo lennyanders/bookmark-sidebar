@@ -38,7 +38,7 @@ export default props => {
   };
 
   const keydown = e => {
-    const delta = e.key === 'ArrowDown' ? 1 : e.key === 'ArrowUp' ? -1 : 0;
+    const delta = e.key === 'ArrowDown' ? 1 : e.key === 'ArrowUp' && -1;
     if (!delta) return;
 
     if (!store.isSearching && e.altKey) {
