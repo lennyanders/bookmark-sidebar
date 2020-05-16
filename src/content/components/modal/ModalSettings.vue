@@ -12,7 +12,7 @@
     />
 
     <BaseCheckbox
-      v-model="showOptionsOnRightClick"
+      v-model="editBookmarkOnRightClick"
       text="Open boomark options on right click?"
     />
 
@@ -67,11 +67,11 @@
           actions.saveBarLeft();
         }
       },
-      showOptionsOnRightClick: {
-        get: () => store.showOptionsOnRightClick,
+      editBookmarkOnRightClick: {
+        get: () => store.editBookmarkOnRightClick,
         set(val) {
-          store.showOptionsOnRightClick = val;
-          actions.saveShowOptionsOnRightClick(val);
+          store.editBookmarkOnRightClick = val;
+          actions.saveeditBookmarkOnRightClick(val);
         }
       },
       activeTheme: {

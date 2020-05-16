@@ -1,25 +1,24 @@
 <template>
-  <li class="bookmark" @keyup.arrow-left="hideChildren">
+  <li class="bookmark" ref="root" @keyup.arrow-left="hideChildren">
     <div
       class="bookmark__content"
-      @keydown.down.exact="goBy(1)"
-      @keydown.up.exact="goBy(-1)"
-      @keydown.down.alt.exact="() => !isSearching && moveBy(1)"
-      @keydown.up.alt.exact="() => !isSearching && moveBy(-1)"
-      @keydown.down.alt.ctrl.exact="() => !isSearching && moveIn(1)"
-      @keydown.up.alt.ctrl.exact="() => !isSearching && moveIn(-1)"
-      @click.right.exact="e => showOptionsOnRightClick && editBm(e)"
       :draggable="!isSearching"
-      @dragstart="e => !isSearching && dragStart(e)"
-      @dragenter="e => !isSearching && dragEnter(e)"
-      @dragend="e => !isSearching && dragEnd(e)"
+      v-on="{
+        keydown,
+        ...(editBookmarkOnRightClick && {
+          contextmenu
+        }),
+        ...(!isSearching && {
+          dragstart,
+          dragenter,
+          dragend
+        })
+      }"
     >
       <button
         class="bookmark__link"
         @click="childrenVisible = !childrenVisible"
         @keyup.arrow-right="childrenVisible = true"
-        @mousedown.middle.prevent
-        @click.middle="openChildren"
         :title="bm.title"
         @focus="setActiveBm"
         ref="focusableBmPart"
@@ -48,63 +47,48 @@
 </template>
 
 <script>
-  import Mixin from './Mixin';
+  import { defineAsyncComponent } from 'vue';
 
+  import useEditBm from './useEditBm';
+  import useKeyboard from './useKeyboard';
+  import useDragAndDrop from './useDragAndDrop';
+  import useFocus from './useFocus';
+  import useIsSearching from './useIsSearching';
+  import useEditBookmarkOnRightClick from './useEditBookmarkOnRightClick';
+  import useChildren from './useChildren';
+
+  import EditBm from '../actions/EditBm';
   import AddBm from '../actions/AddBm';
   import TransitionExpand from '../TransitionExpand';
-
-  // const BaseBookmark = () => import('./BaseBookmark');
-  import BaseBookmark from './BaseBookmark';
+  const BaseBookmark = defineAsyncComponent(() => import('./BaseBookmark'));
 
   export default {
-    props: ['bm'],
-    mixins: [Mixin],
+    props: {
+      bm: {
+        type: Object,
+        required: true
+      }
+    },
     components: {
+      EditBm,
       AddBm,
-      TransitionExpand
-      // BaseBookmark
+      TransitionExpand,
+      BaseBookmark
     },
-    data() {
-      return {
-        childrenVisible: false
-      };
-    },
-    methods: {
-      openChildren() {
-        if (this.bm.children.length > 4) return;
-        this.bm.children.map(({ url }) => {
-          if (url) window.open(url);
-        });
-      },
-      hideChildren(e) {
-        if (!this.childrenVisible) return;
-        e.stopPropagation();
-        this.childrenVisible = false;
-        this.$refs.focusableBmPart.focus();
-      },
-      updateBmChildrenVisible() {
-        this.bm.childrenVisible = this.childrenVisible;
-      }
-    },
-    watch: {
-      childrenVisible() {
-        this.updateBmChildrenVisible();
-      },
-      bm(newVal, oldVal) {
-        this.updateBmChildrenVisible();
+    setup: props => {
+      const { childrenVisible, openChildren, hideChildren } = useChildren(props);
 
-        // happens when moving/adding bookmark into folder
-        if (
-          document.hasFocus() &&
-          newVal.children.length > oldVal.children.length
-        ) {
-          this.childrenVisible = true;
-        }
-      }
-    },
-    beforeCreate: function() {
-      // Vue 3 circula reference FOR NOW
-      this.$options.components.BaseBookmark = BaseBookmark;
+      return {
+        ...useEditBm(props),
+        ...useKeyboard(props),
+        ...useDragAndDrop(props, childrenVisible),
+        ...useFocus(props, childrenVisible),
+        ...useIsSearching(),
+        ...useEditBookmarkOnRightClick(),
+        childrenVisible,
+        hideChildren,
+        openChildren
+      };
     }
   };
 </script>

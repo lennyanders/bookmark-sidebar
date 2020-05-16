@@ -19,7 +19,7 @@ export const store = reactive({
     }
   ],
   activeTheme: 'system',
-  showOptionsOnRightClick: false,
+  editBookmarkOnRightClick: false,
 
   url: location.href,
 

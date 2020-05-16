@@ -11,7 +11,7 @@ port.onMessage.addListener(
     barLeft,
     barWidth,
     barTheme,
-    showOptionsOnRightClick
+    editBookmarkOnRightClick
   }) => {
     store.bm = bm;
     store.allFolders = allFolders;
@@ -19,7 +19,7 @@ port.onMessage.addListener(
     store.barLeft = barLeft;
     mutations.setBarWidth(barWidth);
     store.activeTheme = barTheme;
-    store.showOptionsOnRightClick = showOptionsOnRightClick;
+    store.editBookmarkOnRightClick = editBookmarkOnRightClick;
 
     // unset and set activeBm to maintain focus
     const activeBm = store.activeBm;
@@ -58,10 +58,10 @@ export const actions = {
       barTheme: store.activeTheme
     });
   },
-  saveShowOptionsOnRightClick() {
+  saveeditBookmarkOnRightClick() {
     port.postMessage({
-      type: 'setShowOptionsOnRightClick',
-      showOptionsOnRightClick: store.showOptionsOnRightClick
+      type: 'seteditBookmarkOnRightClick',
+      editBookmarkOnRightClick: store.editBookmarkOnRightClick
     });
   }
 };

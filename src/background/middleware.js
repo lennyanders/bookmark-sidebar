@@ -38,8 +38,8 @@ const actions = {
   setBarTheme({ barTheme }) {
     chrome.storage.sync.set({ barTheme });
   },
-  setShowOptionsOnRightClick({ showOptionsOnRightClick }) {
-    chrome.storage.sync.set({ showOptionsOnRightClick });
+  seteditBookmarkOnRightClick({ editBookmarkOnRightClick }) {
+    chrome.storage.sync.set({ editBookmarkOnRightClick });
   }
 };
 

@@ -1,18 +1,19 @@
 <template>
-  <li class="bookmark">
+  <li class="bookmark" ref="root">
     <div
       class="bookmark__content"
-      @keydown.down.exact="goBy(1)"
-      @keydown.up.exact="goBy(-1)"
-      @keydown.down.alt.exact="() => !isSearching && moveBy(1)"
-      @keydown.up.alt.exact="() => !isSearching && moveBy(-1)"
-      @keydown.down.alt.ctrl.exact="() => !isSearching && moveIn(1)"
-      @keydown.up.alt.ctrl.exact="() => !isSearching && moveIn(-1)"
-      @click.right.exact="e => showOptionsOnRightClick && editBm(e)"
       :draggable="!isSearching"
-      @dragstart="e => !isSearching && dragStart(e)"
-      @dragenter="e => !isSearching && dragEnter(e)"
-      @dragend="e => !isSearching && dragEnd(e)"
+      v-on="{
+        keydown,
+        ...(editBookmarkOnRightClick && {
+          contextmenu
+        }),
+        ...(!isSearching && {
+          dragstart,
+          dragenter,
+          dragend
+        })
+      }"
     >
       <a
         class="bookmark__link"
@@ -31,16 +32,37 @@
 </template>
 
 <script>
+  import { computed } from 'vue';
+
   import { store } from '../../store';
-  import Mixin from './Mixin';
+
+  import useEditBm from './useEditBm';
+  import useKeyboard from './useKeyboard';
+  import useDragAndDrop from './useDragAndDrop';
+  import useFocus from './useFocus';
+  import useIsSearching from './useIsSearching';
+  import useEditBookmarkOnRightClick from './useEditBookmarkOnRightClick';
+
+  import EditBm from '../actions/EditBm';
 
   export default {
-    props: ['bm'],
-    mixins: [Mixin],
-    computed: {
-      isOpen() {
-        return this.bm.url === store.url;
+    props: {
+      bm: {
+        type: Object,
+        required: true
       }
-    }
+    },
+    components: {
+      EditBm
+    },
+    setup: props => ({
+      ...useEditBm(props),
+      ...useKeyboard(props),
+      ...useDragAndDrop(props),
+      ...useFocus(props),
+      ...useIsSearching(),
+      ...useEditBookmarkOnRightClick(),
+      isOpen: computed(() => props.bm.url === store.url)
+    })
   };
 </script>
