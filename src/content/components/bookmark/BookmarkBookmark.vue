@@ -10,8 +10,7 @@
         }),
         ...(!isSearching && {
           dragstart,
-          dragenter,
-          dragend
+          dragenter
         })
       }"
     >

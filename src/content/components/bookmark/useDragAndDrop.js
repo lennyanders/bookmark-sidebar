@@ -1,45 +1,33 @@
-import { ref, computed } from 'vue';
-
-import { store } from '../../store';
 import { actions } from '../../api';
 
-export default (props, childrenVisible) => {
-  const root = ref(null);
+let dragBm;
 
-  const dragstart = e => {
+export default (props, childrenVisible) => {
+  const dragstart = () => {
     if (childrenVisible) childrenVisible.value = false;
 
-    store.dragY = e.offsetY;
-    store.dragEl = root.value;
+    dragBm = props.bm;
   };
 
-  const dragenter = e => {
-    if (store.dragEl !== root.value) store.newBmParentId = props.bm.parentId;
+  const dragenter = () => {
+    if (dragBm.id === props.bm.id) {
+      dragBm = props.bm;
+      return;
+    }
 
-    root.value.parentNode.insertBefore(
-      store.dragEl,
-      e.offsetY < store.dragY ? root.value.nextElementSibling : root.value
-    );
-  };
+    const parentId = props.bm.parentId;
 
-  const dragend = () => {
-    const newParent =
-      props.bm.parentId !== store.newBmParentId ? store.newBmParentId : 0;
-
-    let newIndex = [...root.value.parentNode.children].indexOf(root.value);
-    if (!newParent && newIndex > props.bm.index) newIndex++;
+    let index = props.bm.index;
+    if (parentId === dragBm.parentId && index > dragBm.index) {
+      index++;
+    }
 
     actions.moveBm({
-      id: props.bm.id,
-      ...(newParent && { parentId: newParent }),
-      index: newIndex
+      id: dragBm.id,
+      index,
+      parentId
     });
   };
 
-  return {
-    root,
-    dragstart,
-    dragenter,
-    dragend
-  };
+  return { dragstart, dragenter };
 };

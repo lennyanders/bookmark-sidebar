@@ -36,9 +36,6 @@ export const store = reactive({
   modalComponent: null,
   modalComponentProps: null,
 
-  dragY: null,
-  dragEl: null,
-  newBmParentId: null,
   isSearching: computed(() => !!store.searchQuery),
   flattenedBms: computed(() => {
     let children = [];
