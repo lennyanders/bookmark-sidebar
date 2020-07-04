@@ -19,13 +19,13 @@
     props: {
       bm: {
         type: Object,
-        required: true
-      }
+        required: true,
+      },
     },
     methods: {
       editBm() {
         mutations.showModal(markRaw(ModalEditBm), { bm: this.bm });
-      }
-    }
+      },
+    },
   };
 </script>

@@ -6,12 +6,12 @@
       v-on="{
         keydown,
         ...(editBookmarkOnRightClick && {
-          contextmenu
+          contextmenu,
         }),
         ...(!isSearching && {
           dragstart,
-          dragenter
-        })
+          dragenter,
+        }),
       }"
     >
       <a
@@ -48,20 +48,20 @@
     props: {
       bm: {
         type: Object,
-        required: true
-      }
+        required: true,
+      },
     },
     components: {
-      EditBm
+      EditBm,
     },
-    setup: props => ({
+    setup: (props) => ({
       ...useEditBm(props),
       ...useKeyboard(props),
       ...useDragAndDrop(props),
       ...useFocus(props),
       ...useIsSearching(),
       ...useEditBookmarkOnRightClick(),
-      isOpen: computed(() => props.bm.url === store.url)
-    })
+      isOpen: computed(() => props.bm.url === store.url),
+    }),
   };
 </script>

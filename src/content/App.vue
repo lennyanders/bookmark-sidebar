@@ -15,7 +15,7 @@
       :class="{
         'bookmark-bar--left': barLeft,
         'bookmark-bar--light': activeTheme === 'light',
-        'bookmark-bar--dark': activeTheme === 'dark'
+        'bookmark-bar--dark': activeTheme === 'dark',
       }"
       :style="{ width: `${barWidth}px` }"
       tabindex="-1"
@@ -50,20 +50,20 @@
       TheHeader,
       BaseBookmark,
       TheModal,
-      TheResizer
+      TheResizer,
     },
     data() {
       return {
         barVisible:
           !location.href.startsWith('chrome-extension') ||
-          location.href.endsWith('?bar=open')
+          location.href.endsWith('?bar=open'),
       };
     },
     computed: {
       barWidth: () => store.barWidth,
       barLeft: () => store.barLeft,
       activeTheme: () => store.activeTheme,
-      bm: () => store.filteredBms
+      bm: () => store.filteredBms,
     },
     methods: {
       hideBar(e) {
@@ -79,7 +79,7 @@
       stopSearching: mutations.stopSearching,
       focusBar() {
         this.$refs.root?.focus();
-      }
+      },
     },
     created() {
       addEventListener('toggleBar', this.toggleBarVisibility);
@@ -92,7 +92,7 @@
 
       removeEventListener('click', this.hideBar);
       removeEventListener('blur', this.hideBar);
-    }
+    },
   };
 </script>
 

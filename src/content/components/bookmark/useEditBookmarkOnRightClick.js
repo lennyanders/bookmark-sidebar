@@ -4,7 +4,7 @@ import { store } from '../../store/index';
 
 export default () => {
   const editBookmarkOnRightClick = computed(
-    () => store.editBookmarkOnRightClick
+    () => store.editBookmarkOnRightClick,
   );
 
   return { editBookmarkOnRightClick };

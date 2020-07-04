@@ -9,21 +9,21 @@ const actions = {
     chrome.bookmarks.create({
       parentId,
       title,
-      ...(url && { url })
+      ...(url && { url }),
     });
   },
   async move({ id, index, parentId }) {
     try {
       await chrome.bookmarks.move(id, {
         ...(index !== undefined && { index }),
-        ...(parentId && { parentId })
+        ...(parentId && { parentId }),
       });
     } catch (err) {}
   },
   update({ id, title, url }) {
     chrome.bookmarks.update(id, {
       ...(title && { title }),
-      ...(url && { url })
+      ...(url && { url }),
     });
   },
   setBarLeft({ barLeft }) {
@@ -40,14 +40,14 @@ const actions = {
   },
   seteditBookmarkOnRightClick({ editBookmarkOnRightClick }) {
     chrome.storage.sync.set({ editBookmarkOnRightClick });
-  }
+  },
 };
 
 export const startMiddleware = () => {
-  chrome.runtime.onConnect.addListener(port => {
+  chrome.runtime.onConnect.addListener((port) => {
     console.assert(port.name === 'bmBar');
 
-    port.onMessage.addListener(msg => actions[msg.type]?.(msg));
+    port.onMessage.addListener((msg) => actions[msg.type]?.(msg));
 
     const postData = () => port.postMessage(data);
     postData();
@@ -59,7 +59,7 @@ export const startMiddleware = () => {
       try {
         const [tab] = await chrome.tabs.query({
           lastFocusedWindow: true,
-          active: true
+          active: true,
         });
         scriptRunsOnTab.delete(tab.id);
       } catch (r) {}

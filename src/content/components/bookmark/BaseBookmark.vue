@@ -11,8 +11,8 @@
     props: ['bm'],
     components: {
       BookmarkBookmark,
-      BookmarkFolder
-    }
+      BookmarkFolder,
+    },
   };
 </script>
 

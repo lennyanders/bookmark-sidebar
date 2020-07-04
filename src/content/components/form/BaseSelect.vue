@@ -27,23 +27,23 @@
     props: {
       text: {
         type: String,
-        required: true
+        required: true,
       },
       options: {
         type: Array,
         required: true,
-        validator: array => array.every(item => item.value && item.text)
+        validator: (array) => array.every((item) => item.value && item.text),
       },
       modelValue: {
         type: String,
-        required: true
-      }
+        required: true,
+      },
     },
     data() {
       return {
-        uid: getUid()
+        uid: getUid(),
       };
-    }
+    },
   };
 </script>
 

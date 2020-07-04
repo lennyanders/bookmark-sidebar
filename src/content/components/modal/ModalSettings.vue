@@ -40,16 +40,16 @@
       BaseInput,
       BaseSelect,
       BaseCheckbox,
-      BaseRadio
+      BaseRadio,
     },
     data() {
       return {
-        themes: store.themes
+        themes: store.themes,
       };
     },
     computed: {
       allFolders: () =>
-        store.allFolders.map(folder => {
+        store.allFolders.map((folder) => {
           folder.value = folder.id;
           folder.text = folder.title;
           return folder;
@@ -58,36 +58,36 @@
         get: () => store.bm.id,
         set(val) {
           actions.updateRootBm(val);
-        }
+        },
       },
       barLeft: {
         get: () => store.barLeft,
         set(val) {
           store.barLeft = val;
           actions.saveBarLeft();
-        }
+        },
       },
       editBookmarkOnRightClick: {
         get: () => store.editBookmarkOnRightClick,
         set(val) {
           store.editBookmarkOnRightClick = val;
           actions.saveeditBookmarkOnRightClick(val);
-        }
+        },
       },
       activeTheme: {
         get: () => store.activeTheme,
         set(val) {
           store.activeTheme = val;
           actions.saveActiveTheme();
-        }
+        },
       },
       barWidth: {
         get: () => store.barWidth,
         set(val) {
           mutations.setBarWidth(val);
           actions.saveBarWidth();
-        }
-      }
-    }
+        },
+      },
+    },
   };
 </script>

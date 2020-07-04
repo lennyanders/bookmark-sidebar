@@ -1,6 +1,6 @@
 export let scriptRunsOnTab = new Set([]);
 
-const insertAndToggleBmBar = tabOrTabs => {
+const insertAndToggleBmBar = (tabOrTabs) => {
   const tab = tabOrTabs[0] || tabOrTabs;
 
   // newtab has its own handler
@@ -12,19 +12,19 @@ const insertAndToggleBmBar = tabOrTabs => {
       'chrome://',
       'https://chrome.google.com/webstore/',
       'view-source:',
-      'file:///'
-    ].some(url => tab.url.includes(url))
+      'file:///',
+    ].some((url) => tab.url.includes(url))
   ) {
     return chrome.tabs.create({
       index: tab.index + 1,
-      url: 'chrome://newtab?bar=open'
+      url: 'chrome://newtab?bar=open',
     });
   }
 
   // check if bookmarkbar is already inserted
   if (scriptRunsOnTab.has(tab.id)) {
     return chrome.tabs.executeScript({
-      code: 'window.dispatchEvent(new CustomEvent("toggleBar"));'
+      code: 'window.dispatchEvent(new CustomEvent("toggleBar"));',
     });
   }
 
@@ -34,12 +34,12 @@ const insertAndToggleBmBar = tabOrTabs => {
 };
 
 export const enableBmBar = () => {
-  chrome.commands.onCommand.addListener(command => {
+  chrome.commands.onCommand.addListener((command) => {
     if (command !== 'toogle-bm-bar') return;
 
     chrome.tabs.query(
       { active: true, currentWindow: true },
-      insertAndToggleBmBar
+      insertAndToggleBmBar,
     );
   });
 

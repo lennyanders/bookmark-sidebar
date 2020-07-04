@@ -4,7 +4,7 @@ export const findFocusableBm = (
   id,
   delta = 0,
   includeChildren = true,
-  bms = store.filteredBms.children
+  bms = store.filteredBms.children,
 ) => {
   for (let i = 0; i < bms.length; i++) {
     if (bms[i].id === id) {
@@ -38,7 +38,7 @@ export const findFocusableBm = (
 export const findBmToMoveIn = (
   id,
   delta = 0,
-  bms = store.filteredBms.children
+  bms = store.filteredBms.children,
 ) => {
   for (let i = 0; i < bms.length; i++) {
     if (bms[i].id === id) {

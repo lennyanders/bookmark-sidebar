@@ -38,12 +38,12 @@
     components: {
       OpenSettings,
       LeaveSearch,
-      AddBm
+      AddBm,
     },
     props: ['bm'],
     data() {
       return {
-        placeholder: chrome.i18n.getMessage('searchPlaceholder')
+        placeholder: chrome.i18n.getMessage('searchPlaceholder'),
       };
     },
     computed: {
@@ -51,21 +51,21 @@
         get: () => store.searchFocused,
         set(val) {
           store.searchFocused = val;
-        }
+        },
       },
       searchQuery: {
         get: () => store.searchQuery,
         set(val) {
           store.searchQuery = val.trim();
-        }
-      }
+        },
+      },
     },
     methods: {
       leaveSearchView() {
         this.$refs.searchInput.blur();
         mutations.stopSearching();
-      }
-    }
+      },
+    },
   };
 </script>
 

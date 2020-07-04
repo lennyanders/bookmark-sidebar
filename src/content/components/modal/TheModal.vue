@@ -27,18 +27,18 @@
     computed: {
       modalVisible: () => store.modalVisible,
       modalComponent: () => store.modalComponent,
-      modalComponentProps: () => store.modalComponentProps
+      modalComponentProps: () => store.modalComponentProps,
     },
     methods: {
-      hideModal: mutations.hideModal
+      hideModal: mutations.hideModal,
     },
     watch: {
       modalVisible(val) {
         if (!val) return;
 
         this.$nextTick(() => this.$refs.modal.focus());
-      }
-    }
+      },
+    },
   };
 </script>
 

@@ -20,18 +20,18 @@
     props: {
       text: {
         type: String,
-        required: true
+        required: true,
       },
       modelValue: {
         type: [String, Number],
-        required: true
-      }
+        required: true,
+      },
     },
     data() {
       return {
-        uid: getUid()
+        uid: getUid(),
       };
-    }
+    },
   };
 </script>
 

@@ -23,8 +23,8 @@
           requestAnimationFrame(() => {
             el.style.height = 0;
           });
-        }
+        },
       },
-      slots
+      slots,
     );
 </script>

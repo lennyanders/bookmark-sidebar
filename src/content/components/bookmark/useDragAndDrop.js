@@ -25,7 +25,7 @@ export default (props, childrenVisible) => {
     actions.moveBm({
       id: dragBm.id,
       index,
-      parentId
+      parentId,
     });
   };
 

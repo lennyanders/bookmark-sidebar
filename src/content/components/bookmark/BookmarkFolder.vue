@@ -6,12 +6,12 @@
       v-on="{
         keydown,
         ...(editBookmarkOnRightClick && {
-          contextmenu
+          contextmenu,
         }),
         ...(!isSearching && {
           dragstart,
-          dragenter
-        })
+          dragenter,
+        }),
       }"
     >
       <button
@@ -65,17 +65,19 @@
     props: {
       bm: {
         type: Object,
-        required: true
-      }
+        required: true,
+      },
     },
     components: {
       EditBm,
       AddBm,
       TransitionExpand,
-      BaseBookmark
+      BaseBookmark,
     },
-    setup: props => {
-      const { childrenVisible, openChildren, hideChildren } = useChildren(props);
+    setup: (props) => {
+      const { childrenVisible, openChildren, hideChildren } = useChildren(
+        props,
+      );
 
       return {
         ...useEditBm(props),
@@ -86,8 +88,8 @@
         ...useEditBookmarkOnRightClick(),
         childrenVisible,
         hideChildren,
-        openChildren
+        openChildren,
       };
-    }
+    },
   };
 </script>

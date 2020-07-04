@@ -13,11 +13,11 @@
   export default {
     data() {
       return {
-        dragging: false
+        dragging: false,
       };
     },
     computed: {
-      barLeft: () => store.barLeft
+      barLeft: () => store.barLeft,
     },
     methods: {
       startResizing() {
@@ -33,10 +33,10 @@
       },
       resize(e) {
         mutations.setBarWidth(
-          this.barLeft ? e.x : document.body.scrollWidth - e.x
+          this.barLeft ? e.x : document.body.scrollWidth - e.x,
         );
-      }
-    }
+      },
+    },
   };
 </script>
 

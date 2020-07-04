@@ -22,18 +22,18 @@
   export default {
     components: {
       BaseInput,
-      BaseButton
+      BaseButton,
     },
     props: {
       bm: {
         type: Object,
-        required: true
-      }
+        required: true,
+      },
     },
     data() {
       return {
         newTitle: this.bm.title,
-        newUrl: this.bm.url
+        newUrl: this.bm.url,
       };
     },
     methods: {
@@ -41,14 +41,14 @@
         actions.editBm({
           id: this.bm.id,
           title: this.newTitle,
-          url: this.newUrl
+          url: this.newUrl,
         });
         mutations.hideModal();
       },
       removeBm() {
         actions.removeBm(this.bm.id);
         mutations.hideModal();
-      }
-    }
+      },
+    },
   };
 </script>

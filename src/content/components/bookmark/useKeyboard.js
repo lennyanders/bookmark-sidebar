@@ -2,42 +2,42 @@ import { findFocusableBm, findBmToMoveIn } from '../../utils';
 import { store } from '../../store';
 import { actions } from '../../api/index';
 
-export default props => {
-  const goBy = delta => {
+export default (props) => {
+  const goBy = (delta) => {
     const { id } = findFocusableBm(props.bm.id, delta);
     if (id) store.activeBm = id;
   };
-  const moveBy = delta => {
+  const moveBy = (delta) => {
     if (delta > 0) delta++;
     actions.moveBm({
       id: props.bm.id,
-      index: props.bm.index + delta
+      index: props.bm.index + delta,
     });
   };
-  const moveIn = delta => {
+  const moveIn = (delta) => {
     const { id, parentId, children, index } = findBmToMoveIn(
       props.bm.id,
-      delta
+      delta,
     );
 
     if (!children) return moveBy(delta);
 
-    if (children.some(bm => bm.id === props.bm.id)) {
+    if (children.some((bm) => bm.id === props.bm.id)) {
       return actions.moveBm({
         id: props.bm.id,
         parentId,
-        index: delta > 0 ? index + 1 : index
+        index: delta > 0 ? index + 1 : index,
       });
     }
 
     return actions.moveBm({
       id: props.bm.id,
       parentId: id,
-      ...(delta > 0 && { index: 0 })
+      ...(delta > 0 && { index: 0 }),
     });
   };
 
-  const keydown = e => {
+  const keydown = (e) => {
     const delta = e.key === 'ArrowDown' ? 1 : e.key === 'ArrowUp' && -1;
     if (!delta) return;
 

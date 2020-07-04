@@ -1,9 +1,9 @@
 import { watch, watchEffect, ref } from 'vue';
 
-export default props => {
+export default (props) => {
   const childrenVisible = ref(false);
 
-  const hideChildren = e => {
+  const hideChildren = (e) => {
     if (!childrenVisible.value) return;
     e.stopPropagation();
     childrenVisible.value = false;
@@ -19,7 +19,7 @@ export default props => {
       if (document.hasFocus() && newVal > oldVal) {
         childrenVisible.value = true;
       }
-    }
+    },
   );
 
   return { childrenVisible, hideChildren };

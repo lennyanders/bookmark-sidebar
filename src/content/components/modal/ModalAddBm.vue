@@ -24,19 +24,19 @@
     components: {
       BaseInput,
       BaseCheckbox,
-      BaseButton
+      BaseButton,
     },
     props: {
       bm: {
         type: Object,
-        required: true
-      }
+        required: true,
+      },
     },
     data() {
       return {
         title: document.title,
         url: location.href,
-        createFolder: false
+        createFolder: false,
       };
     },
     methods: {
@@ -44,10 +44,10 @@
         actions.createBm({
           parentId: this.bm.id,
           title: this.title,
-          url: this.createFolder ? '' : this.url
+          url: this.createFolder ? '' : this.url,
         });
         mutations.hideModal();
-      }
-    }
+      },
+    },
   };
 </script>

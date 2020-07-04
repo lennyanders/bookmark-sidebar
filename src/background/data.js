@@ -4,7 +4,7 @@ let faviconUrls = new Set([]);
 let faviconDataUrls = new Map();
 let _shownBmId;
 
-const getFaviconUrl = url => `chrome://favicon/${new URL(url).origin}`;
+const getFaviconUrl = (url) => `chrome://favicon/${new URL(url).origin}`;
 
 const getNewFaviconUrls = (bms, curFaviconUrls) =>
   bms.reduce((res, { url }) => {
@@ -13,7 +13,7 @@ const getNewFaviconUrls = (bms, curFaviconUrls) =>
     return res;
   }, new Set([]));
 
-const loadFavicons = faviconUrls => {
+const loadFavicons = (faviconUrls) => {
   if (!faviconUrls.size) return [];
   return new Promise((resolve, reject) => {
     let faviconDataUrls = new Map();
@@ -51,7 +51,7 @@ const updateTree = async () => {
 
       folders.push({
         title: nested.title,
-        id: nested.id
+        id: nested.id,
       });
     } else if (shownFolder) {
       bmsToLoad.push(nested);
@@ -64,11 +64,11 @@ const updateTree = async () => {
     faviconUrls = new Set([...faviconUrls, ...newFaviconUrls]);
     faviconDataUrls = new Map([
       ...faviconDataUrls,
-      ...(await loadFavicons(newFaviconUrls))
+      ...(await loadFavicons(newFaviconUrls)),
     ]);
   }
   // add favicon data urls to bookmarks that appear in the sidebar
-  bmsToLoad.map(bm => {
+  bmsToLoad.map((bm) => {
     bm.faviconDataUrl = faviconDataUrls.get(getFaviconUrl(bm.url));
   });
 
@@ -85,13 +85,13 @@ export const generateData = async () => {
     barLeft,
     barWidth = 320,
     barTheme = 'system',
-    editBookmarkOnRightClick
+    editBookmarkOnRightClick,
   } = await chrome.storage.sync.get([
     'barLeft',
     'shownBmId',
     'barWidth',
     'barTheme',
-    'editBookmarkOnRightClick'
+    'editBookmarkOnRightClick',
   ]);
 
   _shownBmId = shownBmId;
@@ -99,7 +99,7 @@ export const generateData = async () => {
     barLeft,
     barWidth,
     barTheme,
-    editBookmarkOnRightClick
+    editBookmarkOnRightClick,
   });
   updateTree();
 
@@ -115,7 +115,7 @@ export const generateData = async () => {
       if (barTheme) data.barTheme = barTheme.newValue;
       if (editBookmarkOnRightClick)
         data.editBookmarkOnRightClick = editBookmarkOnRightClick.newValue;
-    }
+    },
   );
   chrome.bookmarks.onRemoved.addListener(updateTree);
   chrome.bookmarks.onCreated.addListener(updateTree);

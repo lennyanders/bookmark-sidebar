@@ -17,21 +17,21 @@
     props: {
       btnClasses: {
         type: Array,
-        default: ['bookmark__option']
+        default: ['bookmark__option'],
       },
       icnClasses: {
         type: Array,
-        default: ['bookmark__icon']
+        default: ['bookmark__icon'],
       },
       bm: {
         type: Object,
-        required: true
-      }
+        required: true,
+      },
     },
     methods: {
       addBm() {
         mutations.showModal(markRaw(ModalAddBm), { bm: this.bm });
-      }
-    }
+      },
+    },
   };
 </script>

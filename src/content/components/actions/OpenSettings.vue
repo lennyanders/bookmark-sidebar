@@ -19,7 +19,7 @@
     methods: {
       showSettings() {
         mutations.showModal(markRaw(ModalSettings));
-      }
-    }
+      },
+    },
   };
 </script>

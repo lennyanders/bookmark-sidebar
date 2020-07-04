@@ -7,7 +7,7 @@ export const updateActionIcon = () => {
     path: {
       '16': `icons/${userColorScheme}browser-action-16.png`,
       '24': `icons/${userColorScheme}browser-action-24.png`,
-      '32': `icons/${userColorScheme}browser-action-32.png`
-    }
+      '32': `icons/${userColorScheme}browser-action-32.png`,
+    },
   });
 };

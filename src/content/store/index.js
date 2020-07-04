@@ -7,16 +7,16 @@ export const store = reactive({
   themes: [
     {
       value: 'system',
-      text: 'System Oriented'
+      text: 'System Oriented',
     },
     {
       value: 'light',
-      text: 'light'
+      text: 'light',
     },
     {
       value: 'dark',
-      text: 'dark'
-    }
+      text: 'dark',
+    },
   ],
   activeTheme: 'system',
   editBookmarkOnRightClick: false,
@@ -49,7 +49,7 @@ export const store = reactive({
     let searchQuery = store.searchQuery;
     if (!searchQuery) return store.bm;
 
-    const activeFilters = store.filters.filter(filter => {
+    const activeFilters = store.filters.filter((filter) => {
       if (
         searchQuery.indexOf(`${filter} `) === 0 ||
         searchQuery.includes(` ${filter} `) ||
@@ -93,7 +93,7 @@ export const store = reactive({
       });
 
     return { ...store.bm, children: res };
-  })
+  }),
 });
 
 export let mutations = {
@@ -122,5 +122,5 @@ export let mutations = {
     store.modalComponentProps = null;
 
     store.modalPrevFocus?.focus();
-  }
+  },
 };

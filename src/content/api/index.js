@@ -11,7 +11,7 @@ port.onMessage.addListener(
     barLeft,
     barWidth,
     barTheme,
-    editBookmarkOnRightClick
+    editBookmarkOnRightClick,
   }) => {
     store.bm = bm;
     store.allFolders = allFolders;
@@ -25,7 +25,7 @@ port.onMessage.addListener(
     const activeBm = store.activeBm;
     store.activeBm = null;
     requestAnimationFrame(() => (store.activeBm = activeBm));
-  }
+  },
 );
 
 // communicate with middleware (background script)
@@ -55,13 +55,13 @@ export const actions = {
   saveActiveTheme() {
     port.postMessage({
       type: 'setBarTheme',
-      barTheme: store.activeTheme
+      barTheme: store.activeTheme,
     });
   },
   saveeditBookmarkOnRightClick() {
     port.postMessage({
       type: 'seteditBookmarkOnRightClick',
-      editBookmarkOnRightClick: store.editBookmarkOnRightClick
+      editBookmarkOnRightClick: store.editBookmarkOnRightClick,
     });
-  }
+  },
 };
