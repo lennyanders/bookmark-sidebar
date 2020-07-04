@@ -1,25 +1,15 @@
-<template>
-  <BookmarkBookmark v-if="bm.url" :bm="bm" />
-  <BookmarkFolder v-else :bm="bm" />
-</template>
-
 <script>
+  import { h } from 'vue';
+
   import BookmarkBookmark from './BookmarkBookmark';
   import BookmarkFolder from './BookmarkFolder';
 
-  export default {
-    props: ['bm'],
-    components: {
-      BookmarkBookmark,
-      BookmarkFolder,
-    },
-  };
+  export default ({ bm }) =>
+    h(bm.url ? BookmarkBookmark : BookmarkFolder, { bm });
 </script>
 
 <style lang="scss">
   .bookmark {
-    $bm: &;
-
     &__content {
       line-height: 30px;
       display: flex;
@@ -28,7 +18,7 @@
       &:focus-within {
         background-color: var(--bm-focus-color);
 
-        #{$bm}__option {
+        .bookmark__option {
           display: inherit;
         }
       }
@@ -73,11 +63,10 @@
     &__children {
       padding-left: 18px;
       will-change: height;
-      height: 0;
-      overflow: hidden;
 
       &-enter-active,
       &-leave-active {
+        overflow: hidden;
         transition: height 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
       }
     }
