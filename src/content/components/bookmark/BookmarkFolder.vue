@@ -34,11 +34,15 @@
         </svg>
         <span class="bookmark__title">{{ bm.title }}</span>
       </button>
-      <add-bm :bm="bm" />
-      <edit-bm :bm="bm" />
+      <AddBm :bm="bm" />
+      <EditBm :bm="bm" />
     </div>
-    <TransitionExpand v-if="bm.children.length" name="bookmark__children">
-      <ul class="bookmark__children" v-show="childrenVisible">
+    <TransitionExpand v-if="bm.children.length">
+      <ul
+        class="bookmark__children"
+        :hidden="!childrenVisible"
+        :key="!childrenVisible"
+      >
         <BaseBookmark v-for="bm of bm.children" :key="bm.id" :bm="bm" />
       </ul>
     </TransitionExpand>
