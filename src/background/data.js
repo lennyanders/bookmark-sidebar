@@ -4,7 +4,9 @@ let faviconUrls = new Set([]);
 let faviconDataUrls = new Map();
 let _shownBmId;
 
-const getFaviconUrl = (url) => `chrome://favicon/${new URL(url).origin}`;
+const getFaviconUrl = (url) => {
+  `chrome://favicon/size/32/${new URL(url).origin}`;
+};
 
 const getNewFaviconUrls = (bms, curFaviconUrls) =>
   bms.reduce((res, { url }) => {

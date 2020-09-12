@@ -149,7 +149,7 @@
     grid-template-rows: 50px 1fr;
     background-color: var(--bg-color);
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
-    z-index: 999999999;
+    z-index: 2147483647;
     will-change: scroll-position;
 
     $bar: &;
