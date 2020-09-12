@@ -4,28 +4,37 @@ const insertAndToggleBmBar = (tabOrTabs) => {
   const tab = tabOrTabs[0] || tabOrTabs;
 
   // newtab has its own handler
-  if (tab.url.includes('chrome://newtab')) return;
+  if (
+    tab.url.includes('chrome://newtab') ||
+    tab.url.includes('edge://newtab')
+  ) {
+    return;
+  }
 
   // check if current tab is a url where a content script can't run
   if (
     [
       'chrome://',
+      'edge://',
       'https://chrome.google.com/webstore/',
+      'https://microsoftedge.microsoft.com/addons/',
       'view-source:',
       'file:///',
     ].some((url) => tab.url.includes(url))
   ) {
-    return chrome.tabs.create({
+    chrome.tabs.create({
       index: tab.index + 1,
       url: 'chrome://newtab?bar=open',
     });
+    return;
   }
 
   // check if bookmarkbar is already inserted
   if (scriptRunsOnTab.has(tab.id)) {
-    return chrome.tabs.executeScript({
+    chrome.tabs.executeScript({
       code: 'window.dispatchEvent(new CustomEvent("toggleBar"));',
     });
+    return;
   }
 
   chrome.tabs.insertCSS({ file: 'fonts/lato.css' });

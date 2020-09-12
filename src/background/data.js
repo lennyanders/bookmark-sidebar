@@ -5,15 +5,16 @@ let faviconDataUrls = new Map();
 let _shownBmId;
 
 const getFaviconUrl = (url) => {
-  `chrome://favicon/size/32/${new URL(url).origin}`;
+  return `chrome://favicon/size/32/${new URL(url).origin}`;
 };
 
-const getNewFaviconUrls = (bms, curFaviconUrls) =>
-  bms.reduce((res, { url }) => {
+const getNewFaviconUrls = (bms, curFaviconUrls) => {
+  return bms.reduce((res, { url }) => {
     const faviconUrl = getFaviconUrl(url);
     if (!curFaviconUrls.has(faviconUrl)) res.add(faviconUrl);
     return res;
   }, new Set([]));
+};
 
 const loadFavicons = (faviconUrls) => {
   if (!faviconUrls.size) return [];
@@ -84,10 +85,10 @@ const updateTree = async () => {
 export const generateData = async () => {
   const {
     shownBmId = '0',
-    barLeft,
+    barLeft = false,
     barWidth = 320,
     barTheme = 'system',
-    editBookmarkOnRightClick,
+    editBookmarkOnRightClick = false,
   } = await chrome.storage.sync.get([
     'barLeft',
     'shownBmId',
