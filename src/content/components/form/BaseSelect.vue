@@ -1,6 +1,6 @@
 <template>
   <div class="select">
-    <label class="select__label" :for="uid">{{ text }}</label>
+    <label class="select__label" :for="uid" v-text="text" />
     <select
       class="select__el"
       :id="uid"

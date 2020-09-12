@@ -1,6 +1,6 @@
 <template>
   <fieldset class="radios">
-    <legend class="radios__label">{{ text }}</legend>
+    <legend class="radios__label" v-text="text" />
     <div class="radio" v-for="{ value, text } of options" :key="value">
       <input
         class="radio__el"
