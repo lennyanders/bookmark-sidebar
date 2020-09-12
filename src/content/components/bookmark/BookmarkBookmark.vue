@@ -31,17 +31,6 @@
 </template>
 
 <script>
-  import { computed } from 'vue';
-
-  import { store } from '../../store';
-
-  import useEditBm from './useEditBm';
-  import useKeyboard from './useKeyboard';
-  import useDragAndDrop from './useDragAndDrop';
-  import useFocus from './useFocus';
-  import useIsSearching from './useIsSearching';
-  import useEditBookmarkOnRightClick from './useEditBookmarkOnRightClick';
-
   import EditBm from '../actions/EditBm';
 
   export default {
@@ -54,14 +43,24 @@
     components: {
       EditBm,
     },
-    setup: (props) => ({
-      ...useEditBm(props),
-      ...useKeyboard(props),
-      ...useDragAndDrop(props),
-      ...useFocus(props),
-      ...useIsSearching(),
-      ...useEditBookmarkOnRightClick(),
-      isOpen: computed(() => props.bm.url === store.url),
-    }),
   };
+</script>
+
+<script setup="props">
+  import { computed } from 'vue';
+  import { store } from '../../store';
+  import useEditBm from './useEditBm';
+  import useKeyboard from './useKeyboard';
+  import useDragAndDrop from './useDragAndDrop';
+  import useFocus from './useFocus';
+  import useIsSearching from './useIsSearching';
+  import useEditBookmarkOnRightClick from './useEditBookmarkOnRightClick';
+
+  export const { contextmenu } = useEditBm(props);
+  export const { keydown } = useKeyboard(props);
+  export const { dragstart, dragenter } = useDragAndDrop(props);
+  export const { focusableBmPart, setActiveBm } = useFocus(props);
+  export const { isSearching } = useIsSearching();
+  export const { editBookmarkOnRightClick } = useEditBookmarkOnRightClick();
+  export const isOpen = computed(() => props.bm.url === store.url);
 </script>

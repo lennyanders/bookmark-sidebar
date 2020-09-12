@@ -4,8 +4,9 @@
   import BookmarkBookmark from './BookmarkBookmark';
   import BookmarkFolder from './BookmarkFolder';
 
-  export default ({ bm }) =>
-    h(bm.url ? BookmarkBookmark : BookmarkFolder, { bm });
+  export default ({ bm }) => {
+    return h(bm.url ? BookmarkBookmark : BookmarkFolder, { bm });
+  };
 </script>
 
 <style lang="scss">

@@ -96,7 +96,7 @@ module.exports = async ({ NODE_ENV }) => {
       },
       plugins: [
         new DefinePlugin({
-          __VUE_OPTIONS_API__: JSON.stringify(true),
+          __VUE_OPTIONS_API__: JSON.stringify(false),
           __VUE_PROD_DEVTOOLS__: JSON.stringify(false),
         }),
         new VueLoaderPlugin(),
@@ -138,7 +138,7 @@ module.exports = async ({ NODE_ENV }) => {
       },
       plugins: [
         new DefinePlugin({
-          __VUE_OPTIONS_API__: JSON.stringify(true),
+          __VUE_OPTIONS_API__: JSON.stringify(false),
           __VUE_PROD_DEVTOOLS__: JSON.stringify(false),
         }),
         new VueLoaderPlugin(),

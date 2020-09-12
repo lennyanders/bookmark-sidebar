@@ -58,7 +58,7 @@ export const actions = {
       barTheme: store.activeTheme,
     });
   },
-  saveeditBookmarkOnRightClick() {
+  saveEditBookmarkOnRightClick() {
     port.postMessage({
       type: 'seteditBookmarkOnRightClick',
       editBookmarkOnRightClick: store.editBookmarkOnRightClick,

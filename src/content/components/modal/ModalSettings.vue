@@ -32,9 +32,6 @@
   import BaseCheckbox from '../form/BaseCheckbox';
   import BaseRadio from '../form/BaseRadio';
 
-  import { store, mutations } from '../../store/index';
-  import { actions } from '../../api/index';
-
   export default {
     components: {
       BaseInput,
@@ -42,52 +39,55 @@
       BaseCheckbox,
       BaseRadio,
     },
-    data() {
-      return {
-        themes: store.themes,
-      };
-    },
-    computed: {
-      allFolders: () =>
-        store.allFolders.map((folder) => {
-          folder.value = folder.id;
-          folder.text = folder.title;
-          return folder;
-        }),
-      shownBm: {
-        get: () => store.bm.id,
-        set(val) {
-          actions.updateRootBm(val);
-        },
-      },
-      barLeft: {
-        get: () => store.barLeft,
-        set(val) {
-          store.barLeft = val;
-          actions.saveBarLeft();
-        },
-      },
-      editBookmarkOnRightClick: {
-        get: () => store.editBookmarkOnRightClick,
-        set(val) {
-          store.editBookmarkOnRightClick = val;
-          actions.saveeditBookmarkOnRightClick(val);
-        },
-      },
-      activeTheme: {
-        get: () => store.activeTheme,
-        set(val) {
-          store.activeTheme = val;
-          actions.saveActiveTheme();
-        },
-      },
-      barWidth: {
-        get: () => store.barWidth,
-        set(val) {
-          mutations.setBarWidth(val);
-          actions.saveBarWidth();
-        },
-      },
-    },
   };
+</script>
+
+<script setup="props">
+  import { toRef, computed } from 'vue';
+  import { store, mutations } from '../../store/index';
+  import { actions } from '../../api/index';
+
+  export const shownBm = computed({
+    get: () => store.bm.id,
+    set: actions.updateRootBm,
+  });
+  export const allFolders = computed(() => {
+    return store.allFolders.map(({ id, title }) => ({
+      value: id,
+      text: title,
+    }));
+  });
+
+  export const barLeft = computed({
+    get: () => store.barLeft,
+    set: (value) => {
+      store.barLeft = value;
+      actions.saveBarLeft();
+    },
+  });
+
+  export const editBookmarkOnRightClick = computed({
+    get: () => store.editBookmarkOnRightClick,
+    set: (value) => {
+      store.editBookmarkOnRightClick = value;
+      actions.saveEditBookmarkOnRightClick();
+    },
+  });
+
+  export const themes = store.themes;
+  export const activeTheme = computed({
+    get: () => store.activeTheme,
+    set: (value) => {
+      store.activeTheme = value;
+      actions.saveActiveTheme();
+    },
+  });
+
+  export const barWidth = computed({
+    get: () => store.barWidth,
+    set: (value) => {
+      mutations.setBarWidth(value);
+      actions.saveBarWidth();
+    },
+  });
 </script>

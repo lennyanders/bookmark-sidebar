@@ -10,11 +10,6 @@
 </template>
 
 <script>
-  import { markRaw } from 'vue';
-  import ModalEditBm from '../modal/ModalEditBm';
-
-  import { mutations } from '../../store/index';
-
   export default {
     props: {
       bm: {
@@ -22,10 +17,15 @@
         required: true,
       },
     },
-    methods: {
-      editBm() {
-        mutations.showModal(markRaw(ModalEditBm), { bm: this.bm });
-      },
-    },
+  };
+</script>
+
+<script setup="props">
+  import { markRaw } from 'vue';
+  import { mutations } from '../../store';
+  import ModalEditBm from '../modal/ModalEditBm';
+
+  export const editBm = () => {
+    mutations.showModal(markRaw(ModalEditBm), { bm: props.bm });
   };
 </script>

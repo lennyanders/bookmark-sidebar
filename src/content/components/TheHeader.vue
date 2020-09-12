@@ -28,44 +28,38 @@
 </template>
 
 <script>
-  import { store, mutations } from '../store';
-
   import OpenSettings from './actions/OpenSettings';
   import LeaveSearch from './actions/LeaveSearch';
   import AddBm from './actions/AddBm';
 
   export default {
+    props: {
+      bm: {
+        type: Object,
+        required: true,
+      },
+    },
     components: {
       OpenSettings,
       LeaveSearch,
       AddBm,
     },
-    props: ['bm'],
-    data() {
-      return {
-        placeholder: chrome.i18n.getMessage('searchPlaceholder'),
-      };
-    },
-    computed: {
-      searchFocused: {
-        get: () => store.searchFocused,
-        set(val) {
-          store.searchFocused = val;
-        },
-      },
-      searchQuery: {
-        get: () => store.searchQuery,
-        set(val) {
-          store.searchQuery = val.trim();
-        },
-      },
-    },
-    methods: {
-      leaveSearchView() {
-        this.$refs.searchInput.blur();
-        mutations.stopSearching();
-      },
-    },
+  };
+</script>
+
+<script setup="props">
+  import { ref, toRef } from 'vue';
+  import { store, mutations } from '../store';
+
+  export const placeholder = chrome.i18n.getMessage('searchPlaceholder');
+
+  export const searchFocused = toRef(store, 'searchFocused');
+  export const searchQuery = toRef(store, 'searchQuery');
+
+  export const searchInput = ref(null);
+  export const leaveSearchView = () => {
+    searchInput.value?.blur();
+    mutations.stopSearching();
   };
 </script>
 

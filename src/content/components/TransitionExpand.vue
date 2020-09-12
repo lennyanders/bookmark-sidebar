@@ -6,8 +6,8 @@
     el.style.setProperty(heightPropertyName, el.scrollHeight + 'px');
   };
 
-  export default (props, { slots }) =>
-    h(
+  export default (props, { slots }) => {
+    return h(
       Transition,
       {
         ...props,
@@ -19,6 +19,7 @@
       },
       slots,
     );
+  };
 </script>
 
 <style lang="scss">

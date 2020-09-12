@@ -9,17 +9,12 @@
   </button>
 </template>
 
-<script>
+<script setup="props">
   import { markRaw } from 'vue';
+  import { mutations } from '../../store';
   import ModalSettings from '../modal/ModalSettings';
 
-  import { mutations } from '../../store/index';
-
-  export default {
-    methods: {
-      showSettings() {
-        mutations.showModal(markRaw(ModalSettings));
-      },
-    },
+  export const showSettings = () => {
+    mutations.showModal(markRaw(ModalSettings));
   };
 </script>

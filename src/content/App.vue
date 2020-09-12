@@ -43,8 +43,6 @@
   import TheModal from './components/modal/TheModal';
   import TheResizer from './components/TheResizer';
 
-  import { store, mutations } from './store/index';
-
   export default {
     components: {
       TheHeader,
@@ -52,48 +50,47 @@
       TheModal,
       TheResizer,
     },
-    data() {
-      return {
-        barVisible:
-          !location.href.startsWith('chrome-extension') ||
-          location.href.endsWith('?bar=open'),
-      };
-    },
-    computed: {
-      barWidth: () => store.barWidth,
-      barLeft: () => store.barLeft,
-      activeTheme: () => store.activeTheme,
-      bm: () => store.filteredBms,
-    },
-    methods: {
-      hideBar(e) {
-        if (e.type === 'blur' && document.activeElement.tagName !== 'IFRAME')
-          return;
-
-        this.barVisible = false;
-      },
-      toggleBarVisibility() {
-        store.url = location.href;
-        this.barVisible = !this.barVisible;
-      },
-      stopSearching: mutations.stopSearching,
-      focusBar() {
-        this.$refs.root?.focus();
-      },
-    },
-    created() {
-      addEventListener('toggleBar', this.toggleBarVisibility);
-
-      addEventListener('click', this.hideBar);
-      addEventListener('blur', this.hideBar);
-    },
-    beforeDestroy() {
-      removeEventListener('toggleBar', this.toggleBarVisibility);
-
-      removeEventListener('click', this.hideBar);
-      removeEventListener('blur', this.hideBar);
-    },
   };
+</script>
+
+<script setup="props">
+  import { ref, toRef, onBeforeUnmount } from 'vue';
+  import { store, mutations } from './store';
+
+  export const barVisible = ref(
+    !location.href.startsWith('chrome-extension') ||
+      location.href.endsWith('?bar=open'),
+  );
+  const hideBar = (event) => {
+    if (event.type === 'blur' && document.activeElement.tagName !== 'IFRAME') {
+      return;
+    }
+
+    barVisible.value = false;
+  };
+  const toggleBarVisibility = () => {
+    store.url = location.href;
+    barVisible.value = !barVisible.value;
+  };
+
+  addEventListener('toggleBar', toggleBarVisibility);
+  addEventListener('click', hideBar);
+  addEventListener('blur', hideBar);
+
+  onBeforeUnmount(() => {
+    removeEventListener('toggleBar', toggleBarVisibility);
+    removeEventListener('click', hideBar);
+    removeEventListener('blur', hideBar);
+  });
+
+  export const root = ref(null);
+  export const focusBar = () => root.value?.focus();
+
+  export const stopSearching = mutations.stopSearching;
+  export const barWidth = toRef(store, 'barWidth');
+  export const barLeft = toRef(store, 'barLeft');
+  export const activeTheme = toRef(store, 'activeTheme');
+  export const bm = toRef(store, 'filteredBms');
 </script>
 
 <style lang="scss">
@@ -161,8 +158,6 @@
     z-index: 2147483647;
     will-change: scroll-position;
 
-    $bar: &;
-
     &--light {
       @include lightTheme();
     }
@@ -184,7 +179,7 @@
     &--invisible {
       transform: translateX(calc(100% + 10px));
 
-      &#{$bar}--left {
+      &.bookmark-bar--left {
         transform: translateX(calc(-100% - 10px));
       }
     }

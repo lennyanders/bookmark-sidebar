@@ -50,16 +50,6 @@
 </template>
 
 <script>
-  import { defineAsyncComponent } from 'vue';
-
-  import useEditBm from './useEditBm';
-  import useKeyboard from './useKeyboard';
-  import useDragAndDrop from './useDragAndDrop';
-  import useFocus from './useFocus';
-  import useIsSearching from './useIsSearching';
-  import useEditBookmarkOnRightClick from './useEditBookmarkOnRightClick';
-  import useChildren from './useChildren';
-
   import EditBm from '../actions/EditBm';
   import AddBm from '../actions/AddBm';
   import TransitionExpand from '../TransitionExpand';
@@ -78,22 +68,33 @@
       TransitionExpand,
       BaseBookmark,
     },
-    setup: (props) => {
-      const { childrenVisible, openChildren, hideChildren } = useChildren(
-        props,
-      );
-
-      return {
-        ...useEditBm(props),
-        ...useKeyboard(props),
-        ...useDragAndDrop(props, childrenVisible),
-        ...useFocus(props, childrenVisible),
-        ...useIsSearching(),
-        ...useEditBookmarkOnRightClick(),
-        childrenVisible,
-        hideChildren,
-        openChildren,
-      };
-    },
   };
+</script>
+
+<script setup="props">
+  import { defineAsyncComponent } from 'vue';
+
+  import useEditBm from './useEditBm';
+  import useKeyboard from './useKeyboard';
+  import useDragAndDrop from './useDragAndDrop';
+  import useFocus from './useFocus';
+  import useIsSearching from './useIsSearching';
+  import useEditBookmarkOnRightClick from './useEditBookmarkOnRightClick';
+  import useChildren from './useChildren';
+
+  export const { childrenVisible, openChildren, hideChildren } = useChildren(
+    props,
+  );
+  export const { contextmenu } = useEditBm(props);
+  export const { keydown } = useKeyboard(props);
+  export const { dragstart, dragenter } = useDragAndDrop(
+    props,
+    childrenVisible,
+  );
+  export const { focusableBmPart, setActiveBm } = useFocus(
+    props,
+    childrenVisible,
+  );
+  export const { isSearching } = useIsSearching();
+  export const { editBookmarkOnRightClick } = useEditBookmarkOnRightClick();
 </script>

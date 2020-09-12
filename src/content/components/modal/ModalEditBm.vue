@@ -16,39 +16,38 @@
   import BaseInput from '../form/BaseInput';
   import BaseButton from '../form/BaseButton';
 
-  import { store, mutations } from '../../store/index';
-  import { actions } from '../../api/index';
-
   export default {
-    components: {
-      BaseInput,
-      BaseButton,
-    },
     props: {
       bm: {
         type: Object,
         required: true,
       },
     },
-    data() {
-      return {
-        newTitle: this.bm.title,
-        newUrl: this.bm.url,
-      };
+    components: {
+      BaseInput,
+      BaseButton,
     },
-    methods: {
-      updateBm() {
-        actions.editBm({
-          id: this.bm.id,
-          title: this.newTitle,
-          url: this.newUrl,
-        });
-        mutations.hideModal();
-      },
-      removeBm() {
-        actions.removeBm(this.bm.id);
-        mutations.hideModal();
-      },
-    },
+  };
+</script>
+
+<script setup="props">
+  import { ref } from 'vue';
+  import { store, mutations } from '../../store/index';
+  import { actions } from '../../api/index';
+
+  export const newTitle = ref(props.bm.title);
+  export const newUrl = ref(props.bm.url);
+
+  export const updateBm = () => {
+    actions.editBm({
+      id: props.bm.id,
+      title: newTitle.value,
+      url: newUrl.value,
+    });
+    mutations.hideModal();
+  };
+  export const removeBm = () => {
+    actions.removeBm(props.bm.id);
+    mutations.hideModal();
   };
 </script>

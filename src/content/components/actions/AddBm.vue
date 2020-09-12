@@ -8,11 +8,6 @@
 </template>
 
 <script>
-  import { markRaw } from 'vue';
-  import ModalAddBm from '../modal/ModalAddBm';
-
-  import { mutations } from '../../store/index';
-
   export default {
     props: {
       btnClasses: {
@@ -28,10 +23,15 @@
         required: true,
       },
     },
-    methods: {
-      addBm() {
-        mutations.showModal(markRaw(ModalAddBm), { bm: this.bm });
-      },
-    },
+  };
+</script>
+
+<script setup="props">
+  import { markRaw } from 'vue';
+  import { mutations } from '../../store';
+  import ModalAddBm from '../modal/ModalAddBm';
+
+  export const addBm = () => {
+    mutations.showModal(markRaw(ModalAddBm), { bm: props.bm });
   };
 </script>

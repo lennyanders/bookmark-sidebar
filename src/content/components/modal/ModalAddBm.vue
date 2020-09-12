@@ -17,37 +17,36 @@
   import BaseCheckbox from '../form/BaseCheckbox';
   import BaseButton from '../form/BaseButton';
 
-  import { mutations, store } from '../../store/index';
-  import { actions } from '../../api/index';
-
   export default {
-    components: {
-      BaseInput,
-      BaseCheckbox,
-      BaseButton,
-    },
     props: {
       bm: {
         type: Object,
         required: true,
       },
     },
-    data() {
-      return {
-        title: document.title,
-        url: location.href,
-        createFolder: false,
-      };
+    components: {
+      BaseInput,
+      BaseCheckbox,
+      BaseButton,
     },
-    methods: {
-      createBm() {
-        actions.createBm({
-          parentId: this.bm.id,
-          title: this.title,
-          url: this.createFolder ? '' : this.url,
-        });
-        mutations.hideModal();
-      },
-    },
+  };
+</script>
+
+<script setup="props">
+  import { ref } from 'vue';
+  import { mutations, store } from '../../store/index';
+  import { actions } from '../../api/index';
+
+  export const title = ref(document.title);
+  export const url = ref(location.href);
+  export const createFolder = ref(false);
+
+  export const createBm = () => {
+    actions.createBm({
+      parentId: props.bm.id,
+      title: title.value,
+      url: createFolder.value ? null : url.value,
+    });
+    mutations.hideModal();
   };
 </script>

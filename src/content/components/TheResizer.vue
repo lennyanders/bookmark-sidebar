@@ -6,37 +6,29 @@
   />
 </template>
 
-<script>
-  import { store, mutations } from '../store/index';
-  import { actions } from '../api/index';
+<script setup="props">
+  import { ref, toRef } from 'vue';
+  import { store, mutations } from '../store';
+  import { actions } from '../api';
 
-  export default {
-    data() {
-      return {
-        dragging: false,
-      };
-    },
-    computed: {
-      barLeft: () => store.barLeft,
-    },
-    methods: {
-      startResizing() {
-        this.dragging = true;
-        window.addEventListener('mousemove', this.resize);
-        window.addEventListener('mouseup', this.stopResizing);
-      },
-      stopResizing() {
-        actions.saveBarWidth();
-        this.dragging = false;
-        window.removeEventListener('mousemove', this.resize);
-        window.removeEventListener('mouseup', this.stopResizing);
-      },
-      resize(e) {
-        mutations.setBarWidth(
-          this.barLeft ? e.x : document.body.scrollWidth - e.x,
-        );
-      },
-    },
+  export const dragging = ref(false);
+  export const barLeft = toRef(store, 'barLeft');
+
+  const resize = (event) => {
+    mutations.setBarWidth(
+      barLeft.value ? event.x : document.body.scrollWidth - event.x,
+    );
+  };
+  const stopResizing = () => {
+    actions.saveBarWidth();
+    dragging.value = false;
+    removeEventListener('mousemove', resize);
+    removeEventListener('mouseup', stopResizing);
+  };
+  export const startResizing = () => {
+    dragging.value = true;
+    addEventListener('mousemove', resize);
+    addEventListener('mouseup', stopResizing);
   };
 </script>
 

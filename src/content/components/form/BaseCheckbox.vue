@@ -13,8 +13,6 @@
 </template>
 
 <script>
-  import { getUid } from '../../utils';
-
   export default {
     inheritAttrs: false,
     props: {
@@ -27,12 +25,13 @@
         required: true,
       },
     },
-    data() {
-      return {
-        uid: getUid(),
-      };
-    },
   };
+</script>
+
+<script setup="props">
+  import { getUid } from '../../utils';
+
+  export const uid = getUid();
 </script>
 
 <style lang="scss">

@@ -20,26 +20,23 @@
   </transition>
 </template>
 
-<script>
+<script setup="props">
+  import { ref, toRef, watchEffect, nextTick } from 'vue';
   import { store, mutations } from '../../store/index';
 
-  export default {
-    computed: {
-      modalVisible: () => store.modalVisible,
-      modalComponent: () => store.modalComponent,
-      modalComponentProps: () => store.modalComponentProps,
-    },
-    methods: {
-      hideModal: mutations.hideModal,
-    },
-    watch: {
-      modalVisible(val) {
-        if (!val) return;
+  export const modalVisible = toRef(store, 'modalVisible');
+  export const modalComponent = toRef(store, 'modalComponent');
+  export const modalComponentProps = toRef(store, 'modalComponentProps');
 
-        this.$nextTick(() => this.$refs.modal.focus());
-      },
-    },
-  };
+  export const hideModal = mutations.hideModal;
+
+  export const modal = ref(null);
+  watchEffect(async () => {
+    if (modalVisible.value) {
+      await nextTick();
+      modal.value.focus();
+    }
+  });
 </script>
 
 <style lang="scss">
