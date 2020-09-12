@@ -1,16 +1,15 @@
-'use strict';
-
 import manifest from './src/manifest.json';
-import { version } from './package';
+import { version } from './package.json';
 
 import path from 'path';
 import { emptyDir, outputJson, copy } from 'fs-extra';
 
+import { DefinePlugin } from 'webpack';
 import { VueLoaderPlugin } from 'vue-loader';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import HtmPlugin from 'html-webpack-plugin';
 
-const resolve = dir => path.resolve(__dirname, dir);
+const resolve = (dir) => path.resolve(__dirname, dir);
 
 module.exports = async ({ NODE_ENV }) => {
   await emptyDir('dist');
@@ -19,8 +18,8 @@ module.exports = async ({ NODE_ENV }) => {
     ...manifest,
     version,
     ...(NODE_ENV !== 'production' && {
-      content_security_policy: `${manifest.content_security_policy} script-src 'self' 'unsafe-eval'; object-src 'self'`
-    })
+      content_security_policy: `${manifest.content_security_policy} script-src 'self' 'unsafe-eval'; object-src 'self'`,
+    }),
   });
 
   await copy('public', 'dist');
@@ -34,16 +33,16 @@ module.exports = async ({ NODE_ENV }) => {
       entry: './src/background/main.js',
       output: {
         filename: 'main.js',
-        path: resolve('dist/background')
+        path: resolve('dist/background'),
       },
       module: {
         rules: [
           {
             test: /\.js$/,
-            loader: 'babel-loader'
-          }
-        ]
-      }
+            loader: 'babel-loader',
+          },
+        ],
+      },
     },
     //
     // content script
@@ -54,17 +53,17 @@ module.exports = async ({ NODE_ENV }) => {
       entry: './src/content/main.js',
       output: {
         filename: 'main.js',
-        path: resolve('dist/content')
+        path: resolve('dist/content'),
       },
       module: {
         rules: [
           {
             test: /\.vue$/,
-            loader: 'vue-loader'
+            loader: 'vue-loader',
           },
           {
             test: /\.js$/,
-            loader: 'babel-loader'
+            loader: 'babel-loader',
           },
           {
             test: /\.css$/,
@@ -73,11 +72,11 @@ module.exports = async ({ NODE_ENV }) => {
                 loader: 'style-loader',
                 options: {
                   injectType: 'singletonStyleTag',
-                  insert: element => (window.styles = element)
-                }
+                  insert: (element) => (window.styles = element),
+                },
               },
-              'css-loader'
-            ]
+              'css-loader',
+            ],
           },
           {
             test: /\.scss$/,
@@ -86,19 +85,25 @@ module.exports = async ({ NODE_ENV }) => {
                 loader: 'style-loader',
                 options: {
                   injectType: 'singletonStyleTag',
-                  insert: element => (window.styles = element)
-                }
+                  insert: (element) => (window.styles = element),
+                },
               },
               'css-loader',
-              'sass-loader'
-            ]
-          }
-        ]
+              'sass-loader',
+            ],
+          },
+        ],
       },
-      plugins: [new VueLoaderPlugin()],
+      plugins: [
+        new DefinePlugin({
+          __VUE_OPTIONS_API__: JSON.stringify(true),
+          __VUE_PROD_DEVTOOLS__: JSON.stringify(false),
+        }),
+        new VueLoaderPlugin(),
+      ],
       resolve: {
-        extensions: ['.js', '.json', '.vue']
-      }
+        extensions: ['.js', '.json', '.vue'],
+      },
     },
     //
     // new tab page
@@ -109,39 +114,43 @@ module.exports = async ({ NODE_ENV }) => {
       entry: './src/newtab/main.js',
       output: {
         filename: 'main.js',
-        path: resolve('dist/newtab')
+        path: resolve('dist/newtab'),
       },
       module: {
         rules: [
           {
             test: /\.vue$/,
-            loader: 'vue-loader'
+            loader: 'vue-loader',
           },
           {
             test: /\.js$/,
-            loader: 'babel-loader'
+            loader: 'babel-loader',
           },
           {
             test: /\.css$/,
-            use: [MiniCssExtractPlugin.loader, 'css-loader']
+            use: [MiniCssExtractPlugin.loader, 'css-loader'],
           },
           {
             test: /\.scss$/,
-            use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
-          }
-        ]
+            use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+          },
+        ],
       },
       plugins: [
+        new DefinePlugin({
+          __VUE_OPTIONS_API__: JSON.stringify(true),
+          __VUE_PROD_DEVTOOLS__: JSON.stringify(false),
+        }),
         new VueLoaderPlugin(),
         new MiniCssExtractPlugin({ filename: 'main.css' }),
         new HtmPlugin({
           template: './src/newtab/index.html',
-          filename: 'index.html'
-        })
+          filename: 'index.html',
+        }),
       ],
       resolve: {
-        extensions: ['.js', '.json', '.vue']
-      }
-    }
+        extensions: ['.js', '.json', '.vue'],
+      },
+    },
   ];
 };
