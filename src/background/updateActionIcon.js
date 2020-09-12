@@ -1,13 +1,19 @@
 export const updateActionIcon = () => {
-  const userColorScheme = matchMedia('(prefers-color-scheme: dark)').matches
-    ? 'dark/'
-    : '';
+  const userPrefersDarkColorScheme = matchMedia('(prefers-color-scheme: dark)');
 
-  chrome.browserAction.setIcon({
-    path: {
-      '16': `icons/${userColorScheme}browser-action-16.png`,
-      '24': `icons/${userColorScheme}browser-action-24.png`,
-      '32': `icons/${userColorScheme}browser-action-32.png`,
-    },
-  });
+  const setActionIcon = () => {
+    const userColorScheme = userPrefersDarkColorScheme.matches ? 'dark/' : '';
+
+    chrome.browserAction.setIcon({
+      path: {
+        16: `icons/${userColorScheme}browser-action-16.png`,
+        24: `icons/${userColorScheme}browser-action-24.png`,
+        32: `icons/${userColorScheme}browser-action-32.png`,
+      },
+    });
+  };
+
+  // addEventListener does not work in content script, but maybe in the future so I leave it here
+  userPrefersDarkColorScheme.addEventListener('change', setActionIcon);
+  setActionIcon();
 };

@@ -1,4 +1,4 @@
-export let data = {};
+export const data = {};
 
 let faviconUrls = new Set([]);
 let faviconDataUrls = new Map();

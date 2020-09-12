@@ -10,7 +10,7 @@
         "default": "Ctrl+Shift+Y",
         "mac": "Command+Shift+Y"
       },
-      "description": "toogle Bookmarkbar visibility"
+      "description": "toggle Bookmarkbar visibility"
     }
   },
   "background": {

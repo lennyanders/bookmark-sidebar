@@ -7,7 +7,7 @@ import { emptyDir, outputJson, copy } from 'fs-extra';
 import { DefinePlugin } from 'webpack';
 import { VueLoaderPlugin } from 'vue-loader';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import HtmPlugin from 'html-webpack-plugin';
+import HtmlPlugin from 'html-webpack-plugin';
 
 const resolve = (dir) => path.resolve(__dirname, dir);
 
@@ -26,7 +26,7 @@ module.exports = async ({ NODE_ENV }) => {
 
   return [
     //
-    // background script + copy public files + generate manifest + clean
+    // background script
     //
     {
       mode: NODE_ENV,
@@ -143,9 +143,11 @@ module.exports = async ({ NODE_ENV }) => {
         }),
         new VueLoaderPlugin(),
         new MiniCssExtractPlugin({ filename: 'main.css' }),
-        new HtmPlugin({
+        new HtmlPlugin({
           template: './src/newtab/index.html',
           filename: 'index.html',
+          scriptLoading: 'defer',
+          favicon: './src/newtab/favicon.svg',
         }),
       ],
       resolve: {
