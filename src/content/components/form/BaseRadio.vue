@@ -12,7 +12,7 @@
         :checked="value === modelValue"
         @change="$emit('update:modelValue', $event.target.value)"
       />
-      <label class="radio__label" :for="name + value">{{ text }}</label>
+      <label class="radio__label" :for="name + value" v-text="text" />
     </div>
   </fieldset>
 </template>

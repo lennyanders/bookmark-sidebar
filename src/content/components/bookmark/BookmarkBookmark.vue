@@ -23,7 +23,7 @@
         ref="focusableBmPart"
       >
         <img class="bookmark__icon" :src="bm.faviconDataUrl" />
-        <span class="bookmark__title">{{ bm.title }}</span>
+        <span class="bookmark__title" v-text="bm.title" />
       </a>
       <EditBm :bm="bm" />
     </div>

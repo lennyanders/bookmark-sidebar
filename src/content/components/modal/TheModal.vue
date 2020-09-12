@@ -9,7 +9,12 @@
       ref="modal"
     >
       <div @click.stop class="modal__layer">
-        <button class="modal__close" @click="hideModal" title="Close"></button>
+        <button
+          class="modal__close"
+          @click="hideModal"
+          title="Close"
+          aria-label="close modal"
+        />
         <component
           :is="modalComponent"
           v-bind="modalComponentProps"

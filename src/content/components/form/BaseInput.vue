@@ -1,6 +1,6 @@
 <template>
   <div class="input">
-    <label class="input__label" :for="uid">{{ text }}</label>
+    <label class="input__label" :for="uid" v-text="text" />
     <input
       class="input__el"
       :id="uid"

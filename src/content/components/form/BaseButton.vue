@@ -1,8 +1,12 @@
 // v-bind is more important than "type"
 <template>
-  <button class="button" :data-text="text" type="button" v-bind="$attrs">
-    {{ text }}
-  </button>
+  <button
+    class="button"
+    :data-text="text"
+    type="button"
+    v-bind="$attrs"
+    v-text="text"
+  />
 </template>
 
 <script>

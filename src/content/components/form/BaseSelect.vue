@@ -12,9 +12,8 @@
         :key="value"
         :value="value"
         :selected="value === modelValue"
-      >
-        {{ text }}
-      </option>
+        v-text="text"
+      />
     </select>
   </div>
 </template>

@@ -8,7 +8,7 @@
       :checked="modelValue"
       @change="$emit('update:modelValue', $event.target.checked)"
     />
-    <label :for="uid" class="checkbox__label">{{ text }}</label>
+    <label :for="uid" class="checkbox__label" v-text="text" />
   </div>
 </template>
 
