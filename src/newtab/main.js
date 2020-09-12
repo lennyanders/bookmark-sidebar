@@ -1,10 +1,10 @@
+import '../../public/fonts/lato.css';
+import './style.scss';
+
 import { createApp } from 'vue';
 import App from '../content/App';
 
-const vueEl = document.createElement('div');
-document.body.append(vueEl);
-
-createApp(App).mount(vueEl);
+createApp(App).mount(sidebarEl);
 
 let tabId;
 chrome.tabs.query({ active: true, currentWindow: true }, ([{ id }]) => {

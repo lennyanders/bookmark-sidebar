@@ -134,6 +134,15 @@
   }
 
   :host,
+  html {
+    @include lightTheme();
+
+    @media (prefers-color-scheme: dark) {
+      @include darkTheme();
+    }
+  }
+
+  :host,
   * {
     font-family: 'Lato', Arial, Helvetica, sans-serif;
     color: var(--font-color);
@@ -154,19 +163,12 @@
 
     $bar: &;
 
-    &,
     &--light {
       @include lightTheme();
     }
 
     &--dark {
       @include darkTheme();
-    }
-
-    &:not(&--light) {
-      @media (prefers-color-scheme: dark) {
-        @include darkTheme();
-      }
     }
 
     &--left {
