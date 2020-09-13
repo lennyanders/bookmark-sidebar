@@ -1,6 +1,8 @@
 import { reactive, computed } from 'vue';
 import { fuzzy } from 'fast-fuzzy';
 
+import { clamp } from '../utils';
+
 export const store = reactive({
   barLeft: false,
   barWidth: 320,
@@ -25,7 +27,6 @@ export const store = reactive({
 
   searchQuery: '',
   searchFocused: false,
-  filters: ['-t', '-u', '-b', '-f'],
 
   bm: {},
   allFolders: [],
@@ -36,74 +37,66 @@ export const store = reactive({
   modalComponent: null,
   modalComponentProps: null,
 
-  isSearching: computed(() => !!store.searchQuery),
+  isSearching: computed(() => !!store.searchQuery.trim()),
   flattenedBms: computed(() => {
     let children = [];
     JSON.stringify(store.bm.children, (_, nested) => {
-      if (nested && nested.title) children.push(nested);
+      if (nested?.title) children.push(nested);
       return nested;
     });
     return children;
   }),
   filteredBms: computed(() => {
-    let searchQuery = store.searchQuery;
+    let searchQuery = store.searchQuery.trim();
     if (!searchQuery) return store.bm;
 
-    const activeFilters = store.filters.filter((filter) => {
-      if (
-        searchQuery.indexOf(`${filter} `) === 0 ||
-        searchQuery.includes(` ${filter} `) ||
-        searchQuery.indexOf(` ${filter}`) ===
-          searchQuery.length - filter.length - 1
-      ) {
-        searchQuery = searchQuery.replace(new RegExp(filter, 'gi'), '');
+    const filters = ['-t', '-u', '-b', '-f'].filter((filter) => {
+      if (searchQuery.startsWith(`${filter} `)) {
+        searchQuery = searchQuery.slice(3);
+        return true;
+      } else if (searchQuery.includes(` ${filter} `)) {
+        searchQuery = searchQuery.replace(new RegExp(` ${filter} `, 'g'), ' ');
+        return true;
+      } else if (searchQuery.endsWith(` ${filter}`)) {
+        searchQuery = searchQuery.slice(0, -3);
         return true;
       }
     });
-    console.log(activeFilters);
 
     const res = store.flattenedBms
-      .reduce((bms, bm) => {
-        const titleScore = fuzzy(searchQuery, bm.title),
-          urlScore = bm.url ? fuzzy(searchQuery, bm.url) : 0,
-          score = Math.max(titleScore, urlScore);
+      .filter((bm) => {
+        const onlyFolder = !filters.includes('-b') && filters.includes('-f');
+        const onlyBookmark = !filters.includes('-f') && filters.includes('-b');
+        if ((onlyBookmark && !bm.url) || (onlyFolder && bm.url)) return;
 
-        if (score < 0.8) return bms;
-        bm.score = score;
+        const filterTitle = !filters.includes('-u') || filters.includes('-t');
+        let titleScore;
+        if (filterTitle) {
+          titleScore = fuzzy(searchQuery, bm.title);
+          if (!filters.includes('-u') && filters.includes('-t')) {
+            return titleScore >= 0.8 && (bm.score = titleScore);
+          }
+        }
 
-        if (!activeFilters.includes('-u') && activeFilters.includes('-t')) {
-          if (titleScore < 0.8) return bms;
-          bm.score = titleScore;
-        }
-        if (!activeFilters.includes('-t') && activeFilters.includes('-u')) {
-          if (urlScore < 0.8) return bms;
-          bm.score = urlScore;
-        }
-        if (!activeFilters.includes('-f') && activeFilters.includes('-b')) {
-          if (!bm.url) return bms;
-        }
-        if (!activeFilters.includes('-b') && activeFilters.includes('-f')) {
-          if (bm.url) return bms;
-        }
-        return [...bms, bm];
-      }, [])
-      .sort((a, b) => {
-        // sort by best match
-        return b.score - a.score;
-      });
+        const urlScore = bm.url ? fuzzy(searchQuery, bm.url) : 0;
+        if (!filterTitle) return urlScore >= 0.8 && (bm.score = urlScore);
+
+        const score = Math.max(titleScore, urlScore);
+        return score >= 0.8 && (bm.score = score);
+      })
+      .sort((a, b) => b.score - a.score);
 
     return { ...store.bm, children: res };
   }),
 });
 
-export let mutations = {
+export const mutations = {
   stopSearching() {
     store.searchQuery = '';
     store.searchFocused = false;
   },
   setBarWidth(width) {
-    if (width < 280 || width > window.screen.width / 2) return;
-    store.barWidth = width;
+    store.barWidth = clamp(width, 280, window.innerWidth);
   },
 
   showModal(component, componentProps) {
