@@ -32,7 +32,6 @@
     "webpack-cli": "^3.3.12"
   },
   "dependencies": {
-    "chrome-extension-async": "^3.4.1",
     "fast-fuzzy": "^1.10.7",
     "vue": "^3.0.0-rc.10"
   },

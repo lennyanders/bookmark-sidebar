@@ -1,3 +1,5 @@
+import { ports } from './middleware';
+
 export const data = {};
 
 let faviconUrls = new Set([]);
@@ -40,71 +42,75 @@ const loadFavicons = (faviconUrls) => {
   });
 };
 
-const updateTree = async () => {
-  const [bookmarks] = await chrome.bookmarks.getTree();
-  let shownFolder;
-  let bmsToLoad = [];
-  let folders = [];
+const updateTree = () => {
+  chrome.bookmarks.getTree(async ([bookmarks]) => {
+    let shownFolder;
+    let bmsToLoad = [];
+    let folders = [];
 
-  JSON.stringify(bookmarks, (_, nested) => {
-    if (!nested.id) return nested;
-    if (!nested.url) {
-      if (nested.id === '0') nested.title = 'root';
-      if (nested.id === _shownBmId) shownFolder = nested;
+    JSON.stringify(bookmarks, (_, nested) => {
+      if (!nested.id) return nested;
+      if (!nested.url) {
+        if (nested.id === '0') nested.title = 'root';
+        if (nested.id === _shownBmId) shownFolder = nested;
 
-      folders.push({
-        title: nested.title,
-        id: nested.id,
-      });
-    } else if (shownFolder) {
-      bmsToLoad.push(nested);
+        folders.push({
+          title: nested.title,
+          id: nested.id,
+        });
+      } else if (shownFolder) {
+        bmsToLoad.push(nested);
+      }
+      return nested;
+    });
+
+    const newFaviconUrls = getNewFaviconUrls(bmsToLoad, faviconUrls);
+    if (newFaviconUrls.size) {
+      faviconUrls = new Set([...faviconUrls, ...newFaviconUrls]);
+      faviconDataUrls = new Map([
+        ...faviconDataUrls,
+        ...(await loadFavicons(newFaviconUrls)),
+      ]);
     }
-    return nested;
+    // add favicon data urls to bookmarks that appear in the sidebar
+    bmsToLoad.map((bm) => {
+      bm.faviconDataUrl = faviconDataUrls.get(getFaviconUrl(bm.url));
+    });
+
+    data.bm = shownFolder;
+    data.allFolders = folders;
+
+    console.log(data);
+    ports.forEach((postData) => postData());
   });
-
-  const newFaviconUrls = getNewFaviconUrls(bmsToLoad, faviconUrls);
-  if (newFaviconUrls.size) {
-    faviconUrls = new Set([...faviconUrls, ...newFaviconUrls]);
-    faviconDataUrls = new Map([
-      ...faviconDataUrls,
-      ...(await loadFavicons(newFaviconUrls)),
-    ]);
-  }
-  // add favicon data urls to bookmarks that appear in the sidebar
-  bmsToLoad.map((bm) => {
-    bm.faviconDataUrl = faviconDataUrls.get(getFaviconUrl(bm.url));
-  });
-
-  data.bm = shownFolder;
-  data.allFolders = folders;
-
-  console.log(data);
-  window.dispatchEvent(new CustomEvent('treeUpdated'));
 };
 
 export const generateData = async () => {
-  const {
-    shownBmId = '0',
-    barLeft = false,
-    barWidth = 320,
-    barTheme = 'system',
-    editBookmarkOnRightClick = false,
-  } = await chrome.storage.sync.get([
-    'barLeft',
-    'shownBmId',
-    'barWidth',
-    'barTheme',
-    'editBookmarkOnRightClick',
-  ]);
-
-  _shownBmId = shownBmId;
-  Object.assign(data, {
-    barLeft,
-    barWidth,
-    barTheme,
-    editBookmarkOnRightClick,
-  });
-  updateTree();
+  chrome.storage.sync.get(
+    [
+      'barLeft',
+      'shownBmId',
+      'barWidth',
+      'barTheme',
+      'editBookmarkOnRightClick',
+    ],
+    ({
+      shownBmId = '0',
+      barLeft = false,
+      barWidth = 320,
+      barTheme = 'system',
+      editBookmarkOnRightClick = false,
+    }) => {
+      Object.assign(data, {
+        barLeft,
+        barWidth,
+        barTheme,
+        editBookmarkOnRightClick,
+      });
+      _shownBmId = shownBmId;
+      updateTree();
+    },
+  );
 
   chrome.storage.onChanged.addListener(
     ({ shownBmId, barLeft, barWidth, barTheme, editBookmarkOnRightClick }) => {

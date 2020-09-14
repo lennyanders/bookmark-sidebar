@@ -43,6 +43,8 @@ const actions = {
   },
 };
 
+export const ports = new Set([]);
+
 export const startMiddleware = () => {
   chrome.runtime.onConnect.addListener((port) => {
     console.assert(port.name === 'bmBar');
@@ -51,18 +53,14 @@ export const startMiddleware = () => {
 
     const postData = () => port.postMessage(data);
     postData();
-    window.addEventListener('treeUpdated', postData);
+    ports.add(postData);
 
     port.onDisconnect.addListener(async () => {
-      window.removeEventListener('treeUpdated', postData);
+      ports.delete(postData);
 
-      try {
-        const [tab] = await chrome.tabs.query({
-          lastFocusedWindow: true,
-          active: true,
-        });
+      chrome.tabs.query({ lastFocusedWindow: true, active: true }, ([tab]) => {
         scriptRunsOnTab.delete(tab.id);
-      } catch (r) {}
+      });
     });
   });
 };
