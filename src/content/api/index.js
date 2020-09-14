@@ -13,18 +13,24 @@ port.onMessage.addListener(
     barTheme,
     editBookmarkOnRightClick,
   }) => {
-    store.bm = bm;
-    store.allFolders = allFolders;
-
-    store.barLeft = barLeft;
-    mutations.setBarWidth(barWidth);
-    store.activeTheme = barTheme;
-    store.editBookmarkOnRightClick = editBookmarkOnRightClick;
-
-    // unset and set activeBm to maintain focus
-    const activeBm = store.activeBm;
-    store.activeBm = null;
-    requestAnimationFrame(() => (store.activeBm = activeBm));
+    if (bm) {
+      store.bm = bm;
+    }
+    if (allFolders) {
+      store.allFolders = allFolders;
+    }
+    if (barLeft) {
+      store.barLeft = barLeft;
+    }
+    if (barWidth) {
+      mutations.setBarWidth(barWidth);
+    }
+    if (barTheme) {
+      store.activeTheme = barTheme;
+    }
+    if (editBookmarkOnRightClick) {
+      store.editBookmarkOnRightClick = editBookmarkOnRightClick;
+    }
   },
 );
 
