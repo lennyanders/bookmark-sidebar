@@ -47,7 +47,7 @@ export const ports = new Set([]);
 
 export const startMiddleware = () => {
   chrome.runtime.onConnect.addListener((port) => {
-    console.assert(port.name === 'bmBar');
+    if (port.name !== 'bmBar') return;
 
     port.onMessage.addListener((msg) => actions[msg.type]?.(msg));
 
