@@ -7,6 +7,7 @@ export default (props) => {
     const { id } = findFocusableBm(props.bm.id, delta);
     if (id) store.activeBm = id;
   };
+
   const moveBy = (delta) => {
     if (delta > 0) delta++;
     actions.moveBm({
@@ -14,6 +15,7 @@ export default (props) => {
       index: props.bm.index + delta,
     });
   };
+
   const moveIn = (delta) => {
     const { id, parentId, children, index } = findBmToMoveIn(
       props.bm.id,
@@ -37,14 +39,22 @@ export default (props) => {
     });
   };
 
-  const keydown = (e) => {
-    const delta = e.key === 'ArrowDown' ? 1 : e.key === 'ArrowUp' && -1;
+  const keydown = (event) => {
+    const delta =
+      event.code === 'ArrowDown' ? 1 : event.code === 'ArrowUp' && -1;
+
     if (!delta) return;
 
-    if (!store.isSearching && e.altKey) {
-      if (e.ctrlKey) return moveIn(delta);
-      return moveBy(delta);
+    if (!store.isSearching && event.altKey) {
+      if (event.ctrlKey) {
+        moveIn(delta);
+        return;
+      }
+
+      moveBy(delta);
+      return;
     }
+
     goBy(delta);
   };
 

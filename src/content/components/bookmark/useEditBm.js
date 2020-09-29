@@ -5,10 +5,10 @@ import ModalEditBm from '../modal/ModalEditBm';
 import { mutations } from '../../store/index';
 
 export default (props) => {
-  const contextmenu = (e) => {
-    if (e.altKey || e.ctrlKey || e.metaKey) return;
+  const contextmenu = (event) => {
+    if (event.altKey || event.ctrlKey || event.metaKey) return;
 
-    e.preventDefault();
+    event.preventDefault();
     mutations.showModal(markRaw(ModalEditBm), { bm: props.bm });
   };
 
