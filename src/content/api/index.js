@@ -1,3 +1,4 @@
+import { nextTick } from 'vue';
 import { store, mutations } from '../store/index';
 
 // connect to middleware (background script)
@@ -5,7 +6,7 @@ const port = chrome.runtime.connect({ name: 'bmBar' });
 
 // listen to events and update data
 port.onMessage.addListener(
-  ({
+  async ({
     bm,
     allFolders,
     barLeft,
@@ -15,6 +16,12 @@ port.onMessage.addListener(
   }) => {
     if (bm) {
       store.bm = bm;
+
+      // unset and set activeBm to maintain focus
+      const activeBm = store.activeBm;
+      store.activeBm = null;
+      await nextTick();
+      store.activeBm = activeBm;
     }
     if (allFolders) {
       store.allFolders = allFolders;
