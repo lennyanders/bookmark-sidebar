@@ -1,5 +1,5 @@
 <template>
-  <button class="bookmark__option" @click="editBm">
+  <button class="bookmark__option" @click.passive="editBm">
     <svg class="bookmark__icon" viewBox="0 0 24 24">
       <title>Edit bookmark</title>
       <path

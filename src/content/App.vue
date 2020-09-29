@@ -19,8 +19,8 @@
       }"
       :style="{ width: `${barWidth}px` }"
       tabindex="-1"
-      @click.stop
-      @keydown.stop
+      @click.passive.stop
+      @keydown.passive.stop
       @keydown.up.down.prevent
       ref="root"
     >
@@ -73,14 +73,14 @@
     barVisible.value = !barVisible.value;
   };
 
-  addEventListener('toggleBar', toggleBarVisibility);
-  addEventListener('click', hideBar);
-  addEventListener('blur', hideBar);
+  addEventListener('toggleBar', toggleBarVisibility, { passive: true });
+  addEventListener('click', hideBar, { passive: true });
+  addEventListener('blur', hideBar, { passive: true });
 
   onBeforeUnmount(() => {
-    removeEventListener('toggleBar', toggleBarVisibility);
-    removeEventListener('click', hideBar);
-    removeEventListener('blur', hideBar);
+    removeEventListener('toggleBar', toggleBarVisibility, { passive: true });
+    removeEventListener('click', hideBar, { passive: true });
+    removeEventListener('blur', hideBar, { passive: true });
   });
 
   export const root = ref(null);

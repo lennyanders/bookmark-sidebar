@@ -6,7 +6,7 @@
     <BaseInput v-if="newUrl" v-model="newUrl" text="Link" required />
 
     <div class="modal__actions">
-      <BaseButton @click="removeBm" text="delete" />
+      <BaseButton @click.passive="removeBm" text="delete" />
       <BaseButton type="submit" text="update" />
     </div>
   </form>

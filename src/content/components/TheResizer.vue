@@ -2,7 +2,7 @@
   <div
     class="resizer"
     :class="{ 'resizer--right': barLeft, 'resizer--resizing': dragging }"
-    @mousedown.prevent="startResizing"
+    @mousedown.passive="startResizing"
   />
 </template>
 
@@ -22,13 +22,13 @@
   const stopResizing = () => {
     actions.saveBarWidth();
     dragging.value = false;
-    removeEventListener('mousemove', resize);
-    removeEventListener('mouseup', stopResizing);
+    removeEventListener('mousemove', resize, { passive: true });
+    removeEventListener('mouseup', stopResizing, { passive: true });
   };
   export const startResizing = () => {
     dragging.value = true;
-    addEventListener('mousemove', resize);
-    addEventListener('mouseup', stopResizing);
+    addEventListener('mousemove', resize, { passive: true });
+    addEventListener('mouseup', stopResizing, { passive: true });
   };
 </script>
 

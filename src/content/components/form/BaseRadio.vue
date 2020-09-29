@@ -10,7 +10,7 @@
         v-bind="$attrs"
         :value="value"
         :checked="value === modelValue"
-        @change="$emit('update:modelValue', $event.target.value)"
+        @change.passive="$emit('update:modelValue', $event.target.value)"
       />
       <label class="radio__label" :for="name + value" v-text="text" />
     </div>

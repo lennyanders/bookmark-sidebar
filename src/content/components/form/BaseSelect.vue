@@ -5,7 +5,7 @@
       class="select__el"
       :id="uid"
       v-bind="$attrs"
-      @change="$emit('update:modelValue', $event.target.value)"
+      @change.passive="$emit('update:modelValue', $event.target.value)"
     >
       <option
         v-for="{ text, value } of options"

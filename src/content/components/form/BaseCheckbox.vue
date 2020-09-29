@@ -6,7 +6,7 @@
       :id="uid"
       v-bind="$attrs"
       :checked="modelValue"
-      @change="$emit('update:modelValue', $event.target.checked)"
+      @change.passive="$emit('update:modelValue', $event.target.checked)"
     />
     <label :for="uid" class="checkbox__label" v-text="text" />
   </div>

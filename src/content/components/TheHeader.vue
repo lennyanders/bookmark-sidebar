@@ -2,16 +2,16 @@
   <header class="header" :class="{ 'header--searching': searchFocused }">
     <div class="header__icons header__icons--left">
       <OpenSettings />
-      <LeaveSearch @click="leaveSearchView" />
+      <LeaveSearch @click.passive="leaveSearchView" />
     </div>
     <input
       class="header__search"
       type="text"
       :placeholder="placeholder"
       v-model="searchQuery"
-      @focus="searchFocused = true"
-      @keyup.esc="leaveSearchView"
-      @blur="!searchQuery && (searchFocused = false)"
+      @focus.passive="searchFocused = true"
+      @keyup.passive.esc="leaveSearchView"
+      @blur.passive="!searchQuery && (searchFocused = false)"
       ref="searchInput"
     />
     <div class="header__icons header__icons--right">

@@ -4,13 +4,13 @@
       class="bookmark__content"
       :draggable="!isSearching"
       v-on="{
-        keydown,
+        keydownPassive: keydown,
         ...(editBookmarkOnRightClick && {
           contextmenu,
         }),
         ...(!isSearching && {
-          dragstart,
-          dragenter,
+          dragstartPassive: dragstart,
+          dragenterPassive: dragenter,
         }),
       }"
     >
@@ -19,7 +19,7 @@
         :class="{ 'bookmark__link--active': isOpen }"
         :href="bm.url"
         :title="`${bm.title} | ${bm.url}`"
-        @focus="setActiveBm"
+        @focus.passive="setActiveBm"
         ref="focusableBmPart"
       >
         <img class="bookmark__icon" :src="bm.faviconDataUrl" />

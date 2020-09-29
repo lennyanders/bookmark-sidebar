@@ -1,25 +1,25 @@
 <template>
-  <li class="bookmark" ref="root" @keyup.arrow-left="hideChildren">
+  <li class="bookmark" ref="root" @keyup.passive.arrow-left="hideChildren">
     <div
       class="bookmark__content"
       :draggable="!isSearching"
       v-on="{
-        keydown,
+        keydownPassive: keydown,
         ...(editBookmarkOnRightClick && {
           contextmenu,
         }),
         ...(!isSearching && {
-          dragstart,
-          dragenter,
+          dragstartPassive: dragstart,
+          dragenterPassive: dragenter,
         }),
       }"
     >
       <button
         class="bookmark__link"
-        @click="childrenVisible = !childrenVisible"
-        @keyup.arrow-right="childrenVisible = true"
+        @click.passive="childrenVisible = !childrenVisible"
+        @keyup.passive.arrow-right="childrenVisible = true"
         :title="bm.title"
-        @focus="setActiveBm"
+        @focus.passive="setActiveBm"
         ref="focusableBmPart"
       >
         <svg class="bookmark__icon" viewBox="0 0 24 24">

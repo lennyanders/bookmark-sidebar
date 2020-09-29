@@ -4,14 +4,14 @@
       v-if="modalVisible"
       class="modal"
       tabindex="-1"
-      @click="hideModal"
-      @keyup.esc="hideModal"
+      @click.passive="hideModal"
+      @keyup.passive.esc="hideModal"
       ref="modal"
     >
-      <div @click.stop class="modal__layer">
+      <div @click.passive.stop class="modal__layer">
         <button
           class="modal__close"
-          @click="hideModal"
+          @click.passive="hideModal"
           title="Close"
           aria-label="close modal"
         />

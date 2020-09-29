@@ -1,5 +1,8 @@
 <template>
-  <button class="header__icon header__icon--primary" @click="showSettings">
+  <button
+    class="header__icon header__icon--primary"
+    @click.passive="showSettings"
+  >
     <svg viewBox="0 0 24 24">
       <title>Open Settings</title>
       <path
