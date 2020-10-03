@@ -5,7 +5,7 @@
   "permissions": ["storage", "activeTab", "bookmarks", "chrome://favicon/*/"],
   "content_security_policy": "img-src chrome://favicon/ data:;",
   "commands": {
-    "toogle-bm-bar": {
+    "toggle-bm-bar": {
       "suggested_key": {
         "default": "Ctrl+Shift+Y",
         "mac": "Command+Shift+Y"

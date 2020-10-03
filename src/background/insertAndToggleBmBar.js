@@ -7,7 +7,7 @@ const insertAndToggleBmBar = (tabOrTabs) => {
   if (
     ['chrome://newtab', 'edge://newtab'].some((url) => tab.url.startsWith(url))
   ) {
-    chrome.runtime.sendMessage('toogle-bm-bar');
+    chrome.runtime.sendMessage('toggle-bm-bar');
     return;
   }
 
@@ -35,7 +35,7 @@ const insertAndToggleBmBar = (tabOrTabs) => {
 
 export const enableBmBar = () => {
   chrome.commands.onCommand.addListener((command) => {
-    if (command !== 'toogle-bm-bar') return;
+    if (command !== 'toggle-bm-bar') return;
 
     chrome.tabs.query(
       { active: true, currentWindow: true },
