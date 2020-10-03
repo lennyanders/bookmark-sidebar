@@ -8,6 +8,7 @@
       v-bind="$attrs"
       :value="modelValue"
       @input.passive="$emit('update:modelValue', $event.target.value)"
+      @keydown="handleKeyDown"
     />
   </div>
 </template>
@@ -28,10 +29,33 @@
   };
 </script>
 
-<script setup="props">
+<script setup="props, { emit }">
   import { getUid } from '../../utils';
 
   export const uid = getUid();
+
+  /**
+   * @param {KeyboardEvent} event
+   */
+  export const handleKeyDown = (event) => {
+    const { key, ctrlKey } = event;
+    if (ctrlKey || key.length !== 1) return;
+
+    event.preventDefault();
+
+    /**
+     * @type {HTMLInputElement}
+     */
+    const input = event.currentTarget;
+    let { selectionStart, selectionEnd, value } = input;
+    const newValue =
+      value.substring(0, selectionStart) + key + value.substring(selectionEnd);
+
+    input.value = newValue;
+    input.setSelectionRange(++selectionEnd, selectionEnd);
+
+    emit('update:modelValue', newValue);
+  };
 </script>
 
 <style lang="scss">
