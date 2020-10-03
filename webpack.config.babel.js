@@ -41,6 +41,11 @@ module.exports = async ({ NODE_ENV }) => {
             test: /\.js$/,
             loader: 'babel-loader',
           },
+          // needed to bundle @vue-reactivity/watch
+          {
+            test: /\.mjs$/,
+            resolve: { mainFields: ['browser', 'module', 'main'] },
+          },
         ],
       },
     },

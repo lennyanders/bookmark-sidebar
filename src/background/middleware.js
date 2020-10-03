@@ -1,3 +1,5 @@
+import { watch } from '@vue-reactivity/watch';
+
 import { scriptRunsOnTab } from './insertAndToggleBmBar';
 import { data } from './data';
 
@@ -43,20 +45,49 @@ const actions = {
   },
 };
 
-export const ports = new Set([]);
-
 export const startMiddleware = () => {
   chrome.runtime.onConnect.addListener((port) => {
     if (port.name !== 'bmBar') return;
 
     port.onMessage.addListener((msg) => actions[msg.type]?.(msg));
 
-    const postData = () => port.postMessage(data);
-    postData();
-    ports.add(postData);
+    port.postMessage(data);
+
+    const stopWatch = watch(
+      [
+        () => data.bm,
+        () => data.allFolders,
+        () => data.barLeft,
+        () => data.barWidth,
+        () => data.barTheme,
+        () => data.editBookmarkOnRightClick,
+      ],
+      (
+        [bm, allFolders, barLeft, barWidth, barTheme, editBookmarkOnRightClick],
+        [
+          oldBm,
+          oldAllFolders,
+          oldBarLeft,
+          oldBarWidth,
+          oldbarTheme,
+          oldEditBookmarkOnRightClick,
+        ],
+      ) => {
+        port.postMessage({
+          ...(bm !== oldBm && { bm }),
+          ...(allFolders !== oldAllFolders && { allFolders }),
+          ...(barLeft !== oldBarLeft && { barLeft }),
+          ...(barWidth !== oldBarWidth && { barWidth }),
+          ...(barTheme !== oldbarTheme && { barTheme }),
+          ...(editBookmarkOnRightClick !== oldEditBookmarkOnRightClick && {
+            editBookmarkOnRightClick,
+          }),
+        });
+      },
+    );
 
     port.onDisconnect.addListener(async () => {
-      ports.delete(postData);
+      stopWatch();
 
       chrome.tabs.query({ lastFocusedWindow: true, active: true }, ([tab]) => {
         scriptRunsOnTab.delete(tab.id);

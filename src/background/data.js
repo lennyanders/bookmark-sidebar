@@ -1,10 +1,10 @@
-import { ports } from './middleware';
+import { shallowReactive } from '@vue/reactivity';
+import { watch } from '@vue-reactivity/watch';
 
-export const data = {};
+export const data = shallowReactive({});
 
 let faviconUrls = new Set([]);
 let faviconDataUrls = new Map();
-let _shownBmId;
 
 const getFaviconUrl = (url) => {
   return `chrome://favicon/size/32/${new URL(url).origin}`;
@@ -52,7 +52,7 @@ const updateTree = () => {
       if (!nested.id) return nested;
       if (!nested.url) {
         if (nested.id === '0') nested.title = 'root';
-        if (nested.id === _shownBmId) shownFolder = nested;
+        if (nested.id === data.shownBmId) shownFolder = nested;
 
         folders.push({
           title: nested.title,
@@ -81,9 +81,10 @@ const updateTree = () => {
     data.allFolders = folders;
 
     console.log(data);
-    ports.forEach((postData) => postData());
   });
 };
+
+watch(() => data.shownBmId, updateTree);
 
 export const generateData = async () => {
   chrome.storage.sync.get(
@@ -106,24 +107,22 @@ export const generateData = async () => {
         barWidth,
         barTheme,
         editBookmarkOnRightClick,
+        shownBmId,
       });
-      _shownBmId = shownBmId;
-      updateTree();
     },
   );
 
   chrome.storage.onChanged.addListener(
     ({ shownBmId, barLeft, barWidth, barTheme, editBookmarkOnRightClick }) => {
-      if (shownBmId) {
-        _shownBmId = shownBmId.newValue;
-        updateTree();
-      }
-
-      if (barLeft) data.barLeft = barLeft.newValue;
-      if (barWidth) data.barWidth = barWidth.newValue;
-      if (barTheme) data.barTheme = barTheme.newValue;
-      if (editBookmarkOnRightClick)
-        data.editBookmarkOnRightClick = editBookmarkOnRightClick.newValue;
+      Object.assign(data, {
+        ...(shownBmId && { shownBmId: shownBmId.newValue }),
+        ...(barLeft && { barLeft: barLeft.newValue }),
+        ...(barWidth && { barWidth: barWidth.newValue }),
+        ...(barTheme && { barTheme: barTheme.newValue }),
+        ...(editBookmarkOnRightClick && {
+          editBookmarkOnRightClick: editBookmarkOnRightClick.newValue,
+        }),
+      });
     },
   );
   chrome.bookmarks.onRemoved.addListener(updateTree);

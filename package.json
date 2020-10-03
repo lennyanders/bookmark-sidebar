@@ -32,6 +32,8 @@
     "webpack-cli": "^3.3.12"
   },
   "dependencies": {
+    "@vue-reactivity/watch": "^0.1.2",
+    "@vue/reactivity": "^3.0.0",
     "fast-fuzzy": "^1.10.7",
     "vue": "^3.0.0"
   },
