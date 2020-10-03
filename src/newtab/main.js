@@ -6,14 +6,8 @@ import App from '../content/App';
 
 createApp(App).mount(sidebarEl);
 
-const toggleBmBar = () => {
-  if (!document.hasFocus()) return;
-
-  window.dispatchEvent(new CustomEvent('toggleBar'));
-};
-
-chrome.commands.onCommand.addListener(async (command) => {
-  if (command === 'toogle-bm-bar') toggleBmBar();
+chrome.runtime.onMessage.addListener((message) => {
+  if (message === 'toogle-bm-bar') {
+    window.dispatchEvent(new CustomEvent('toggleBar'));
+  }
 });
-
-chrome.browserAction.onClicked.addListener(toggleBmBar);
