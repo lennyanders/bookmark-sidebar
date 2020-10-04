@@ -6,8 +6,11 @@ import App from '../content/App';
 
 createApp(App).mount(sidebarEl);
 
-chrome.runtime.onMessage.addListener((message) => {
-  if (message === 'toggle-bm-bar') {
+let currentTabId;
+chrome.tabs.getCurrent(({ id }) => (currentTabId = id));
+
+chrome.runtime.onMessage.addListener(({ command, tabId }) => {
+  if (command === 'toggle-bm-bar' && tabId === currentTabId) {
     window.dispatchEvent(new CustomEvent('toggleBar'));
   }
 });
