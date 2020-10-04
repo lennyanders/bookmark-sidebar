@@ -2,9 +2,9 @@ import '../../public/fonts/lato.css';
 import './style.scss';
 
 import { createApp } from 'vue';
-import App from '../content/App';
+import App from './App';
 
-createApp(App).mount(sidebarEl);
+createApp(App).mount(document.body);
 
 let currentTabId;
 chrome.tabs.getCurrent(({ id }) => (currentTabId = id));

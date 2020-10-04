@@ -149,7 +149,7 @@ module.exports = async ({ NODE_ENV }) => {
         new VueLoaderPlugin(),
         new MiniCssExtractPlugin({ filename: 'main.css' }),
         new HtmlPlugin({
-          template: './src/newtab/index.html',
+          title: 'Neuer Tab',
           filename: 'index.html',
           scriptLoading: 'defer',
           favicon: './src/newtab/favicon.svg',
