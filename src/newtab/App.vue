@@ -1,13 +1,16 @@
 <template>
-  <BookmarkBar />
+  <TheBookmarkBar />
+  <TheFullScreenFileDrop />
 </template>
 
 <script>
-  import BookmarkBar from '../content/App';
+  import TheFullScreenFileDrop from './components/TheFullScreenFileDrop';
+  import TheBookmarkBar from '../content/App';
 
   export default {
     components: {
-      BookmarkBar,
+      TheFullScreenFileDrop,
+      TheBookmarkBar,
     },
   };
 </script>

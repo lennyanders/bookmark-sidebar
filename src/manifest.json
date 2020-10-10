@@ -2,7 +2,13 @@
   "default_locale": "de",
   "name": "__MSG_extensionName__",
   "description": "Bookmarkbar backend",
-  "permissions": ["storage", "activeTab", "bookmarks", "chrome://favicon/*/"],
+  "permissions": [
+    "storage",
+    "activeTab",
+    "bookmarks",
+    "chrome://favicon/*/",
+    "https://tineye.com/"
+  ],
   "content_security_policy": "img-src chrome://favicon/ data:;",
   "commands": {
     "toggle-bm-bar": {
