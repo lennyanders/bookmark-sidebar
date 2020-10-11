@@ -6,7 +6,6 @@
     enter-from-class="bookmark-bar--invisible"
     leave-to-class="bookmark-bar--invisible"
     @after-enter="focusBar"
-    appear
   >
     <div
       v-if="bm && bm.id"
@@ -73,12 +72,14 @@
     barVisible.value = !barVisible.value;
   };
 
-  addEventListener('toggleBar', toggleBarVisibility, { passive: true });
+  chrome.runtime.onMessage.addListener(({ command }) => {
+    if (command === 'toggle-bm-bar') toggleBarVisibility();
+  });
+
   addEventListener('click', hideBar, { passive: true });
   addEventListener('blur', hideBar, { passive: true });
 
   onBeforeUnmount(() => {
-    removeEventListener('toggleBar', toggleBarVisibility, { passive: true });
     removeEventListener('click', hideBar, { passive: true });
     removeEventListener('blur', hideBar, { passive: true });
   });
@@ -140,10 +141,16 @@
   }
 
   :host,
-  * {
+  body {
+    font-size: 16px;
     font-family: 'Lato', Arial, Helvetica, sans-serif;
     color: var(--font-color);
-    font-size: 15px;
+  }
+
+  * {
+    font-size: inherit;
+    font-family: inherit;
+    color: inherit;
   }
 
   .bookmark-bar {

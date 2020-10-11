@@ -49,6 +49,12 @@ export const startMiddleware = () => {
   chrome.runtime.onConnect.addListener((port) => {
     if (port.name !== 'bmBar') return;
 
+    let tabId;
+    chrome.tabs.query({ active: true, currentWindow: true }, ([{ id }]) => {
+      tabId = id;
+      scriptRunsOnTab.add(tabId);
+    });
+
     port.onMessage.addListener((msg) => actions[msg.type]?.(msg));
 
     port.postMessage(data);
@@ -88,10 +94,7 @@ export const startMiddleware = () => {
 
     port.onDisconnect.addListener(async () => {
       stopWatch();
-
-      chrome.tabs.query({ lastFocusedWindow: true, active: true }, ([tab]) => {
-        scriptRunsOnTab.delete(tab.id);
-      });
+      scriptRunsOnTab.delete(tabId);
     });
   });
 };
