@@ -3,6 +3,7 @@
     <div
       class="bookmark__content"
       :draggable="!isSearching"
+      @dragenter.stop
       v-on="{
         keydownPassive: keydown,
         ...(editBookmarkOnRightClick && {
