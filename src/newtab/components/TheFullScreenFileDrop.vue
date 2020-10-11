@@ -1,23 +1,33 @@
 <template>
-  <div class="file-overlay" :class="{ 'file-overlay--visible': visible }">
-    <form
-      v-for="form of forms"
-      :action="form.action"
-      :method="form.method"
-      :enctype="form.enctype"
-      :target="form.target"
-      @submit="form.customSubmitHandler"
-      @submit.passive="hideOverlay"
-      class="file-overlay__zone"
-    >
-      <span class="file-overlay__title">Search on {{ form.name }}</span>
-      <input
-        type="file"
-        :name="form.fileFieldName"
-        @input="$event.target.form.requestSubmit(), $event.target.form.reset()"
-      />
-    </form>
-  </div>
+  <Transition
+    name="file-overlay"
+    enter-active-class="file-overlay--appearing"
+    leave-active-class="file-overlay--disappearing"
+    enter-from-class="file-overlay--invisible"
+    leave-to-class="file-overlay--invisible"
+  >
+    <div class="file-overlay" v-show="visible">
+      <form
+        v-for="form of forms"
+        :action="form.action"
+        :method="form.method"
+        :enctype="form.enctype"
+        :target="form.target"
+        @submit="form.customSubmitHandler"
+        @submit.passive="hideOverlay"
+        class="file-overlay__zone"
+      >
+        <span class="file-overlay__title">Search on {{ form.name }}</span>
+        <input
+          type="file"
+          :name="form.fileFieldName"
+          @input="
+            $event.target.form.requestSubmit(), $event.target.form.reset()
+          "
+        />
+      </form>
+    </div>
+  </Transition>
 </template>
 
 <script setup="props">
@@ -127,14 +137,17 @@
     background-color: var(--bg-color);
     font-size: 2rem;
     z-index: 2147483647;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.125s ease, visibility 0.125s;
 
-    &--visible {
-      transition: opacity 0.25s ease, visibility 0.25s;
-      opacity: 1;
-      visibility: visible;
+    &--appearing {
+      transition: opacity 0.25s ease;
+    }
+
+    &--disappearing {
+      transition: opacity 0.125s ease;
+    }
+
+    &--invisible {
+      opacity: 0;
     }
 
     &__zone {
