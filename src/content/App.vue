@@ -16,7 +16,6 @@
         'bookmark-bar--light': activeTheme === 'light',
         'bookmark-bar--dark': activeTheme === 'dark',
       }"
-      :style="{ width: `${barWidth}px` }"
       tabindex="-1"
       @click.passive.stop
       @keydown.passive.stop
@@ -94,7 +93,7 @@
   export const bm = toRef(store, 'filteredBms');
 </script>
 
-<style lang="scss">
+<style lang="scss" vars="{ 'bar-width': barWidth.value }">
   @import 'reset';
 
   @mixin lightTheme() {
@@ -144,13 +143,14 @@
   body {
     font-size: 16px;
     font-family: 'Lato', Arial, Helvetica, sans-serif;
-    color: var(--font-color);
+    line-height: 1.5;
   }
 
   * {
     font-size: inherit;
     font-family: inherit;
-    color: inherit;
+    line-height: inherit;
+    color: var(--font-color);
   }
 
   .bookmark-bar {
@@ -158,10 +158,11 @@
     top: 0;
     right: 0;
     bottom: 0;
+    width: calc(var(--bar-width) * 1px);
     display: grid;
-    grid-template-rows: 50px 1fr;
+    grid-template-rows: auto 1fr;
     background-color: var(--bg-color);
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.25);
     z-index: 2147483647;
     will-change: scroll-position;
 
@@ -184,25 +185,26 @@
     }
 
     &--invisible {
-      transform: translateX(calc(100% + 10px));
+      transform: translateX(calc(100% + 0.5rem));
 
       &.bookmark-bar--left {
-        transform: translateX(calc(-100% - 10px));
+        transform: translateX(calc(-100% - 0.5rem));
       }
     }
   }
 
   .main {
-    padding: 8px 4px 8px 8px;
+    padding: 0.5rem 0.25rem 0.5rem 0.5rem;
     overflow: hidden scroll;
     will-change: transform;
 
     &::-webkit-scrollbar {
-      width: 4px;
+      width: 0.25rem;
     }
     &::-webkit-scrollbar-thumb {
       background-color: var(--scrollbar-color);
-      box-shadow: inset 0 8px var(--bg-color), inset 0 -8px var(--bg-color);
+      box-shadow: inset 0 0.5rem var(--bg-color),
+        inset 0 -0.5rem var(--bg-color);
     }
   }
 </style>

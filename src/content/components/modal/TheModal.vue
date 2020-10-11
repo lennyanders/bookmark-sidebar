@@ -48,9 +48,9 @@
   .modal {
     position: absolute;
     top: 0;
-    right: 0;
-    bottom: 0;
     left: 0;
+    width: 100%;
+    height: 100%;
     background-color: rgba(0, 0, 0, 0.25);
     cursor: pointer;
     z-index: 1;
@@ -78,40 +78,40 @@
       right: 0;
       bottom: 0;
       left: 0;
-      padding: 8px 16px 64px 16px;
+      padding: 0.5rem 1rem 4rem 1rem;
       background-color: var(--bg-color);
-      box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+      box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.25);
       cursor: auto;
     }
 
     &__close {
       position: relative;
       display: block;
-      height: 20px;
-      width: 40px;
+      height: 1.25rem;
+      width: 2.5rem;
       margin: 0 auto;
 
       &::before,
       &::after {
         content: '';
         position: absolute;
-        top: 7px;
-        width: 18px;
-        height: 6px;
-        border-radius: 2px;
+        top: 0.375rem;
+        width: 1.25rem;
+        height: 0.25rem;
+        border-radius: 0.125rem;
         background-color: var(--font-color);
         transition: transform 0.25s cubic-bezier(0.5, -0.5, 0.5, 1.5);
       }
 
       &::before {
         right: 50%;
-        margin-right: -2px;
+        margin-right: -0.125rem;
         transform: rotate(-20deg);
       }
 
       &::after {
         left: 50%;
-        margin-left: -2px;
+        margin-left: -0.125rem;
         transform: rotate(20deg);
       }
 
@@ -134,7 +134,7 @@
     &__content {
       display: grid;
       grid-auto-flow: row;
-      grid-row-gap: 20px;
+      grid-row-gap: 1.25rem;
     }
   }
 </style>

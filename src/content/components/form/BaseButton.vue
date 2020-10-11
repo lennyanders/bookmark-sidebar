@@ -23,8 +23,8 @@
 <style lang="scss">
   .button {
     position: relative;
-    padding: 7px 12px;
-    box-shadow: inset 0 0 0 2px var(--font-color);
+    padding: 0.5rem 0.75rem;
+    box-shadow: inset 0 0 0 0.125rem var(--font-color);
     overflow: hidden;
 
     &::after {
@@ -46,7 +46,7 @@
     }
 
     & + & {
-      margin-left: 15px;
+      margin-left: 1rem;
     }
   }
 </style>

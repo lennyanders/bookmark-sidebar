@@ -50,13 +50,13 @@
 
     &__label {
       display: block;
-      margin-bottom: 5px;
+      margin-bottom: 0.5rem;
     }
   }
 
   .radio {
     &__label {
-      padding-left: 24px;
+      padding-left: 1.5rem;
       position: relative;
 
       &::before,
@@ -65,9 +65,9 @@
         position: absolute;
         left: 0;
         top: 50%;
-        margin-top: -8px;
-        height: 16px;
-        width: 16px;
+        margin-top: -0.5rem;
+        height: 1rem;
+        width: 1rem;
         cursor: pointer;
         border-radius: 50%;
       }
@@ -79,7 +79,7 @@
       }
 
       &::after {
-        border: 2px solid var(--font-color);
+        border: 0.125rem solid var(--font-color);
         transition: background-color 0.2s ease, transform 0.2s ease;
       }
     }

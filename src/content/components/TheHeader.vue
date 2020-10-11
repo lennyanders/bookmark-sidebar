@@ -68,37 +68,38 @@
     position: relative;
     display: grid;
     grid-auto-flow: column;
-    grid-template-columns: 42px 1fr 42px;
-    padding: 8px 8px 0 8px;
+    grid-template-columns: auto 1fr auto;
+    padding: 0.5rem 0.5rem 0 0.5rem;
 
     &::before {
       content: '';
       position: absolute;
       display: block;
-      top: 8px;
-      right: 8px;
+      top: 0.5rem;
+      right: 0.5rem;
       bottom: 0;
-      left: 8px;
-      // background-color: rgb(51, 103, 214);
+      left: 0.5rem;
       background: linear-gradient(45deg, #304ffe, #2979ff);
-
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+      box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.25);
       transform-origin: center bottom;
       transition: transform 0.125s;
     }
 
     &--searching {
       &::before {
-        transform: scale(calc(320 / 304), calc(50 / 42));
+        transform: scale(
+          calc(var(--bar-width) / (var(--bar-width) - 16)),
+          #{(48 / 40)}
+        );
       }
 
       .header {
         &__icons {
           &--left {
-            transform: translate(-4px, -4px) rotate(0.5turn);
+            transform: translate(-0.25rem, -0.25rem) rotate(0.5turn);
           }
           &--right {
-            transform: translate(4px, -4px) rotate(-0.5turn);
+            transform: translate(0.25rem, -0.25rem) rotate(-0.5turn);
           }
         }
         &__icon {
@@ -112,7 +113,7 @@
           }
         }
         &__search {
-          transform: translateY(-4px);
+          transform: translateY(-0.25rem);
           animation: blink 0.125s cubic-bezier(0.47, 0, 0.745, 0.715);
         }
       }
@@ -120,15 +121,15 @@
 
     &__icons {
       position: relative;
-      padding: 9px;
+      display: flex;
+      padding: 0.5rem;
       transition: transform 0.125s;
       z-index: 1;
     }
 
     &__icon {
-      position: absolute;
-      width: 24px;
-      height: 24px;
+      width: 1.5rem;
+      height: 1.5rem;
       fill: #fafafa;
       transition: opacity 0.125s, visibility 0.125s;
 
@@ -136,6 +137,7 @@
         opacity: 0;
         visibility: hidden;
         transform: scale(-1);
+        margin-left: -1.5rem;
       }
     }
 
