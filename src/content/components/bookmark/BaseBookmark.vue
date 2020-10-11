@@ -36,19 +36,19 @@
       &--active::after {
         content: '\02022';
         position: absolute;
-        top: 1.25rem;
-        left: 1.25rem;
-        margin: -0.125rem 0 0 -0.125rem;
-        width: 0.5rem;
-        line-height: 0.5rem;
+        top: 1.25em;
+        left: 1.25em;
+        margin: -0.125em 0 0 -0.125em;
+        width: 0.5em;
+        line-height: 0.5em;
         text-align: center;
         color: #00cdcd;
       }
     }
     &__icon {
-      width: 1rem;
-      height: 1rem;
-      margin: 0.5rem;
+      width: 1em;
+      height: 1em;
+      margin: 0.5em;
       fill: var(--folder-icon);
     }
     &__title {
@@ -60,12 +60,12 @@
       display: none;
 
       & + & {
-        margin-left: -0.25rem;
+        margin-left: -0.25em;
       }
     }
 
     &__children {
-      padding-left: 1.25rem;
+      padding-left: 1.25em;
     }
   }
 </style>

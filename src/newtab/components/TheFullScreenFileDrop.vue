@@ -130,12 +130,12 @@
     left: 0;
     width: 100%;
     height: 100%;
-    padding: 1.5rem;
+    padding: 1.5em;
     display: grid;
     grid-template: 1fr 1fr / 1fr 1fr;
-    gap: 3rem;
+    gap: 3em;
     background-color: var(--bg-color);
-    font-size: 2rem;
+    font-size: 2em;
     z-index: 2147483647;
 
     &--appearing {
@@ -161,10 +161,10 @@
         position: absolute;
         background-color: var(--bg-color);
         filter: brightness(0.75);
-        top: 0.5rem;
-        right: 0.5rem;
-        bottom: 0.5rem;
-        left: 0.5rem;
+        top: 0.5em;
+        right: 0.5em;
+        bottom: 0.5em;
+        left: 0.5em;
       }
 
       > input {

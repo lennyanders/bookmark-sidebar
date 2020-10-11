@@ -62,7 +62,7 @@
   .input {
     &__label {
       display: block;
-      margin-bottom: 0.375rem;
+      margin-bottom: 0.375em;
     }
 
     &__el {

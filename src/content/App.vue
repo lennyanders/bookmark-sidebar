@@ -141,9 +141,9 @@
 
   :host,
   body {
-    font-size: 16px;
-    font-family: 'Lato', Arial, Helvetica, sans-serif;
-    line-height: 1.5;
+    font-size: 16px !important;
+    font-family: 'Lato', Arial, Helvetica, sans-serif !important;
+    line-height: 1.5 !important;
   }
 
   * {
@@ -162,7 +162,7 @@
     display: grid;
     grid-template-rows: auto 1fr;
     background-color: var(--bg-color);
-    box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.25);
+    box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.25);
     z-index: 2147483647;
     will-change: scroll-position;
 
@@ -185,26 +185,25 @@
     }
 
     &--invisible {
-      transform: translateX(calc(100% + 0.5rem));
+      transform: translateX(calc(100% + 0.5em));
 
       &.bookmark-bar--left {
-        transform: translateX(calc(-100% - 0.5rem));
+        transform: translateX(calc(-100% - 0.5em));
       }
     }
   }
 
   .main {
-    padding: 0.5rem 0.25rem 0.5rem 0.5rem;
+    padding: 0.5em 0.25em 0.5em 0.5em;
     overflow: hidden scroll;
     will-change: transform;
 
     &::-webkit-scrollbar {
-      width: 0.25rem;
+      width: 0.25em;
     }
     &::-webkit-scrollbar-thumb {
       background-color: var(--scrollbar-color);
-      box-shadow: inset 0 0.5rem var(--bg-color),
-        inset 0 -0.5rem var(--bg-color);
+      box-shadow: inset 0 0.5em var(--bg-color), inset 0 -0.5em var(--bg-color);
     }
   }
 </style>

@@ -38,7 +38,7 @@
     top: 0;
     bottom: 0;
     left: 0;
-    width: 0.25rem;
+    width: 0.25em;
     transform: translateX(-50%);
     cursor: col-resize;
     z-index: 2;
@@ -50,7 +50,7 @@
     }
 
     &--resizing {
-      width: 1.25rem;
+      width: 1.25em;
     }
   }
 </style>

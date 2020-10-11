@@ -69,18 +69,18 @@
     display: grid;
     grid-auto-flow: column;
     grid-template-columns: auto 1fr auto;
-    padding: 0.5rem 0.5rem 0 0.5rem;
+    padding: 0.5em 0.5em 0 0.5em;
 
     &::before {
       content: '';
       position: absolute;
       display: block;
-      top: 0.5rem;
-      right: 0.5rem;
+      top: 0.5em;
+      right: 0.5em;
       bottom: 0;
-      left: 0.5rem;
+      left: 0.5em;
       background: linear-gradient(45deg, #304ffe, #2979ff);
-      box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.25);
+      box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.25);
       transform-origin: center bottom;
       transition: transform 0.125s;
     }
@@ -96,10 +96,10 @@
       .header {
         &__icons {
           &--left {
-            transform: translate(-0.25rem, -0.25rem) rotate(0.5turn);
+            transform: translate(-0.25em, -0.25em) rotate(0.5turn);
           }
           &--right {
-            transform: translate(0.25rem, -0.25rem) rotate(-0.5turn);
+            transform: translate(0.25em, -0.25em) rotate(-0.5turn);
           }
         }
         &__icon {
@@ -113,7 +113,7 @@
           }
         }
         &__search {
-          transform: translateY(-0.25rem);
+          transform: translateY(-0.25em);
           animation: blink 0.125s cubic-bezier(0.47, 0, 0.745, 0.715);
         }
       }
@@ -122,14 +122,14 @@
     &__icons {
       position: relative;
       display: flex;
-      padding: 0.5rem;
+      padding: 0.5em;
       transition: transform 0.125s;
       z-index: 1;
     }
 
     &__icon {
-      width: 1.5rem;
-      height: 1.5rem;
+      width: 1.5em;
+      height: 1.5em;
       fill: #fafafa;
       transition: opacity 0.125s, visibility 0.125s;
 
@@ -137,7 +137,7 @@
         opacity: 0;
         visibility: hidden;
         transform: scale(-1);
-        margin-left: -1.5rem;
+        margin-left: -1.5em;
       }
     }
 

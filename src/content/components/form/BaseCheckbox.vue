@@ -41,7 +41,7 @@
     &__label {
       position: relative;
       display: block;
-      padding-left: 1.5rem;
+      padding-left: 1.5em;
 
       &::before,
       &::after {
@@ -49,9 +49,9 @@
         position: absolute;
         left: 0;
         top: 50%;
-        margin-top: -0.5rem;
-        height: 1rem;
-        width: 1rem;
+        margin-top: -0.5em;
+        height: 1em;
+        width: 1em;
         cursor: pointer;
       }
 
@@ -62,7 +62,7 @@
       }
 
       &::after {
-        border: 0.125rem solid var(--font-color);
+        border: 0.125em solid var(--font-color);
         transition: background-color 0.2s ease, transform 0.2s ease;
       }
     }
