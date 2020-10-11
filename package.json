@@ -24,8 +24,8 @@
     "html-webpack-plugin": "^4.5.0",
     "mini-css-extract-plugin": "^0.11.2",
     "node-sass": "^4.14.1",
-    "sass-loader": "^10.0.2",
-    "style-loader": "^1.2.1",
+    "sass-loader": "^10.0.3",
+    "style-loader": "^2.0.0",
     "vue-loader": "^16.0.0-beta.8",
     "vue-template-compiler": "^2.6.12",
     "webpack": "^4.44.2",
@@ -34,7 +34,7 @@
   "dependencies": {
     "@vue-reactivity/watch": "^0.1.2",
     "@vue/reactivity": "^3.0.0",
-    "fast-fuzzy": "^1.10.7",
+    "fast-fuzzy": "^1.10.8",
     "vue": "^3.0.0"
   },
   "browserslist": [
