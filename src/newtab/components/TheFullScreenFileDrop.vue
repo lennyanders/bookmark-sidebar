@@ -39,11 +39,15 @@
   const showOverlay = () => (visible.value = true);
 
   addEventListener('dragenter', showOverlay, { passive: true });
+  addEventListener('dragover', (event) => event.preventDefault());
   addEventListener(
     'dragleave',
     (event) => !event.relatedTarget && hideOverlay(),
     { passive: true },
   );
+  addEventListener('dragend', hideOverlay, { passive: true });
+  addEventListener('dragexit', hideOverlay, { passive: true });
+  addEventListener('drop', hideOverlay, { passive: true });
 
   const tinEyeFrom = reactive({
     fileFieldName: 'image',
@@ -130,10 +134,10 @@
     left: 0;
     width: 100%;
     height: 100%;
-    padding: 1.5em;
+    padding: 0.75em;
     display: grid;
     grid-template: 1fr 1fr / 1fr 1fr;
-    gap: 3em;
+    gap: 1.5em;
     background-color: var(--bg-color);
     font-size: 2em;
     z-index: 2147483647;
@@ -161,10 +165,10 @@
         position: absolute;
         background-color: var(--bg-color);
         filter: brightness(0.75);
-        top: 0.5em;
-        right: 0.5em;
-        bottom: 0.5em;
-        left: 0.5em;
+        top: 0.25em;
+        right: 0.25em;
+        bottom: 0.25em;
+        left: 0.25em;
       }
 
       > input {
