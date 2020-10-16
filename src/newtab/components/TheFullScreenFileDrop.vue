@@ -140,7 +140,6 @@
     gap: 1.5em;
     background-color: var(--bg-color);
     font-size: 2em;
-    z-index: 2147483647;
 
     &--appearing {
       transition: opacity 0.25s ease;

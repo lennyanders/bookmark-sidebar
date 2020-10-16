@@ -163,7 +163,6 @@
     grid-template-rows: auto 1fr;
     background-color: var(--bg-color);
     box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.25);
-    z-index: 2147483647;
     will-change: scroll-position;
 
     &--light {
