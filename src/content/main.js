@@ -3,6 +3,7 @@ import App from './App';
 
 const bmBar = document.createElement('div');
 bmBar.style.position = 'fixed';
+bmBar.style.zIndex = 2147483647;
 
 const shadowRoot = bmBar.attachShadow({ mode: 'closed' });
 const vueEl = document.createElement('div');
