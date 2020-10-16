@@ -2,6 +2,8 @@ import { createApp } from 'vue';
 import App from './App';
 
 const bmBar = document.createElement('div');
+bmBar.style.position = 'fixed';
+
 const shadowRoot = bmBar.attachShadow({ mode: 'closed' });
 const vueEl = document.createElement('div');
 
