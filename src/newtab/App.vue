@@ -5,7 +5,7 @@
 
 <script>
   import TheFullScreenFileDrop from './components/TheFullScreenFileDrop';
-  import TheBookmarkBar from '../content/App';
+  import TheBookmarkBar from '../bookmarkBar/App';
 
   export default {
     components: {

@@ -73,27 +73,15 @@ module.exports = async ({ NODE_ENV }) => {
           {
             test: /\.css$/,
             use: [
-              {
-                loader: 'style-loader',
-                options: {
-                  injectType: 'singletonStyleTag',
-                  insert: (element) => (window.styles = element),
-                },
-              },
-              'css-loader',
+              './raw-to-javascript-variable-loader',
+              'css-loader?sourceMap=false',
             ],
           },
           {
             test: /\.scss$/,
             use: [
-              {
-                loader: 'style-loader',
-                options: {
-                  injectType: 'singletonStyleTag',
-                  insert: (element) => (window.styles = element),
-                },
-              },
-              'css-loader',
+              './raw-to-javascript-variable-loader',
+              'css-loader?sourceMap=false',
               'sass-loader',
             ],
           },
