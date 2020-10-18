@@ -1,9 +1,11 @@
 export const scriptRunsOnTab = new Set([]);
 
-const insertAndToggleBmBar = (tab) => {
+const insertAndToggleBmBar = ({ id, index } = {}) => {
+  if (!id) return;
+
   // if bookmarkbar is already inserted
-  if (scriptRunsOnTab.has(tab.id)) {
-    chrome.tabs.sendMessage(tab.id, { command: 'toggle-bm-bar' });
+  if (scriptRunsOnTab.has(id)) {
+    chrome.tabs.sendMessage(id, { command: 'toggle-bm-bar' });
     return;
   }
 
@@ -13,7 +15,7 @@ const insertAndToggleBmBar = (tab) => {
 
     // if script couldn't be inserted open newtab
     chrome.tabs.create({
-      index: tab.index + 1,
+      index: index + 1,
       url: 'chrome://newtab?bar=open',
     });
   });
