@@ -11,7 +11,7 @@ const insertAndToggleBmBar = ({ id, index } = {}) => {
 
   chrome.tabs.insertCSS({ file: 'fonts/lato.css' });
   chrome.tabs.executeScript({ file: 'content/main.js' }, ([success] = []) => {
-    if (success) return;
+    if (success !== undefined) return;
 
     // if script couldn't be inserted open newtab
     chrome.tabs.create({
