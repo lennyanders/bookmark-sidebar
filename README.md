@@ -1,16 +1,19 @@
 # bookmark-sidebar
 
 ## Project setup
+
 ```
 npm i
 ```
 
 ### Compiles and updates for development
+
 ```
-npm run serve
+npm start
 ```
 
 ### Compiles and minifies for production
+
 ```
 npm run build
 ```

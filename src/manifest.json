@@ -34,6 +34,6 @@
   "chrome_url_overrides": {
     "newtab": "newtab/index.html"
   },
-  "web_accessible_resources": ["content/main.css", "fonts/*"],
+  "web_accessible_resources": ["fonts/*"],
   "manifest_version": 2
 }
