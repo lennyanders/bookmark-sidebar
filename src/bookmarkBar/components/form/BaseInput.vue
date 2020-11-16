@@ -42,14 +42,12 @@
     const { key, ctrlKey } = event;
     if (ctrlKey || key.length !== 1) return;
 
+    /** @type {HTMLInputElement} */
     const input = event.currentTarget;
     if (input.type !== 'text') return;
 
     event.preventDefault();
 
-    /**
-     * @type {HTMLInputElement}
-     */
     let { selectionStart, selectionEnd, value } = input;
 
     const newValue =
