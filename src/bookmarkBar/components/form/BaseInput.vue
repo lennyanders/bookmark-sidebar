@@ -30,6 +30,7 @@
 </script>
 
 <script setup="props, { emit }">
+  import { nextTick } from 'vue';
   import { getUid } from '../../utils';
 
   export const uid = getUid();
@@ -37,24 +38,26 @@
   /**
    * @param {KeyboardEvent} event
    */
-  export const handleKeyDown = (event) => {
+  export const handleKeyDown = async (event) => {
     const { key, ctrlKey } = event;
     if (ctrlKey || key.length !== 1) return;
+
+    const input = event.currentTarget;
+    if (input.type !== 'text') return;
 
     event.preventDefault();
 
     /**
      * @type {HTMLInputElement}
      */
-    const input = event.currentTarget;
     let { selectionStart, selectionEnd, value } = input;
+
     const newValue =
       value.substring(0, selectionStart) + key + value.substring(selectionEnd);
 
-    input.value = newValue;
-    input.setSelectionRange(++selectionEnd, selectionEnd);
-
     emit('update:modelValue', newValue);
+    await nextTick();
+    input.setSelectionRange(++selectionEnd, selectionEnd);
   };
 </script>
 
