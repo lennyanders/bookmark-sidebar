@@ -1,3 +1,22 @@
+<script setup>
+  import { ref, toRef, watchEffect, nextTick } from 'vue';
+  import { store, mutations } from '../../store/index';
+
+  const modalVisible = toRef(store, 'modalVisible');
+  const modalComponent = toRef(store, 'modalComponent');
+  const modalComponentProps = toRef(store, 'modalComponentProps');
+
+  const hideModal = mutations.hideModal;
+
+  const modal = ref(null);
+  watchEffect(async () => {
+    if (modalVisible.value) {
+      await nextTick();
+      modal.value.focus();
+    }
+  });
+</script>
+
 <template>
   <transition name="modal">
     <div
@@ -24,25 +43,6 @@
     </div>
   </transition>
 </template>
-
-<script setup="props">
-  import { ref, toRef, watchEffect, nextTick } from 'vue';
-  import { store, mutations } from '../../store/index';
-
-  export const modalVisible = toRef(store, 'modalVisible');
-  export const modalComponent = toRef(store, 'modalComponent');
-  export const modalComponentProps = toRef(store, 'modalComponentProps');
-
-  export const hideModal = mutations.hideModal;
-
-  export const modal = ref(null);
-  watchEffect(async () => {
-    if (modalVisible.value) {
-      await nextTick();
-      modal.value.focus();
-    }
-  });
-</script>
 
 <style lang="scss">
   .modal {

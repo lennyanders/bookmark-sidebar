@@ -1,3 +1,20 @@
+<script setup>
+  import { markRaw, defineProps } from 'vue';
+  import { mutations } from '../../store';
+  import ModalEditBm from '../modal/ModalEditBm';
+
+  const props = defineProps({
+    bm: {
+      type: Object,
+      required: true,
+    },
+  });
+
+  const editBm = () => {
+    mutations.showModal(markRaw(ModalEditBm), { bm: props.bm });
+  };
+</script>
+
 <template>
   <button class="bookmark__option" @click.passive="editBm">
     <svg class="bookmark__icon" viewBox="0 0 24 24">
@@ -8,24 +25,3 @@
     </svg>
   </button>
 </template>
-
-<script>
-  export default {
-    props: {
-      bm: {
-        type: Object,
-        required: true,
-      },
-    },
-  };
-</script>
-
-<script setup="props">
-  import { markRaw } from 'vue';
-  import { mutations } from '../../store';
-  import ModalEditBm from '../modal/ModalEditBm';
-
-  export const editBm = () => {
-    mutations.showModal(markRaw(ModalEditBm), { bm: props.bm });
-  };
-</script>

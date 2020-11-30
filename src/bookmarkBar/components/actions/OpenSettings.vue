@@ -1,3 +1,13 @@
+<script setup>
+  import { markRaw } from 'vue';
+  import { mutations } from '../../store';
+  import ModalSettings from '../modal/ModalSettings';
+
+  const showSettings = () => {
+    mutations.showModal(markRaw(ModalSettings));
+  };
+</script>
+
 <template>
   <button
     class="header__icon header__icon--primary"
@@ -11,13 +21,3 @@
     </svg>
   </button>
 </template>
-
-<script setup="props">
-  import { markRaw } from 'vue';
-  import { mutations } from '../../store';
-  import ModalSettings from '../modal/ModalSettings';
-
-  export const showSettings = () => {
-    mutations.showModal(markRaw(ModalSettings));
-  };
-</script>

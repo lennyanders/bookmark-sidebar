@@ -1,12 +1,12 @@
-import loaderUtils from 'loader-utils';
+const { getOptions, stringifyRequest } = require('loader-utils');
 
-export const pitch = function (request) {
-  const { insert } = loaderUtils.getOptions(this) || {};
+module.exports.pitch = function (request) {
+  const { insert } = getOptions(this) || {};
 
   const variable = `window['${insert || 'styles'}']`;
 
   return `
-    const content = require(${loaderUtils.stringifyRequest(
+    const content = require(${stringifyRequest(
       this,
       `!!${request}`,
     )}).default.toString();

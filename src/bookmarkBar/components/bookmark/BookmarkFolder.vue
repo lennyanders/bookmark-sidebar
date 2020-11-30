@@ -1,5 +1,36 @@
+<script setup>
+  import { defineAsyncComponent, defineProps } from 'vue';
+  import EditBm from '../actions/EditBm';
+  import AddBm from '../actions/AddBm';
+  import TransitionExpand from '../TransitionExpand';
+  const BaseBookmark = defineAsyncComponent(() => import('./BaseBookmark'));
+
+  const props = defineProps({
+    bm: {
+      type: Object,
+      required: true,
+    },
+  });
+
+  import useEditBm from './useEditBm';
+  import useKeyboard from './useKeyboard';
+  import useDragAndDrop from './useDragAndDrop';
+  import useFocus from './useFocus';
+  import useIsSearching from './useIsSearching';
+  import useEditBookmarkOnRightClick from './useEditBookmarkOnRightClick';
+  import useChildren from './useChildren';
+
+  const { childrenVisible, openChildren, hideChildren } = useChildren(props);
+  const { contextmenu } = useEditBm(props);
+  const { keydown } = useKeyboard(props);
+  const { dragstart, dragenter } = useDragAndDrop(props, childrenVisible);
+  const { focusableBmPart, setActiveBm } = useFocus(props, childrenVisible);
+  const { isSearching } = useIsSearching();
+  const { editBookmarkOnRightClick } = useEditBookmarkOnRightClick();
+</script>
+
 <template>
-  <li class="bookmark" ref="root" @keyup.passive.arrow-left="hideChildren">
+  <li class="bookmark" @keyup.passive.arrow-left="hideChildren">
     <div
       class="bookmark__content"
       :draggable="!isSearching"
@@ -49,53 +80,3 @@
     </TransitionExpand>
   </li>
 </template>
-
-<script>
-  import EditBm from '../actions/EditBm';
-  import AddBm from '../actions/AddBm';
-  import TransitionExpand from '../TransitionExpand';
-  const BaseBookmark = defineAsyncComponent(() => import('./BaseBookmark'));
-
-  export default {
-    props: {
-      bm: {
-        type: Object,
-        required: true,
-      },
-    },
-    components: {
-      EditBm,
-      AddBm,
-      TransitionExpand,
-      BaseBookmark,
-    },
-  };
-</script>
-
-<script setup="props">
-  import { defineAsyncComponent } from 'vue';
-
-  import useEditBm from './useEditBm';
-  import useKeyboard from './useKeyboard';
-  import useDragAndDrop from './useDragAndDrop';
-  import useFocus from './useFocus';
-  import useIsSearching from './useIsSearching';
-  import useEditBookmarkOnRightClick from './useEditBookmarkOnRightClick';
-  import useChildren from './useChildren';
-
-  export const { childrenVisible, openChildren, hideChildren } = useChildren(
-    props,
-  );
-  export const { contextmenu } = useEditBm(props);
-  export const { keydown } = useKeyboard(props);
-  export const { dragstart, dragenter } = useDragAndDrop(
-    props,
-    childrenVisible,
-  );
-  export const { focusableBmPart, setActiveBm } = useFocus(
-    props,
-    childrenVisible,
-  );
-  export const { isSearching } = useIsSearching();
-  export const { editBookmarkOnRightClick } = useEditBookmarkOnRightClick();
-</script>

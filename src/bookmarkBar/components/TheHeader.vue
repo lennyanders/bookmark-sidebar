@@ -1,5 +1,38 @@
+<script setup>
+  import OpenSettings from './actions/OpenSettings';
+  import LeaveSearch from './actions/LeaveSearch';
+  import AddBm from './actions/AddBm';
+
+  import { ref, toRef, defineProps, useCssVars } from 'vue';
+  import { store, mutations } from '../store';
+
+  const props = defineProps({
+    bm: {
+      type: Object,
+      required: true,
+    },
+  });
+
+  const placeholder = chrome.i18n.getMessage('searchPlaceholder');
+
+  const searchFocused = toRef(store, 'searchFocused');
+  const searchQuery = toRef(store, 'searchQuery');
+
+  const searchInput = ref(null);
+  const leaveSearchView = () => {
+    searchInput.value?.blur();
+    mutations.stopSearching();
+  };
+
+  const barWidth = toRef(store, 'barWidth');
+</script>
+
 <template>
-  <header class="header" :class="{ 'header--searching': searchFocused }">
+  <header
+    class="header"
+    :class="{ 'header--searching': searchFocused }"
+    :style="{ '--bar-width': barWidth }"
+  >
     <div class="header__icons header__icons--left">
       <OpenSettings />
       <LeaveSearch @click.passive="leaveSearchView" />
@@ -26,42 +59,6 @@
     </div>
   </header>
 </template>
-
-<script>
-  import OpenSettings from './actions/OpenSettings';
-  import LeaveSearch from './actions/LeaveSearch';
-  import AddBm from './actions/AddBm';
-
-  export default {
-    props: {
-      bm: {
-        type: Object,
-        required: true,
-      },
-    },
-    components: {
-      OpenSettings,
-      LeaveSearch,
-      AddBm,
-    },
-  };
-</script>
-
-<script setup="props">
-  import { ref, toRef } from 'vue';
-  import { store, mutations } from '../store';
-
-  export const placeholder = chrome.i18n.getMessage('searchPlaceholder');
-
-  export const searchFocused = toRef(store, 'searchFocused');
-  export const searchQuery = toRef(store, 'searchQuery');
-
-  export const searchInput = ref(null);
-  export const leaveSearchView = () => {
-    searchInput.value?.blur();
-    mutations.stopSearching();
-  };
-</script>
 
 <style lang="scss">
   .header {

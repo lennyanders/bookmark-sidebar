@@ -1,61 +1,13 @@
-<template>
-  <Transition
-    name="bookmark-bar"
-    enter-active-class="bookmark-bar--appearing"
-    leave-active-class="bookmark-bar--disappearing"
-    enter-from-class="bookmark-bar--invisible"
-    leave-to-class="bookmark-bar--invisible"
-    @after-enter="focusBar"
-  >
-    <div
-      v-if="bm && bm.id"
-      v-show="barVisible"
-      class="bookmark-bar"
-      :class="{
-        'bookmark-bar--left': barLeft,
-        'bookmark-bar--light': activeTheme === 'light',
-        'bookmark-bar--dark': activeTheme === 'dark',
-      }"
-      tabindex="-1"
-      @click.passive.stop
-      @keydown.passive.stop
-      @keydown.up.down.prevent
-      ref="root"
-    >
-      <TheHeader :bm="bm" />
-      <main class="main">
-        <ul v-if="bm.children.length" @keyup.esc="stopSearching">
-          <BaseBookmark v-for="bm of bm.children" :key="bm.id" :bm="bm" />
-        </ul>
-        <span v-else>Nothing found</span>
-      </main>
-      <TheModal />
-      <TheResizer />
-    </div>
-  </Transition>
-</template>
-
-<script>
+<script setup>
   import TheHeader from './components/TheHeader';
   import BaseBookmark from './components/bookmark/BaseBookmark';
   import TheModal from './components/modal/TheModal';
   import TheResizer from './components/TheResizer';
 
-  export default {
-    components: {
-      TheHeader,
-      BaseBookmark,
-      TheModal,
-      TheResizer,
-    },
-  };
-</script>
-
-<script setup="props">
-  import { ref, toRef, onBeforeUnmount } from 'vue';
+  import { ref, toRef, onBeforeUnmount, computed, useCssVars } from 'vue';
   import { store, mutations } from './store';
 
-  export const barVisible = ref(
+  const barVisible = ref(
     !location.href.startsWith('chrome-extension') ||
       location.href.endsWith('?bar=open'),
   );
@@ -83,17 +35,56 @@
     removeEventListener('blur', hideBar, { passive: true });
   });
 
-  export const root = ref(null);
-  export const focusBar = () => root.value?.focus();
+  const root = ref(null);
+  const focusBar = () => root.value?.focus();
 
-  export const stopSearching = mutations.stopSearching;
-  export const barWidth = toRef(store, 'barWidth');
-  export const barLeft = toRef(store, 'barLeft');
-  export const activeTheme = toRef(store, 'activeTheme');
-  export const bm = toRef(store, 'filteredBms');
+  const stopSearching = mutations.stopSearching;
+
+  const barLeft = toRef(store, 'barLeft');
+  const activeTheme = toRef(store, 'activeTheme');
+  const bm = toRef(store, 'filteredBms');
+  const barWidth = computed(() => `${store.barWidth}px`);
 </script>
 
-<style lang="scss" vars="{ 'bar-width': barWidth.value }">
+<template>
+  <Transition
+    name="bookmark-bar"
+    enter-active-class="bookmark-bar--appearing"
+    leave-active-class="bookmark-bar--disappearing"
+    enter-from-class="bookmark-bar--invisible"
+    leave-to-class="bookmark-bar--invisible"
+    @after-enter="focusBar"
+  >
+    <div
+      v-if="bm && bm.id"
+      v-show="barVisible"
+      class="bookmark-bar"
+      :class="{
+        'bookmark-bar--left': barLeft,
+        'bookmark-bar--light': activeTheme === 'light',
+        'bookmark-bar--dark': activeTheme === 'dark',
+      }"
+      :style="{ width: barWidth }"
+      tabindex="-1"
+      @click.passive.stop
+      @keydown.passive.stop
+      @keydown.up.down.prevent
+      ref="root"
+    >
+      <TheHeader :bm="bm" />
+      <main class="main">
+        <ul v-if="bm.children.length" @keyup.esc="stopSearching">
+          <BaseBookmark v-for="bm of bm.children" :key="bm.id" :bm="bm" />
+        </ul>
+        <span v-else>Nothing found</span>
+      </main>
+      <TheModal />
+      <TheResizer />
+    </div>
+  </Transition>
+</template>
+
+<style lang="scss">
   @import 'reset';
 
   @mixin lightTheme() {
@@ -158,7 +149,6 @@
     top: 0;
     right: 0;
     bottom: 0;
-    width: calc(var(--bar-width) * 1px);
     display: grid;
     grid-template-rows: auto 1fr;
     background-color: var(--bg-color);

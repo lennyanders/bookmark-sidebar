@@ -1,4 +1,27 @@
-<template>
+<script setup>
+  import { defineProps } from 'vue';
+  import { getUid } from '../../utils';
+
+  const props = defineProps({
+    text: {
+      type: String,
+      required: true,
+    },
+    options: {
+      type: Array,
+      required: true,
+      validator: (array) => array.every((item) => item.value && item.text),
+    },
+    modelValue: {
+      type: String,
+      required: true,
+    },
+  });
+
+  const uid = getUid();
+</script>
+
+<template inherit-attrs="false">
   <div class="select">
     <label class="select__label" :for="uid" v-text="text" />
     <select
@@ -17,33 +40,6 @@
     </select>
   </div>
 </template>
-
-<script>
-  export default {
-    inheritAttrs: false,
-    props: {
-      text: {
-        type: String,
-        required: true,
-      },
-      options: {
-        type: Array,
-        required: true,
-        validator: (array) => array.every((item) => item.value && item.text),
-      },
-      modelValue: {
-        type: String,
-        required: true,
-      },
-    },
-  };
-</script>
-
-<script setup="props">
-  import { getUid } from '../../utils';
-
-  export const uid = getUid();
-</script>
 
 <style lang="scss">
   @import '../../functions.scss';

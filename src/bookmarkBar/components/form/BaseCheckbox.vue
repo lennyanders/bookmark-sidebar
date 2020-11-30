@@ -1,4 +1,22 @@
-<template>
+<script setup>
+  import { defineProps } from 'vue';
+  import { getUid } from '../../utils';
+
+  const props = defineProps({
+    text: {
+      type: String,
+      required: true,
+    },
+    modelValue: {
+      type: Boolean,
+      required: true,
+    },
+  });
+
+  const uid = getUid();
+</script>
+
+<template inherit-attrs="false">
   <div class="checkbox">
     <input
       type="checkbox"
@@ -11,28 +29,6 @@
     <label :for="uid" class="checkbox__label" v-text="text" />
   </div>
 </template>
-
-<script>
-  export default {
-    inheritAttrs: false,
-    props: {
-      text: {
-        type: String,
-        required: true,
-      },
-      modelValue: {
-        type: Boolean,
-        required: true,
-      },
-    },
-  };
-</script>
-
-<script setup="props">
-  import { getUid } from '../../utils';
-
-  export const uid = getUid();
-</script>
 
 <style lang="scss">
   .checkbox {

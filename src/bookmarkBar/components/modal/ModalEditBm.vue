@@ -1,3 +1,35 @@
+<script setup>
+  import BaseInput from '../form/BaseInput';
+  import BaseButton from '../form/BaseButton';
+
+  import { ref, defineProps } from 'vue';
+  import { store, mutations } from '../../store/index';
+  import { actions } from '../../api/index';
+
+  const props = defineProps({
+    bm: {
+      type: Object,
+      required: true,
+    },
+  });
+
+  const newTitle = ref(props.bm.title);
+  const newUrl = ref(props.bm.url);
+
+  const updateBm = () => {
+    actions.editBm({
+      id: props.bm.id,
+      title: newTitle.value,
+      url: newUrl.value,
+    });
+    mutations.hideModal();
+  };
+  const removeBm = () => {
+    actions.removeBm(props.bm.id);
+    mutations.hideModal();
+  };
+</script>
+
 <template>
   <form @submit.prevent="updateBm">
     <h2 class="modal__headline">Lesezeichen bearbeiten</h2>
@@ -11,43 +43,3 @@
     </div>
   </form>
 </template>
-
-<script>
-  import BaseInput from '../form/BaseInput';
-  import BaseButton from '../form/BaseButton';
-
-  export default {
-    props: {
-      bm: {
-        type: Object,
-        required: true,
-      },
-    },
-    components: {
-      BaseInput,
-      BaseButton,
-    },
-  };
-</script>
-
-<script setup="props">
-  import { ref } from 'vue';
-  import { store, mutations } from '../../store/index';
-  import { actions } from '../../api/index';
-
-  export const newTitle = ref(props.bm.title);
-  export const newUrl = ref(props.bm.url);
-
-  export const updateBm = () => {
-    actions.editBm({
-      id: props.bm.id,
-      title: newTitle.value,
-      url: newUrl.value,
-    });
-    mutations.hideModal();
-  };
-  export const removeBm = () => {
-    actions.removeBm(props.bm.id);
-    mutations.hideModal();
-  };
-</script>

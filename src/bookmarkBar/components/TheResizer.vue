@@ -1,18 +1,10 @@
-<template>
-  <div
-    class="resizer"
-    :class="{ 'resizer--right': barLeft, 'resizer--resizing': dragging }"
-    @mousedown.passive="startResizing"
-  />
-</template>
-
-<script setup="props">
+<script setup>
   import { ref, toRef } from 'vue';
   import { store, mutations } from '../store';
   import { actions } from '../api';
 
-  export const dragging = ref(false);
-  export const barLeft = toRef(store, 'barLeft');
+  const dragging = ref(false);
+  const barLeft = toRef(store, 'barLeft');
 
   const resize = (event) => {
     mutations.setBarWidth(
@@ -25,12 +17,20 @@
     removeEventListener('mousemove', resize, { passive: true });
     removeEventListener('mouseup', stopResizing, { passive: true });
   };
-  export const startResizing = () => {
+  const startResizing = () => {
     dragging.value = true;
     addEventListener('mousemove', resize, { passive: true });
     addEventListener('mouseup', stopResizing, { passive: true });
   };
 </script>
+
+<template>
+  <div
+    class="resizer"
+    :class="{ 'resizer--right': barLeft, 'resizer--resizing': dragging }"
+    @mousedown.passive="startResizing"
+  />
+</template>
 
 <style lang="scss">
   .resizer {

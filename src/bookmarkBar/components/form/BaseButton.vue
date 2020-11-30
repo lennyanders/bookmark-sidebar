@@ -1,3 +1,14 @@
+<script setup>
+  import { defineProps } from 'vue';
+
+  const props = defineProps({
+    text: {
+      type: String,
+      required: true,
+    },
+  });
+</script>
+
 // v-bind is more important than "type"
 <template>
   <button
@@ -8,17 +19,6 @@
     v-text="text"
   />
 </template>
-
-<script>
-  export default {
-    props: {
-      text: {
-        type: String,
-        required: true,
-      },
-    },
-  };
-</script>
 
 <style lang="scss">
   .button {

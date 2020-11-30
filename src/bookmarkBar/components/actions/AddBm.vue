@@ -1,3 +1,28 @@
+<script setup>
+  import { markRaw, defineProps } from 'vue';
+  import { mutations } from '../../store';
+  import ModalAddBm from '../modal/ModalAddBm';
+
+  const props = defineProps({
+    btnClasses: {
+      type: Array,
+      default: ['bookmark__option'],
+    },
+    icnClasses: {
+      type: Array,
+      default: ['bookmark__icon'],
+    },
+    bm: {
+      type: Object,
+      required: true,
+    },
+  });
+
+  const addBm = () => {
+    mutations.showModal(markRaw(ModalAddBm), { bm: props.bm });
+  };
+</script>
+
 <template>
   <button :class="btnClasses" @click.passive="addBm">
     <svg :class="icnClasses" viewBox="0 0 24 24">
@@ -6,32 +31,3 @@
     </svg>
   </button>
 </template>
-
-<script>
-  export default {
-    props: {
-      btnClasses: {
-        type: Array,
-        default: ['bookmark__option'],
-      },
-      icnClasses: {
-        type: Array,
-        default: ['bookmark__icon'],
-      },
-      bm: {
-        type: Object,
-        required: true,
-      },
-    },
-  };
-</script>
-
-<script setup="props">
-  import { markRaw } from 'vue';
-  import { mutations } from '../../store';
-  import ModalAddBm from '../modal/ModalAddBm';
-
-  export const addBm = () => {
-    mutations.showModal(markRaw(ModalAddBm), { bm: props.bm });
-  };
-</script>

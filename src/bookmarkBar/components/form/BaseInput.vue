@@ -1,44 +1,26 @@
-<template>
-  <div class="input">
-    <label class="input__label" :for="uid" v-text="text" />
-    <input
-      class="input__el"
-      :id="uid"
-      type="text"
-      v-bind="$attrs"
-      :value="modelValue"
-      @input.passive="$emit('update:modelValue', $event.target.value)"
-      @keydown="handleKeyDown"
-    />
-  </div>
-</template>
-
-<script>
-  export default {
-    inheritAttrs: false,
-    props: {
-      text: {
-        type: String,
-        required: true,
-      },
-      modelValue: {
-        type: [String, Number],
-        required: true,
-      },
-    },
-  };
-</script>
-
 <script setup="props, { emit }">
-  import { nextTick } from 'vue';
+  import { nextTick, defineProps, defineEmit } from 'vue';
   import { getUid } from '../../utils';
 
-  export const uid = getUid();
+  const props = defineProps({
+    text: {
+      type: String,
+      required: true,
+    },
+    modelValue: {
+      type: [String, Number],
+      required: true,
+    },
+  });
+
+  const emit = defineEmit(['update:modelValue']);
+
+  const uid = getUid();
 
   /**
    * @param {KeyboardEvent} event
    */
-  export const handleKeyDown = async (event) => {
+  const handleKeyDown = async (event) => {
     const { key, ctrlKey } = event;
     if (ctrlKey || key.length !== 1) return;
 
@@ -58,6 +40,21 @@
     input.setSelectionRange(++selectionEnd, selectionEnd);
   };
 </script>
+
+<template inherit-attrs="false">
+  <div class="input">
+    <label class="input__label" :for="uid" v-text="text" />
+    <input
+      class="input__el"
+      :id="uid"
+      type="text"
+      v-bind="$attrs"
+      :value="modelValue"
+      @input.passive="$emit('update:modelValue', $event.target.value)"
+      @keydown="handleKeyDown"
+    />
+  </div>
+</template>
 
 <style lang="scss">
   .input {

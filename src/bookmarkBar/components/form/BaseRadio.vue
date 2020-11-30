@@ -1,4 +1,27 @@
-<template>
+<script setup>
+  import { defineProps } from 'vue';
+  import { getUid } from '../../utils';
+
+  const props = defineProps({
+    text: {
+      type: String,
+      required: true,
+    },
+    options: {
+      type: Array,
+      required: true,
+      validator: (array) => array.every((item) => item.value && item.text),
+    },
+    modelValue: {
+      type: [String, Number],
+      required: true,
+    },
+  });
+
+  const name = getUid();
+</script>
+
+<template inherit-attrs="false">
   <fieldset class="radios">
     <legend class="radios__label" v-text="text" />
     <div class="radio" v-for="{ value, text } of options" :key="value">
@@ -16,33 +39,6 @@
     </div>
   </fieldset>
 </template>
-
-<script>
-  export default {
-    inheritAttrs: false,
-    props: {
-      text: {
-        type: String,
-        required: true,
-      },
-      options: {
-        type: Array,
-        required: true,
-        validator: (array) => array.every((item) => item.value && item.text),
-      },
-      modelValue: {
-        type: [String, Number],
-        required: true,
-      },
-    },
-  };
-</script>
-
-<script setup="props">
-  import { getUid } from '../../utils';
-
-  export const name = getUid();
-</script>
 
 <style lang="scss">
   .radios {

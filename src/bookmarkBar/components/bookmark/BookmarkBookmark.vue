@@ -1,5 +1,33 @@
+<script setup>
+  import EditBm from '../actions/EditBm';
+
+  import { computed, defineProps } from 'vue';
+  import { store } from '../../store';
+  import useEditBm from './useEditBm';
+  import useKeyboard from './useKeyboard';
+  import useDragAndDrop from './useDragAndDrop';
+  import useFocus from './useFocus';
+  import useIsSearching from './useIsSearching';
+  import useEditBookmarkOnRightClick from './useEditBookmarkOnRightClick';
+
+  const props = defineProps({
+    bm: {
+      type: Object,
+      required: true,
+    },
+  });
+
+  const { contextmenu } = useEditBm(props);
+  const { keydown } = useKeyboard(props);
+  const { dragstart, dragenter } = useDragAndDrop(props);
+  const { focusableBmPart, setActiveBm } = useFocus(props);
+  const { isSearching } = useIsSearching();
+  const { editBookmarkOnRightClick } = useEditBookmarkOnRightClick();
+  const isOpen = computed(() => props.bm.url === store.url);
+</script>
+
 <template>
-  <li class="bookmark" ref="root">
+  <li class="bookmark">
     <div
       class="bookmark__content"
       :draggable="!isSearching"
@@ -30,38 +58,3 @@
     </div>
   </li>
 </template>
-
-<script>
-  import EditBm from '../actions/EditBm';
-
-  export default {
-    props: {
-      bm: {
-        type: Object,
-        required: true,
-      },
-    },
-    components: {
-      EditBm,
-    },
-  };
-</script>
-
-<script setup="props">
-  import { computed } from 'vue';
-  import { store } from '../../store';
-  import useEditBm from './useEditBm';
-  import useKeyboard from './useKeyboard';
-  import useDragAndDrop from './useDragAndDrop';
-  import useFocus from './useFocus';
-  import useIsSearching from './useIsSearching';
-  import useEditBookmarkOnRightClick from './useEditBookmarkOnRightClick';
-
-  export const { contextmenu } = useEditBm(props);
-  export const { keydown } = useKeyboard(props);
-  export const { dragstart, dragenter } = useDragAndDrop(props);
-  export const { focusableBmPart, setActiveBm } = useFocus(props);
-  export const { isSearching } = useIsSearching();
-  export const { editBookmarkOnRightClick } = useEditBookmarkOnRightClick();
-  export const isOpen = computed(() => props.bm.url === store.url);
-</script>

@@ -1,13 +1,13 @@
-import manifest from './src/manifest.json';
-import { version } from './package.json';
+const manifest = require('./src/manifest.json');
+const { version } = require('./package.json');
 
-import path from 'path';
-import { emptyDir, outputJson, copy } from 'fs-extra';
+const path = require('path');
+const { emptyDir, outputJson, copy } = require('fs-extra');
 
-import { DefinePlugin } from 'webpack';
-import { VueLoaderPlugin } from 'vue-loader';
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import HtmlPlugin from 'html-webpack-plugin';
+const { DefinePlugin } = require('webpack');
+const { VueLoaderPlugin } = require('vue-loader');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HtmlPlugin = require('html-webpack-plugin');
 
 const resolve = (dir) => path.resolve(__dirname, dir);
 
@@ -35,19 +35,6 @@ module.exports = async ({ NODE_ENV }) => {
         filename: 'main.js',
         path: resolve('dist/background'),
       },
-      module: {
-        rules: [
-          {
-            test: /\.js$/,
-            loader: 'babel-loader',
-          },
-          // needed to bundle @vue-reactivity/watch
-          {
-            test: /\.mjs$/,
-            resolve: { mainFields: ['browser', 'module', 'main'] },
-          },
-        ],
-      },
     },
     //
     // content script
@@ -65,10 +52,6 @@ module.exports = async ({ NODE_ENV }) => {
           {
             test: /\.vue$/,
             loader: 'vue-loader',
-          },
-          {
-            test: /\.js$/,
-            loader: 'babel-loader',
           },
           {
             test: /\.css$/,
@@ -114,10 +97,6 @@ module.exports = async ({ NODE_ENV }) => {
           {
             test: /\.vue$/,
             loader: 'vue-loader',
-          },
-          {
-            test: /\.js$/,
-            loader: 'babel-loader',
           },
           {
             test: /\.css$/,

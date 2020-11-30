@@ -1,41 +1,9 @@
-<template>
-  <Transition
-    name="file-overlay"
-    enter-active-class="file-overlay--appearing"
-    leave-active-class="file-overlay--disappearing"
-    enter-from-class="file-overlay--invisible"
-    leave-to-class="file-overlay--invisible"
-  >
-    <div class="file-overlay" v-show="visible">
-      <form
-        v-for="form of forms"
-        :action="form.action"
-        :method="form.method"
-        :enctype="form.enctype"
-        :target="form.target"
-        @submit="form.customSubmitHandler"
-        @submit.passive="hideOverlay"
-        class="file-overlay__zone"
-      >
-        <span class="file-overlay__title">Search on {{ form.name }}</span>
-        <input
-          type="file"
-          :name="form.fileFieldName"
-          @input="
-            $event.target.form.requestSubmit(), $event.target.form.reset()
-          "
-        />
-      </form>
-    </div>
-  </Transition>
-</template>
-
-<script setup="props">
+<script setup>
   import { reactive, ref, toRef } from 'vue';
 
-  export const visible = ref(false);
+  const visible = ref(false);
 
-  export const hideOverlay = () => (visible.value = false);
+  const hideOverlay = () => (visible.value = false);
   const showOverlay = () => (visible.value = true);
 
   addEventListener('dragenter', showOverlay, { passive: true });
@@ -98,7 +66,7 @@
     },
   });
 
-  export const forms = [
+  const forms = [
     {
       action: 'https://saucenao.com/search.php',
       method: 'POST',
@@ -126,6 +94,39 @@
     tinEyeFrom,
   ];
 </script>
+
+<template>
+  <Transition
+    name="file-overlay"
+    enter-active-class="file-overlay--appearing"
+    leave-active-class="file-overlay--disappearing"
+    enter-from-class="file-overlay--invisible"
+    leave-to-class="file-overlay--invisible"
+  >
+    <div class="file-overlay" v-show="visible">
+      <form
+        v-for="form of forms"
+        :key="form.name"
+        :action="form.action"
+        :method="form.method"
+        :enctype="form.enctype"
+        :target="form.target"
+        @submit="form.customSubmitHandler"
+        @submit.passive="hideOverlay"
+        class="file-overlay__zone"
+      >
+        <span class="file-overlay__title">Search on {{ form.name }}</span>
+        <input
+          type="file"
+          :name="form.fileFieldName"
+          @input="
+            $event.target.form.requestSubmit(), $event.target.form.reset()
+          "
+        />
+      </form>
+    </div>
+  </Transition>
+</template>
 
 <style lang="scss">
   .file-overlay {
