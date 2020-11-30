@@ -3,6 +3,7 @@ import TheBookmarkBar from '../bookmarkBar/App';
 
 const bmBar = document.createElement('div');
 bmBar.style.position = 'fixed';
+bmBar.style.display = 'block';
 bmBar.style.zIndex = 2147483647;
 
 const shadowRoot = bmBar.attachShadow({ mode: 'closed' });
