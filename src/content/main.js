@@ -1,5 +1,5 @@
 import { createApp, h } from 'vue';
-import TheBookmarkBar from '../bookmarkBar/App';
+import TheBookmarkBar from '../bookmark-bar/App';
 
 const bmBar = document.createElement('div');
 bmBar.style.position = 'fixed';

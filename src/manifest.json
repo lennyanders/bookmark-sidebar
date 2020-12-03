@@ -20,7 +20,7 @@
     }
   },
   "background": {
-    "scripts": ["background/main.js"],
+    "scripts": ["background.js"],
     "persistent": true
   },
   "browser_action": {
@@ -32,7 +32,7 @@
     "default_title": "Lesezeichen"
   },
   "chrome_url_overrides": {
-    "newtab": "newtab/index.html"
+    "newtab": "newtab.html"
   },
   "web_accessible_resources": ["fonts/*"],
   "manifest_version": 2
