@@ -12,25 +12,20 @@ import {
 
 await deleteDist();
 
+const esbuildOptions = {
+  minify: true,
+  define: {
+    'process.env.NODE_ENV': JSON.stringify('production'),
+  },
+};
+
 await Promise.all([
-  buildBackground(esbuild, {
-    define: {
-      'process.env.NODE_ENV': JSON.stringify('production'),
-    },
-  }),
+  buildBackground(esbuild, esbuildOptions),
   (async () => {
-    await buildContent(esbuild, {
-      define: {
-        'process.env.NODE_ENV': JSON.stringify('production'),
-      },
-    });
+    await buildContent(esbuild, esbuildOptions);
     await afterBuildContent();
   })(),
-  buildNewtab(esbuild, {
-    define: {
-      'process.env.NODE_ENV': JSON.stringify('production'),
-    },
-  }),
+  buildNewtab(esbuild, esbuildOptions),
   copyPublicFiles(),
   writeManifest(),
 ]);

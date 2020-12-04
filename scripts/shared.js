@@ -71,7 +71,6 @@ export const buildBackground = createBuilder({
   outfile: 'dist/background.js',
   format: 'esm',
   bundle: true,
-  minify: true,
 });
 
 export const buildContent = createBuilder({
@@ -79,7 +78,6 @@ export const buildContent = createBuilder({
   outfile: 'dist/content.js',
   format: 'esm',
   bundle: true,
-  minify: true,
   plugins: [vue, sass],
   resolveExtensions: ['.js', '.vue'],
   define: {
@@ -93,7 +91,6 @@ export const buildNewtab = createBuilder({
   outfile: 'dist/newtab.js',
   format: 'esm',
   bundle: true,
-  minify: true,
   plugins: [vue, sass],
   resolveExtensions: ['.js', '.vue'],
   define: {

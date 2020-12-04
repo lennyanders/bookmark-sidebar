@@ -13,26 +13,22 @@ import {
 
 const [service] = await Promise.all([startService(), deleteDist()]);
 
+const esbuildOptions = {
+  sourcemap: 'inline',
+  incremental: true,
+  define: {
+    'process.env.NODE_ENV': JSON.stringify('development'),
+  },
+};
+
 const [
   { rebuild: rebuildBackground },
   rebuildContent,
   { rebuild: rebuildNewtab },
 ] = await Promise.all([
-  buildBackground(service, {
-    sourcemap: 'inline',
-    incremental: true,
-    define: {
-      'process.env.NODE_ENV': JSON.stringify('development'),
-    },
-  }),
+  buildBackground(service, esbuildOptions),
   (async () => {
-    const { rebuild } = await buildContent(service, {
-      sourcemap: 'inline',
-      incremental: true,
-      define: {
-        'process.env.NODE_ENV': JSON.stringify('development'),
-      },
-    });
+    const { rebuild } = await buildContent(service, esbuildOptions);
     await afterBuildContent();
 
     return async () => {
@@ -40,13 +36,7 @@ const [
       await afterBuildContent();
     };
   })(),
-  buildNewtab(service, {
-    sourcemap: 'inline',
-    incremental: true,
-    define: {
-      'process.env.NODE_ENV': JSON.stringify('development'),
-    },
-  }),
+  buildNewtab(service, esbuildOptions),
   copyPublicFiles(),
   writeManifest(),
 ]);
