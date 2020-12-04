@@ -35,7 +35,7 @@ const esbuildPluginVue = {
 
     build.onLoad({ filter: /\.vue$/, namespace: 'file' }, async ({ path }) => {
       const filename = basename(path);
-      const source = await readFile(path, { encoding: 'utf-8' });
+      const source = await readFile(path, { encoding: 'utf8' });
 
       const { errors, descriptor } = parse(source, {
         filename,

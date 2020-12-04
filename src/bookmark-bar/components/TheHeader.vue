@@ -28,11 +28,7 @@
 </script>
 
 <template>
-  <header
-    class="header"
-    :class="{ 'header--searching': searchFocused }"
-    :style="{ '--bar-width': barWidth }"
-  >
+  <header class="header" :class="{ 'header--searching': searchFocused }">
     <div class="header__icons header__icons--left">
       <OpenSettings />
       <LeaveSearch @click.passive="leaveSearchView" />
@@ -85,7 +81,7 @@
     &--searching {
       &::before {
         transform: scale(
-          calc(var(--bar-width) / (var(--bar-width) - 16)),
+          calc(v-bind(barWidth) / (v-bind(barWidth) - 16)),
           #{(48 / 40)}
         );
       }

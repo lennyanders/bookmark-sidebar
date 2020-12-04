@@ -64,7 +64,6 @@
         'bookmark-bar--light': activeTheme === 'light',
         'bookmark-bar--dark': activeTheme === 'dark',
       }"
-      :style="{ width: barWidth }"
       tabindex="-1"
       @click.passive.stop
       @keydown.passive.stop
@@ -151,6 +150,7 @@
     bottom: 0;
     display: grid;
     grid-template-rows: auto 1fr;
+    width: v-bind(barWidth);
     background-color: var(--bg-color);
     box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.25);
     will-change: scroll-position;
