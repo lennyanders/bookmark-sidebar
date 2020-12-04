@@ -33,7 +33,7 @@ export const copyPublicFiles = () => copyDir('public', 'dist');
 export const writeManifest = async () => {
   await mkdir('dist');
   await writeFile(
-    'dist/mainifest.json',
+    'dist/manifest.json',
     JSON.stringify({ ...manifest, version }),
   );
 };
