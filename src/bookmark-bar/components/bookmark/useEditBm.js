@@ -1,7 +1,6 @@
+import ModalEditBm from '../modal/ModalEditBm.vue';
+
 import { markRaw } from 'vue';
-
-import ModalEditBm from '../modal/ModalEditBm';
-
 import { mutations } from '../../store/index';
 
 export default (props) => {

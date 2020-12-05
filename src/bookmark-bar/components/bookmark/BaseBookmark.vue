@@ -1,8 +1,8 @@
 <script>
   import { h } from 'vue';
 
-  import BookmarkBookmark from './BookmarkBookmark';
-  import BookmarkFolder from './BookmarkFolder';
+  import BookmarkBookmark from './BookmarkBookmark.vue';
+  import BookmarkFolder from './BookmarkFolder.vue';
 
   export default ({ bm }) => {
     return h(bm.url ? BookmarkBookmark : BookmarkFolder, { bm });

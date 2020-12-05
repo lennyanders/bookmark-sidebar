@@ -1,6 +1,6 @@
 <script setup>
-  import BaseInput from '../form/BaseInput';
-  import BaseButton from '../form/BaseButton';
+  import BaseInput from '../form/BaseInput.vue';
+  import BaseButton from '../form/BaseButton.vue';
 
   import { ref, defineProps } from 'vue';
   import { store, mutations } from '../../store/index';

@@ -1,8 +1,8 @@
 <script setup>
-  import TheHeader from './components/TheHeader';
-  import BaseBookmark from './components/bookmark/BaseBookmark';
-  import TheModal from './components/modal/TheModal';
-  import TheResizer from './components/TheResizer';
+  import TheHeader from './components/TheHeader.vue';
+  import BaseBookmark from './components/bookmark/BaseBookmark.vue';
+  import TheModal from './components/modal/TheModal.vue';
+  import TheResizer from './components/TheResizer.vue';
 
   import { ref, toRef, onBeforeUnmount, computed, useCssVars } from 'vue';
   import { store, mutations } from './store';

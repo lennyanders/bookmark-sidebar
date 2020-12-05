@@ -1,5 +1,5 @@
 import { createApp, h } from 'vue';
-import TheBookmarkBar from '../bookmark-bar/App';
+import TheBookmarkBar from '../bookmark-bar/App.vue';
 
 const bmBar = document.createElement('div');
 bmBar.style.position = 'fixed';
@@ -12,6 +12,8 @@ const NOOP = () => {};
 shadowRoot.removeAttribute = NOOP;
 shadowRoot.setAttribute = NOOP;
 
-createApp(() => [h('style', styles), h(TheBookmarkBar)]).mount(shadowRoot);
+createApp(() => [h('style', window.styles), h(TheBookmarkBar)]).mount(
+  shadowRoot,
+);
 
 document.body.append(bmBar);

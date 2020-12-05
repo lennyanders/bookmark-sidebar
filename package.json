@@ -11,10 +11,10 @@
   "license": "ISC",
   "devDependencies": {
     "@vue/compiler-sfc": "^3.0.4",
-    "esbuild": "^0.8.18",
+    "esbuild": "^0.8.19",
     "esm": "^3.2.25",
     "node-watch": "^0.7.0",
-    "sass": "^1.29.0"
+    "sass": "^1.30.0"
   },
   "dependencies": {
     "@vue-reactivity/watch": "^0.1.6",

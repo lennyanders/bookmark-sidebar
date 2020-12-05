@@ -1,7 +1,7 @@
 <script setup>
-  import BaseInput from '../form/BaseInput';
-  import BaseCheckbox from '../form/BaseCheckbox';
-  import BaseButton from '../form/BaseButton';
+  import BaseInput from '../form/BaseInput.vue';
+  import BaseCheckbox from '../form/BaseCheckbox.vue';
+  import BaseButton from '../form/BaseButton.vue';
 
   import { ref, defineProps } from 'vue';
   import { mutations, store } from '../../store/index';

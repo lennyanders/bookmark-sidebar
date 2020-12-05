@@ -1,5 +1,5 @@
 <script setup>
-  import EditBm from '../actions/EditBm';
+  import EditBm from '../actions/EditBm.vue';
 
   import { computed, defineProps } from 'vue';
   import { store } from '../../store';

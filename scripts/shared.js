@@ -78,8 +78,7 @@ export const buildContent = createBuilder({
   outfile: 'dist/content.js',
   format: 'esm',
   bundle: true,
-  plugins: [vue, sass],
-  resolveExtensions: ['.js', '.vue'],
+  plugins: [vue],
   define: {
     __VUE_OPTIONS_API__: JSON.stringify(false),
     __VUE_PROD_DEVTOOLS__: JSON.stringify(false),
@@ -92,7 +91,6 @@ export const buildNewtab = createBuilder({
   format: 'esm',
   bundle: true,
   plugins: [vue, sass],
-  resolveExtensions: ['.js', '.vue'],
   define: {
     __VUE_OPTIONS_API__: JSON.stringify(false),
     __VUE_PROD_DEVTOOLS__: JSON.stringify(false),
@@ -102,6 +100,9 @@ export const buildNewtab = createBuilder({
 export const afterBuildContent = async () => {
   const css = await readFile('dist/content.css', 'utf8');
   const js = await readFile('dist/content.js', 'utf8');
-  await writeFile('dist/content.js', js.replace('styles', JSON.stringify(css)));
+  await writeFile(
+    'dist/content.js',
+    js.replace('window.styles', JSON.stringify(css)),
+  );
   await rm('dist/content.css');
 };
