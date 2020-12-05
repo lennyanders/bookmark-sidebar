@@ -1,32 +1,11 @@
-import { rm, copyFile, readdir, mkdir, writeFile, readFile } from 'fs/promises';
-import { resolve } from 'path';
-import * as esbuild from 'esbuild';
+import { rm, mkdir, writeFile, readFile } from 'fs/promises';
+import { copyDir, createBuilder } from './utils';
 import vue from './esbuild-plugin-vue';
 import sass from './esbuild-plugin-sass';
 import { version } from '../package.json';
 import manifest from '../src/manifest.json';
 
 export const deleteDist = () => rm('dist', { force: true, recursive: true });
-
-export const copyDir = async (entry, target) => {
-  const dir = await readdir(entry, { withFileTypes: true });
-  await Promise.all(
-    dir.map(async (dirent) => {
-      if (dirent.isDirectory()) {
-        await copyDir(
-          resolve(entry, dirent.name),
-          resolve(target, dirent.name),
-        );
-      } else {
-        await mkdir(target, { recursive: true });
-        await copyFile(
-          resolve(entry, dirent.name),
-          resolve(target, dirent.name),
-        );
-      }
-    }),
-  );
-};
 
 export const copyPublicFiles = () => copyDir('public', 'dist');
 
@@ -37,34 +16,6 @@ export const writeManifest = async () => {
     JSON.stringify({ ...manifest, version }),
   );
 };
-
-const deepAssign = (obj1, obj2) => {
-  if (!obj1) return {};
-  if (!obj2) return obj1;
-
-  for (const key in obj2) {
-    if (Object.prototype.toString.call(obj2[key]) === '[object Object]') {
-      obj1[key] = deepAssign(obj1[key] || {}, obj2[key]);
-    } else {
-      obj1[key] = obj2[key];
-    }
-  }
-  return obj1;
-};
-
-/**
- * @callback Builder
- * @param {esbuild|esbuild.Service} esbuildOrEsbuildService
- * @param {esbuild.BuildOptions} options
- * @returns {Promise<esbuild.BuildResult>}
- */
-
-/**
- * @param {esbuild.BuildOptions} defaultOptions
- * @returns {Builder}
- */
-const createBuilder = (defaultOptions) => (esbuildOrEsbuildService, options) =>
-  esbuildOrEsbuildService.build(deepAssign(defaultOptions, options));
 
 export const buildBackground = createBuilder({
   entryPoints: ['src/background/main.js'],
