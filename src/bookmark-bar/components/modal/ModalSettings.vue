@@ -47,7 +47,7 @@
   const barWidth = computed({
     get: () => store.barWidth,
     set: (value) => {
-      mutations.setBarWidth(value);
+      store.barWidth = value;
       actions.saveBarWidth();
     },
   });

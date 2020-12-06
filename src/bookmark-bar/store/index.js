@@ -1,11 +1,10 @@
 import { reactive, computed } from 'vue';
 import { fuzzy } from 'fast-fuzzy';
-
-import { clamp } from '../utils';
+import { useClampedRef } from '../use';
 
 export const store = reactive({
   barLeft: false,
-  barWidth: 320,
+  barWidth: useClampedRef(300, 280, window.innerWidth),
   themes: [
     {
       value: 'system',
@@ -95,10 +94,6 @@ export const mutations = {
     store.searchQuery = '';
     store.searchFocused = false;
   },
-  setBarWidth(width) {
-    store.barWidth = clamp(width, 280, window.innerWidth);
-  },
-
   showModal(component, componentProps) {
     store.modalPrevFocus =
       document.activeElement

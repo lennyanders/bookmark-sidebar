@@ -18,6 +18,7 @@ port.onMessage.addListener(
       ...(bm && { bm }),
       ...(allFolders && { allFolders }),
       ...(barLeft !== undefined && { barLeft }),
+      ...(barWidth && { barWidth }),
       ...(barTheme && { activeTheme: barTheme }),
       ...(editBookmarkOnRightClick !== undefined && {
         editBookmarkOnRightClick,
@@ -29,9 +30,6 @@ port.onMessage.addListener(
       store.activeBm = null;
       await nextTick();
       store.activeBm = activeBm;
-    }
-    if (barWidth) {
-      mutations.setBarWidth(barWidth);
     }
   },
 );

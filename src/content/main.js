@@ -1,10 +1,9 @@
 import { createApp, h } from 'vue';
 import TheBookmarkBar from '../bookmark-bar/App.vue';
 
-const bmBar = document.createElement('div');
-bmBar.style.position = 'fixed';
-bmBar.style.display = 'block';
-bmBar.style.zIndex = 2147483647;
+const bmBar = Object.assign(document.createElement('div'), {
+  style: 'position:fixed;display:block;z-index:2147483647',
+});
 
 const shadowRoot = bmBar.attachShadow({ mode: 'closed' });
 

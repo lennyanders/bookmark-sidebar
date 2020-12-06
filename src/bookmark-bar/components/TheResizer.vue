@@ -6,10 +6,8 @@
   const dragging = ref(false);
   const barLeft = toRef(store, 'barLeft');
 
-  const resize = (event) => {
-    mutations.setBarWidth(
-      barLeft.value ? event.x : document.body.scrollWidth - event.x,
-    );
+  const resize = ({ x }) => {
+    store.barWidth = store.barLeft ? x : document.body.scrollWidth - x;
   };
   const stopResizing = () => {
     actions.saveBarWidth();
