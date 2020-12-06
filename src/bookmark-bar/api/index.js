@@ -14,29 +14,24 @@ port.onMessage.addListener(
     barTheme,
     editBookmarkOnRightClick,
   }) => {
+    Object.assign(store, {
+      ...(bm && { bm }),
+      ...(allFolders && { allFolders }),
+      ...(barLeft !== undefined && { barLeft }),
+      ...(barTheme && { activeTheme: barTheme }),
+      ...(editBookmarkOnRightClick !== undefined && {
+        editBookmarkOnRightClick,
+      }),
+    });
     if (bm) {
-      store.bm = bm;
-
       // unset and set activeBm to maintain focus
       const activeBm = store.activeBm;
       store.activeBm = null;
       await nextTick();
       store.activeBm = activeBm;
     }
-    if (allFolders) {
-      store.allFolders = allFolders;
-    }
-    if (barLeft) {
-      store.barLeft = barLeft;
-    }
     if (barWidth) {
       mutations.setBarWidth(barWidth);
-    }
-    if (barTheme) {
-      store.activeTheme = barTheme;
-    }
-    if (editBookmarkOnRightClick) {
-      store.editBookmarkOnRightClick = editBookmarkOnRightClick;
     }
   },
 );
