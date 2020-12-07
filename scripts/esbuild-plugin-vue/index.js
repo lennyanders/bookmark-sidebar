@@ -56,7 +56,8 @@ const esbuildPluginVue = {
           inlineTemplate: true,
         });
 
-        contents = withMap(content, map);
+        // the replace should be correctly handled by @vue/compiler-sfc not by me
+        contents = withMap(content.replace('{ ,', '{'), map);
       } else if (template) {
         const { errors, code, map } = compileTemplate({
           id,
