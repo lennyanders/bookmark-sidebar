@@ -2,6 +2,7 @@ import { rm, mkdir, writeFile, readFile } from 'fs/promises';
 import { copyDir, createBuilder } from './utils';
 import vue from './esbuild-plugin-vue';
 import sass from './esbuild-plugin-sass';
+import resolveChromeExtensionUrl from './esbuild-plugin-resolve-chrome-extension-url';
 import { version } from '../package.json';
 import manifest from '../src/manifest.json';
 
@@ -43,7 +44,7 @@ export const buildNewtab = createBuilder({
   outfile: 'dist/newtab.js',
   format: 'esm',
   bundle: true,
-  plugins: [vue, sass],
+  plugins: [vue, sass, resolveChromeExtensionUrl],
   define: {
     __VUE_OPTIONS_API__: JSON.stringify(false),
     __VUE_PROD_DEVTOOLS__: JSON.stringify(false),

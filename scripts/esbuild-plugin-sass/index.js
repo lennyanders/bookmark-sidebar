@@ -1,4 +1,3 @@
-import { readFile } from 'fs/promises';
 import { renderSync } from 'sass';
 import * as esbuild from 'esbuild';
 
@@ -19,11 +18,6 @@ const esbuildPluginSass = {
         contents: css,
       };
     });
-
-    build.onResolve(
-      { filter: /^chrome-extension:\/\/__MSG_@@extension_id__\// },
-      (args) => ({ path: args.path, external: true }),
-    );
   },
 };
 
