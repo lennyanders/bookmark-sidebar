@@ -23,7 +23,7 @@ const esbuildOptions = {
 };
 
 watch('dist', (event, name) => {
-  if (event === 'update' || name === normalize('dist/content.css')) {
+  if (event === 'update' && name === normalize('dist/content.css')) {
     afterBuildContent();
   }
 });
