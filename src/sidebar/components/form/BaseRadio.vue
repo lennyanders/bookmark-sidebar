@@ -1,6 +1,5 @@
 <script setup>
   import { defineProps, defineEmit } from 'vue';
-  import { getUid } from '@utils';
 
   const props = defineProps({
     text: {
@@ -19,25 +18,22 @@
   });
 
   const emit = defineEmit(['update:modelValue']);
-
-  const name = getUid();
 </script>
 
 <template inherit-attrs="false">
   <fieldset class="radios">
     <legend class="radios__label" v-text="text" />
-    <div class="radio" v-for="{ value, text } of options" :key="value">
+    <label class="radio" v-for="{ value, text } of options" :key="value">
       <input
         class="radio__el"
         type="radio"
-        :id="name + value"
         :name="name"
         :value="value"
         :checked="value === modelValue"
         @change.passive="emit('update:modelValue', $event.target.value)"
       />
-      <label class="radio__label" :for="name + value" v-text="text" />
-    </div>
+      <span class="radio__label" v-text="text" />
+    </label>
   </fieldset>
 </template>
 
@@ -52,6 +48,8 @@
   }
 
   .radio {
+    display: block;
+
     &__label {
       padding-left: 1.5em;
       position: relative;

@@ -1,6 +1,5 @@
 <script setup>
   import { nextTick, defineProps, defineEmit, useContext } from 'vue';
-  import { getUid } from '@utils';
 
   const props = defineProps({
     text: {
@@ -16,8 +15,6 @@
   const emit = defineEmit(['update:modelValue']);
 
   const { attrs } = useContext();
-
-  const uid = getUid();
 
   /**
    * @param {KeyboardEvent} event
@@ -44,18 +41,17 @@
 </script>
 
 <template inherit-attrs="false">
-  <div class="input">
-    <label class="input__label" :for="uid" v-text="text" />
+  <label class="input">
+    <span class="input__label" v-text="text" />
     <input
       class="input__el"
-      :id="uid"
       type="text"
       v-bind="attrs"
       :value="modelValue"
       @input.passive="emit('update:modelValue', $event.target.value)"
       @keydown="handleKeyDown"
     />
-  </div>
+  </label>
 </template>
 
 <style lang="scss">

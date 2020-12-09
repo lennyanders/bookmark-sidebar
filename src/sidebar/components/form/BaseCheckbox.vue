@@ -1,6 +1,5 @@
 <script setup>
   import { defineProps } from 'vue';
-  import { getUid } from '@utils';
 
   const props = defineProps({
     text: {
@@ -12,21 +11,18 @@
       required: true,
     },
   });
-
-  const uid = getUid();
 </script>
 
 <template inherit-attrs="false">
-  <div class="checkbox">
+  <label class="checkbox">
     <input
       type="checkbox"
       class="checkbox__el"
-      :id="uid"
       :checked="modelValue"
       @change.passive="$emit('update:modelValue', $event.target.checked)"
     />
-    <label :for="uid" class="checkbox__label" v-text="text" />
-  </div>
+    <span class="checkbox__label" v-text="text" />
+  </label>
 </template>
 
 <style lang="scss">

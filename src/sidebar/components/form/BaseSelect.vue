@@ -1,6 +1,5 @@
 <script setup>
   import { defineProps, defineEmit } from 'vue';
-  import { getUid } from '@utils';
 
   const props = defineProps({
     text: {
@@ -19,16 +18,13 @@
   });
 
   const emit = defineEmit(['update:modelValue']);
-
-  const uid = getUid();
 </script>
 
 <template inherit-attrs="false">
-  <div class="select">
-    <label class="select__label" :for="uid" v-text="text" />
+  <label class="select">
+    <span class="select__label" v-text="text" />
     <select
       class="select__el"
-      :id="uid"
       @change.passive="emit('update:modelValue', $event.target.value)"
     >
       <option
@@ -39,7 +35,7 @@
         v-text="text"
       />
     </select>
-  </div>
+  </label>
 </template>
 
 <style lang="scss">
