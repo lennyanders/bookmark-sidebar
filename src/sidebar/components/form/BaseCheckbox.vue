@@ -1,6 +1,6 @@
 <script setup>
   import { defineProps } from 'vue';
-  import { getUid } from '../../utils';
+  import { getUid } from '@utils';
 
   const props = defineProps({
     text: {
@@ -22,7 +22,6 @@
       type="checkbox"
       class="checkbox__el"
       :id="uid"
-      v-bind="$attrs"
       :checked="modelValue"
       @change.passive="$emit('update:modelValue', $event.target.checked)"
     />

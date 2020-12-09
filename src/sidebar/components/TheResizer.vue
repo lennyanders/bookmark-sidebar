@@ -1,7 +1,7 @@
 <script setup>
   import { ref, toRef } from 'vue';
-  import { store, mutations } from '../store';
-  import { actions } from '../api';
+  import { store, mutations } from '@store';
+  import { actions } from '@api';
 
   const dragging = ref(false);
   const barLeft = toRef(store, 'barLeft');

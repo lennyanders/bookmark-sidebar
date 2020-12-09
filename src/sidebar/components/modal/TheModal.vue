@@ -1,6 +1,6 @@
 <script setup>
   import { ref, toRef, watchEffect, nextTick } from 'vue';
-  import { store, mutations } from '../../store/index';
+  import { store, mutations } from '@store';
 
   const modalVisible = toRef(store, 'modalVisible');
   const modalComponent = toRef(store, 'modalComponent');

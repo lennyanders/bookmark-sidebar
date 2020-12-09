@@ -1,8 +1,8 @@
 <script setup>
   import { defineAsyncComponent, defineProps } from 'vue';
-  import EditBm from '../actions/EditBm.vue';
-  import AddBm from '../actions/AddBm.vue';
-  import TransitionExpand from '../TransitionExpand.vue';
+  import EditBm from '@components/actions/EditBm.vue';
+  import AddBm from '@components/actions/AddBm.vue';
+  import TransitionExpand from '@components/TransitionExpand.vue';
   const BaseBookmark = defineAsyncComponent(() => import('./BaseBookmark.vue'));
 
   const props = defineProps({

@@ -1,6 +1,6 @@
 import { ref, watchEffect, watch } from 'vue';
 
-import { store } from '../../store/index';
+import { store } from '@store';
 
 export default (props, childrenVisible) => {
   const focusableBmPart = ref(null);

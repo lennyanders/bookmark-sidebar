@@ -1,6 +1,6 @@
 import { reactive, computed } from 'vue';
 import { fuzzy } from 'fast-fuzzy';
-import { useClampedRef } from '../use';
+import { useClampedRef } from '@use';
 
 export const store = reactive({
   barLeft: false,

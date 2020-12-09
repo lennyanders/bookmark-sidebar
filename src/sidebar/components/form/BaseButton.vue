@@ -9,15 +9,8 @@
   });
 </script>
 
-// v-bind is more important than "type"
 <template>
-  <button
-    class="button"
-    :data-text="text"
-    type="button"
-    v-bind="$attrs"
-    v-text="text"
-  />
+  <button class="button" :aria-label="text" type="button" />
 </template>
 
 <style lang="scss">
@@ -27,8 +20,12 @@
     box-shadow: inset 0 0 0 0.125em var(--font-color);
     overflow: hidden;
 
+    &::before {
+      content: attr(aria-label);
+    }
+
     &::after {
-      content: attr(data-text);
+      content: attr(aria-label);
       position: absolute;
       top: 0;
       left: 0;

@@ -1,7 +1,7 @@
 <script setup>
   import { markRaw } from 'vue';
-  import { mutations } from '../../store';
-  import ModalSettings from '../modal/ModalSettings.vue';
+  import { mutations } from '@store';
+  import ModalSettings from '@components/modal/ModalSettings.vue';
 
   const showSettings = () => {
     mutations.showModal(markRaw(ModalSettings));

@@ -1,10 +1,10 @@
 <script setup>
-  import OpenSettings from './actions/OpenSettings.vue';
-  import LeaveSearch from './actions/LeaveSearch.vue';
-  import AddBm from './actions/AddBm.vue';
+  import OpenSettings from '@components/actions/OpenSettings.vue';
+  import LeaveSearch from '@components/actions/LeaveSearch.vue';
+  import AddBm from '@components/actions/AddBm.vue';
 
   import { ref, toRef, defineProps, useCssVars } from 'vue';
-  import { store, mutations } from '../store';
+  import { store, mutations } from '@store';
 
   const props = defineProps({
     bm: {

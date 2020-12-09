@@ -1,10 +1,10 @@
 <script setup>
-  import BaseInput from '../form/BaseInput.vue';
-  import BaseButton from '../form/BaseButton.vue';
+  import BaseInput from '@components/form/BaseInput.vue';
+  import BaseButton from '@components/form/BaseButton.vue';
 
   import { ref, defineProps } from 'vue';
-  import { store, mutations } from '../../store/index';
-  import { actions } from '../../api/index';
+  import { store, mutations } from '@store';
+  import { actions } from '@api';
 
   const props = defineProps({
     bm: {

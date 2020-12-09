@@ -1,6 +1,6 @@
-<script setup="props, { emit }">
-  import { nextTick, defineProps, defineEmit } from 'vue';
-  import { getUid } from '../../utils';
+<script setup>
+  import { nextTick, defineProps, defineEmit, useContext } from 'vue';
+  import { getUid } from '@utils';
 
   const props = defineProps({
     text: {
@@ -14,6 +14,8 @@
   });
 
   const emit = defineEmit(['update:modelValue']);
+
+  const { attrs } = useContext();
 
   const uid = getUid();
 
@@ -48,9 +50,9 @@
       class="input__el"
       :id="uid"
       type="text"
-      v-bind="$attrs"
+      v-bind="attrs"
       :value="modelValue"
-      @input.passive="$emit('update:modelValue', $event.target.value)"
+      @input.passive="emit('update:modelValue', $event.target.value)"
       @keydown="handleKeyDown"
     />
   </div>

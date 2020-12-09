@@ -1,8 +1,8 @@
 <script setup>
-  import EditBm from '../actions/EditBm.vue';
+  import EditBm from '@components/actions/EditBm.vue';
 
   import { computed, defineProps } from 'vue';
-  import { store } from '../../store';
+  import { store } from '@store';
   import useEditBm from './useEditBm';
   import useKeyboard from './useKeyboard';
   import useDragAndDrop from './useDragAndDrop';

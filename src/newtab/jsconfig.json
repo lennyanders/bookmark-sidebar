@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@sidebar/*": ["../sidebar/*"],
+      "@components/*": ["components/*"]
+    }
+  }
+}

@@ -1,5 +1,5 @@
 <template>
-  <button class="header__icon header__icon--secondary" v-bind="$attrs">
+  <button class="header__icon header__icon--secondary">
     <svg viewBox="0 0 24 24">
       <title>Leave Search View</title>
       <path

@@ -1,5 +1,5 @@
 import { createApp, h } from 'vue';
-import TheBookmarkBar from '../sidebar/App.vue';
+import TheBookmarkBar from '@sidebar/App.vue';
 
 const bmBar = Object.assign(document.createElement('div'), {
   style: 'position:fixed;display:block;z-index:2147483647',

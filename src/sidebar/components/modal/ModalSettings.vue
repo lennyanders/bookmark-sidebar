@@ -1,12 +1,12 @@
 <script setup>
-  import BaseInput from '../form/BaseInput.vue';
-  import BaseSelect from '../form/BaseSelect.vue';
-  import BaseCheckbox from '../form/BaseCheckbox.vue';
-  import BaseRadio from '../form/BaseRadio.vue';
+  import BaseInput from '@components/form/BaseInput.vue';
+  import BaseSelect from '@components/form/BaseSelect.vue';
+  import BaseCheckbox from '@components/form/BaseCheckbox.vue';
+  import BaseRadio from '@components/form/BaseRadio.vue';
 
   import { toRef, computed } from 'vue';
-  import { store, mutations } from '../../store/index';
-  import { actions } from '../../api/index';
+  import { store, mutations } from '@store';
+  import { actions } from '@api';
 
   const shownBm = computed({
     get: () => store.bm.id,

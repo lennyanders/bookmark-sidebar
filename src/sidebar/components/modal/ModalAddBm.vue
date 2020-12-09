@@ -1,11 +1,11 @@
 <script setup>
-  import BaseInput from '../form/BaseInput.vue';
-  import BaseCheckbox from '../form/BaseCheckbox.vue';
-  import BaseButton from '../form/BaseButton.vue';
+  import BaseInput from '@components/form/BaseInput.vue';
+  import BaseCheckbox from '@components/form/BaseCheckbox.vue';
+  import BaseButton from '@components/form/BaseButton.vue';
 
   import { ref, defineProps } from 'vue';
-  import { mutations, store } from '../../store/index';
-  import { actions } from '../../api/index';
+  import { mutations, store } from '@store';
+  import { actions } from '@api';
 
   const props = defineProps({
     bm: {

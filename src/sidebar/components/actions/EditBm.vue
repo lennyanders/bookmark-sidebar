@@ -1,8 +1,8 @@
 <script setup>
-  import ModalEditBm from '../modal/ModalEditBm.vue';
+  import ModalEditBm from '@components/modal/ModalEditBm.vue';
 
   import { markRaw, defineProps } from 'vue';
-  import { mutations } from '../../store';
+  import { mutations } from '@store';
 
   const props = defineProps({
     bm: {

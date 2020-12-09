@@ -1,5 +1,5 @@
 import { nextTick } from 'vue';
-import { store, mutations } from '../store/index';
+import { store } from '@store';
 
 // connect to middleware (background script)
 const port = chrome.runtime.connect({ name: 'bmBar' });

@@ -1,6 +1,6 @@
 <script setup>
-  import { defineProps } from 'vue';
-  import { getUid } from '../../utils';
+  import { defineProps, defineEmit } from 'vue';
+  import { getUid } from '@utils';
 
   const props = defineProps({
     text: {
@@ -18,6 +18,8 @@
     },
   });
 
+  const emit = defineEmit(['update:modelValue']);
+
   const name = getUid();
 </script>
 
@@ -30,10 +32,9 @@
         type="radio"
         :id="name + value"
         :name="name"
-        v-bind="$attrs"
         :value="value"
         :checked="value === modelValue"
-        @change.passive="$emit('update:modelValue', $event.target.value)"
+        @change.passive="emit('update:modelValue', $event.target.value)"
       />
       <label class="radio__label" :for="name + value" v-text="text" />
     </div>

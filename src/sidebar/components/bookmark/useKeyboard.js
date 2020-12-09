@@ -1,6 +1,6 @@
-import { findFocusableBm, findBmToMoveIn } from '../../utils';
-import { store } from '../../store';
-import { actions } from '../../api/index';
+import { findFocusableBm, findBmToMoveIn } from '@utils';
+import { store } from '@store';
+import { actions } from '@api';
 
 export default (props) => {
   const goBy = (delta) => {

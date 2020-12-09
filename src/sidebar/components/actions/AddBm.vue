@@ -1,8 +1,8 @@
 <script setup>
-  import ModalAddBm from '../modal/ModalAddBm.vue';
+  import ModalAddBm from '@components/modal/ModalAddBm.vue';
 
   import { markRaw, defineProps } from 'vue';
-  import { mutations } from '../../store';
+  import { mutations } from '@store';
 
   const props = defineProps({
     btnClasses: {

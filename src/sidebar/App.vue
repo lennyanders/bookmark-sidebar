@@ -1,11 +1,11 @@
 <script setup>
-  import TheHeader from './components/TheHeader.vue';
-  import BaseBookmark from './components/bookmark/BaseBookmark.vue';
-  import TheModal from './components/modal/TheModal.vue';
-  import TheResizer from './components/TheResizer.vue';
+  import TheHeader from '@components/TheHeader.vue';
+  import BaseBookmark from '@components/bookmark/BaseBookmark.vue';
+  import TheModal from '@components/modal/TheModal.vue';
+  import TheResizer from '@components/TheResizer.vue';
 
   import { ref, toRef, onBeforeUnmount, computed, useCssVars } from 'vue';
-  import { store, mutations } from './store';
+  import { store, mutations } from '@store';
 
   const barVisible = ref(
     !location.href.startsWith('chrome-extension') ||
