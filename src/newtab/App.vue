@@ -1,6 +1,6 @@
 <script setup>
   import TheFullScreenFileDrop from './components/TheFullScreenFileDrop.vue';
-  import TheBookmarkBar from '../bookmark-bar/App.vue';
+  import TheBookmarkBar from '../sidebar/App.vue';
 </script>
 
 <template>
