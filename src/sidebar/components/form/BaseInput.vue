@@ -65,6 +65,7 @@
       width: 100%;
       color: var(--input-color);
       transition: color 0.2s ease;
+      cursor: text;
 
       &:disabled {
         color: var(--disabled-input-color);
