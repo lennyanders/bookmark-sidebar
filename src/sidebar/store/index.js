@@ -1,6 +1,7 @@
 import { reactive, computed } from 'vue';
 import { fuzzy } from 'fast-fuzzy';
 import { useClampedRef } from '@use';
+import { flattenBms } from '@shared/utils';
 
 export const store = reactive({
   barLeft: false,
@@ -32,14 +33,7 @@ export const store = reactive({
   activeBm: '0',
 
   isSearching: computed(() => !!store.searchQuery.trim()),
-  flattenedBms: computed(() => {
-    let children = [];
-    JSON.stringify(store.bm.children, (_, nested) => {
-      if (nested?.title) children.push(nested);
-      return nested;
-    });
-    return children;
-  }),
+  flattenedBms: computed(() => flattenBms(store.bm.children)),
   filteredBms: computed(() => {
     let searchQuery = store.searchQuery.trim();
     if (!searchQuery) return store.bm;

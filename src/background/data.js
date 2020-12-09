@@ -1,5 +1,6 @@
 import { shallowReactive } from '@vue/reactivity';
 import { watch } from '@vue-reactivity/watch';
+import { flattenBms } from '@shared/utils';
 
 export const data = shallowReactive({});
 
@@ -43,26 +44,24 @@ const loadFavicons = (faviconUrls) => {
 };
 
 const updateTree = () => {
-  chrome.bookmarks.getTree(async ([bookmarks]) => {
+  chrome.bookmarks.getTree(async ([bookmark]) => {
     let shownFolder;
     let bmsToLoad = [];
     let folders = [];
 
-    JSON.stringify(bookmarks, (_, nested) => {
-      if (!nested.id) return nested;
-      if (!nested.url) {
-        if (nested.id === '0') nested.title = 'root';
-        if (nested.id === data.shownBmId) shownFolder = nested;
+    const flattenedBms = [bookmark, ...flattenBms(bookmark.children)];
+    for (const bm of flattenedBms) {
+      if (!bm.url) {
+        if (bm.id === data.shownBmId) shownFolder = bm;
 
         folders.push({
-          title: nested.title,
-          id: nested.id,
+          title: bm.id === '0' ? 'Root' : bm.title,
+          id: bm.id,
         });
       } else if (shownFolder) {
-        bmsToLoad.push(nested);
+        bmsToLoad.push(bm);
       }
-      return nested;
-    });
+    }
 
     const newFaviconUrls = getNewFaviconUrls(bmsToLoad, faviconUrls);
     if (newFaviconUrls.size) {

@@ -27,7 +27,6 @@
       <input
         class="radio__el"
         type="radio"
-        :name="name"
         :value="value"
         :checked="value === modelValue"
         @change.passive="emit('update:modelValue', $event.target.value)"

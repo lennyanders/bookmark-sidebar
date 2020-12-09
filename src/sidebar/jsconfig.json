@@ -3,6 +3,7 @@
     "lib": ["esnext", "dom"],
     "baseUrl": ".",
     "paths": {
+      "@shared/*": ["../shared/*"],
       "@components/*": ["components/*"],
       "@store": ["store"],
       "@api": ["api"],
