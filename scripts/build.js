@@ -7,7 +7,7 @@ import {
   buildBackground,
   buildContent,
   buildNewtab,
-  afterBuildContent,
+  inlineContentCss,
 } from './shared';
 
 await emptyDist();
@@ -21,7 +21,7 @@ const esbuildOptions = {
 
 await Promise.all([
   buildBackground(esbuild, esbuildOptions),
-  buildContent(esbuild, esbuildOptions).then(afterBuildContent),
+  buildContent(esbuild, esbuildOptions).then(inlineContentCss),
   buildNewtab(esbuild, esbuildOptions),
   copyPublicFiles(),
   writeManifest(),

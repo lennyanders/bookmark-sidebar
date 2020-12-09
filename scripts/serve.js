@@ -9,7 +9,7 @@ import {
   buildBackground,
   buildContent,
   buildNewtab,
-  afterBuildContent,
+  inlineContentCss,
 } from './shared';
 
 const [service] = await Promise.all([startService(), emptyDist()]);
@@ -24,7 +24,7 @@ const esbuildOptions = {
 
 watch('dist', (event, name) => {
   if (event === 'update' && name === normalize('dist/content.css')) {
-    afterBuildContent();
+    inlineContentCss();
   }
 });
 

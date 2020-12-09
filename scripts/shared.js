@@ -50,7 +50,7 @@ export const buildNewtab = createBuilder({
   },
 });
 
-export const afterBuildContent = async () => {
+export const inlineContentCss = async () => {
   const css = await readFile('dist/content.css', 'utf8');
   const js = await readFile('dist/content.js', 'utf8');
   await writeFile(
