@@ -1,26 +1,20 @@
 <script setup>
-  import { ref, toRef, watchEffect, nextTick } from 'vue';
-  import { store, mutations } from '@store';
-
-  const modalVisible = toRef(store, 'modalVisible');
-  const modalComponent = toRef(store, 'modalComponent');
-  const modalComponentProps = toRef(store, 'modalComponentProps');
-
-  const hideModal = mutations.hideModal;
+  import { ref, watchEffect, nextTick } from 'vue';
+  import { state, hideModal } from './';
 
   const modal = ref(null);
   watchEffect(async () => {
-    if (modalVisible.value) {
-      await nextTick();
-      modal.value.focus();
-    }
+    if (!state.visible) return;
+
+    await nextTick();
+    modal.value.focus();
   });
 </script>
 
 <template>
   <transition name="modal">
     <div
-      v-if="modalVisible"
+      v-if="state.visible"
       class="modal"
       tabindex="-1"
       @click.passive="hideModal"
@@ -35,8 +29,8 @@
           aria-label="close modal"
         />
         <component
-          :is="modalComponent"
-          v-bind="modalComponentProps"
+          :is="state.component"
+          v-bind="state.componentProps"
           class="modal__content"
         />
       </div>

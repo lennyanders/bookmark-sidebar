@@ -4,8 +4,8 @@
   import BaseButton from '@components/form/BaseButton.vue';
 
   import { ref, defineProps } from 'vue';
-  import { mutations, store } from '@store';
   import { actions } from '@api';
+  import { hideModal } from '@components/modal';
 
   const props = defineProps({
     bm: {
@@ -24,7 +24,7 @@
       title: title.value,
       url: createFolder.value ? null : url.value,
     });
-    mutations.hideModal();
+    hideModal();
   };
 </script>
 

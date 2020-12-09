@@ -1,8 +1,7 @@
 <script setup>
-  import ModalAddBm from '@components/modal/ModalAddBm.vue';
-
   import { markRaw, defineProps } from 'vue';
-  import { mutations } from '@store';
+  import { showModal } from '@components/modal';
+  import ModalAddBm from '@components/modal/ModalAddBm.vue';
 
   const props = defineProps({
     btnClasses: {
@@ -19,9 +18,7 @@
     },
   });
 
-  const addBm = () => {
-    mutations.showModal(markRaw(ModalAddBm), { bm: props.bm });
-  };
+  const addBm = () => showModal(markRaw(ModalAddBm), { bm: props.bm });
 </script>
 
 <template>

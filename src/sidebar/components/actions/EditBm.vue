@@ -1,8 +1,7 @@
 <script setup>
-  import ModalEditBm from '@components/modal/ModalEditBm.vue';
-
   import { markRaw, defineProps } from 'vue';
-  import { mutations } from '@store';
+  import { showModal } from '@components/modal';
+  import ModalEditBm from '@components/modal/ModalEditBm.vue';
 
   const props = defineProps({
     bm: {
@@ -11,9 +10,7 @@
     },
   });
 
-  const editBm = () => {
-    mutations.showModal(markRaw(ModalEditBm), { bm: props.bm });
-  };
+  const editBm = () => showModal(markRaw(ModalEditBm), { bm: props.bm });
 </script>
 
 <template>

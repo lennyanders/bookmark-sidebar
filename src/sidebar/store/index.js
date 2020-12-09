@@ -31,11 +31,6 @@ export const store = reactive({
   allFolders: [],
   activeBm: '0',
 
-  modalPrevFocus: null,
-  modalVisible: false,
-  modalComponent: null,
-  modalComponentProps: null,
-
   isSearching: computed(() => !!store.searchQuery.trim()),
   flattenedBms: computed(() => {
     let children = [];
@@ -93,22 +88,5 @@ export const mutations = {
   stopSearching() {
     store.searchQuery = '';
     store.searchFocused = false;
-  },
-  showModal(component, componentProps) {
-    store.modalPrevFocus =
-      document.activeElement
-        ?.closest('.bookmark')
-        ?.querySelector('.bookmark__link') || document.activeElement;
-
-    store.modalVisible = true;
-    store.modalComponent = component;
-    store.modalComponentProps = componentProps;
-  },
-  hideModal() {
-    store.modalVisible = false;
-    store.modalComponent = null;
-    store.modalComponentProps = null;
-
-    store.modalPrevFocus?.focus();
   },
 };

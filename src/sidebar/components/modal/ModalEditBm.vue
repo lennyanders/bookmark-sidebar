@@ -3,8 +3,8 @@
   import BaseButton from '@components/form/BaseButton.vue';
 
   import { ref, defineProps } from 'vue';
-  import { store, mutations } from '@store';
   import { actions } from '@api';
+  import { hideModal } from '@components/modal';
 
   const props = defineProps({
     bm: {
@@ -22,11 +22,12 @@
       title: newTitle.value,
       url: newUrl.value,
     });
-    mutations.hideModal();
+    hideModal();
   };
+
   const removeBm = () => {
     actions.removeBm(props.bm.id);
-    mutations.hideModal();
+    hideModal();
   };
 </script>
 
