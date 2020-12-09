@@ -1,7 +1,7 @@
 import * as esbuild from 'esbuild';
 
 import {
-  deleteDist,
+  emptyDist,
   copyPublicFiles,
   writeManifest,
   buildBackground,
@@ -10,7 +10,7 @@ import {
   afterBuildContent,
 } from './shared';
 
-await deleteDist();
+await emptyDist();
 
 const esbuildOptions = {
   minify: true,
@@ -21,10 +21,7 @@ const esbuildOptions = {
 
 await Promise.all([
   buildBackground(esbuild, esbuildOptions),
-  (async () => {
-    await buildContent(esbuild, esbuildOptions);
-    await afterBuildContent();
-  })(),
+  buildContent(esbuild, esbuildOptions).then(afterBuildContent),
   buildNewtab(esbuild, esbuildOptions),
   copyPublicFiles(),
   writeManifest(),

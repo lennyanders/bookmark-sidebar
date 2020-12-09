@@ -5,13 +5,15 @@ import sass from './esbuild-plugin-sass';
 import { version } from '../package.json';
 import manifest from '../src/manifest.json';
 
-export const deleteDist = () => rm('dist', { force: true, recursive: true });
+export const emptyDist = async () => {
+  await rm('dist', { force: true, recursive: true });
+  await mkdir('dist');
+};
 
 export const copyPublicFiles = () => copyDir('public', 'dist');
 
-export const writeManifest = async () => {
-  await mkdir('dist');
-  await writeFile(
+export const writeManifest = () => {
+  return writeFile(
     'dist/manifest.json',
     JSON.stringify({ ...manifest, version }),
   );

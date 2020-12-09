@@ -1,8 +1,9 @@
+import { normalize } from 'path';
 import { startService } from 'esbuild';
 import watch from 'node-watch';
 
 import {
-  deleteDist,
+  emptyDist,
   copyPublicFiles,
   writeManifest,
   buildBackground,
@@ -11,7 +12,7 @@ import {
   afterBuildContent,
 } from './shared';
 
-const [service] = await Promise.all([startService(), deleteDist()]);
+const [service] = await Promise.all([startService(), emptyDist()]);
 
 const esbuildOptions = {
   sourcemap: 'inline',
@@ -21,34 +22,26 @@ const esbuildOptions = {
   },
 };
 
+watch('dist', (event, name) => {
+  if (event === 'update' || name === normalize('dist/content.css')) {
+    afterBuildContent();
+  }
+});
+
 const [
   { rebuild: rebuildBackground },
-  rebuildContent,
+  { rebuild: rebuildContent },
   { rebuild: rebuildNewtab },
 ] = await Promise.all([
   buildBackground(service, esbuildOptions),
-  (async () => {
-    const { rebuild } = await buildContent(service, esbuildOptions);
-    await afterBuildContent();
-
-    return async () => {
-      await rebuild();
-      await afterBuildContent();
-    };
-  })(),
+  buildContent(service, esbuildOptions),
   buildNewtab(service, esbuildOptions),
   copyPublicFiles(),
   writeManifest(),
 ]);
 
-await Promise.all([
-  watch('src/background', { recursive: true }, rebuildBackground),
-  watch(
-    ['src/content', 'src/bookmark-bar'],
-    { recursive: true },
-    rebuildContent,
-  ),
-  watch(['src/newtab', 'src/bookmark-bar'], { recursive: true }, rebuildNewtab),
-  watch('public', { recursive: true }, copyPublicFiles),
-  watch('src/manifest.json', writeManifest),
-]);
+watch('src/background', { recursive: true }, rebuildBackground);
+watch(['src/content', 'src/sidebar'], { recursive: true }, rebuildContent);
+watch(['src/newtab', 'src/sidebar'], { recursive: true }, rebuildNewtab);
+watch('public', { recursive: true }, copyPublicFiles);
+watch('src/manifest.json', writeManifest);
