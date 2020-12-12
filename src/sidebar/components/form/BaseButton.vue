@@ -41,9 +41,5 @@
         clip-path: inset(0 0 0 0);
       }
     }
-
-    & + & {
-      margin-left: 1em;
-    }
   }
 </style>

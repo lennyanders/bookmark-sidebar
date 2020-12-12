@@ -123,6 +123,7 @@
       display: flex;
       justify-content: flex-end;
       align-items: center;
+      gap: 1em;
     }
 
     &__content {

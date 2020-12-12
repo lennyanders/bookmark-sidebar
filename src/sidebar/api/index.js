@@ -37,7 +37,7 @@ port.onMessage.addListener(
 // communicate with middleware (background script)
 export const actions = {
   updateRootBm(id) {
-    port.postMessage({ type: 'setShownBm', id: id });
+    port.postMessage({ type: 'setShownBm', id });
   },
   createBm(bm) {
     port.postMessage({ type: 'create', ...bm });

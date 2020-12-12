@@ -14,7 +14,7 @@
 
   const emit = defineEmit(['update:modelValue']);
 
-  const { attrs } = useContext();
+  const { attrs, slots } = useContext();
 
   /**
    * @param {KeyboardEvent} event
@@ -25,7 +25,7 @@
 
     /** @type {HTMLInputElement} */
     const input = event.currentTarget;
-    if (input.type !== 'text') return;
+    if (['text', 'url'].every((type) => type !== input.type)) return;
 
     event.preventDefault();
 
@@ -51,17 +51,25 @@
       @input.passive="emit('update:modelValue', $event.target.value)"
       @keydown="handleKeyDown"
     />
+    <div v-if="slots.default" class="input__actions"><slot /></div>
   </label>
 </template>
 
 <style lang="scss">
   .input {
+    display: grid;
+    grid-template:
+      'label label' 1fr
+      'input actions' 1fr / 1fr min-content;
+
     &__label {
+      grid-area: label;
       display: block;
       margin-bottom: 0.375em;
     }
 
     &__el {
+      grid-area: input;
       width: 100%;
       color: var(--input-color);
       transition: color 0.2s ease;
@@ -70,6 +78,13 @@
       &:disabled {
         color: var(--disabled-input-color);
       }
+    }
+
+    &__actions {
+      grid-area: actions;
+      padding-left: 0.5rem;
+      display: flex;
+      align-items: center;
     }
   }
 </style>
