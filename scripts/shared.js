@@ -23,14 +23,14 @@ export const writeManifest = () => {
 export const buildBackground = createBuilder({
   entryPoints: ['src/background/main.js'],
   outfile: 'dist/background.js',
-  format: 'esm',
+  format: 'iife',
   bundle: true,
 });
 
 export const buildContent = createBuilder({
   entryPoints: ['src/content/main.js'],
   outfile: 'dist/content.js',
-  format: 'esm',
+  format: 'iife',
   bundle: true,
   plugins: [vue],
   define: {
@@ -42,7 +42,7 @@ export const buildContent = createBuilder({
 export const buildNewtab = createBuilder({
   entryPoints: ['src/newtab/main.js'],
   outfile: 'dist/newtab.js',
-  format: 'esm',
+  format: 'iife',
   bundle: true,
   plugins: [vue, sass, resolveChromeExtensionUrl],
   define: {

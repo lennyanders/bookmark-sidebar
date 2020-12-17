@@ -1,4 +1,5 @@
 <script setup>
+  import PseudoWindow from '@shared/components/PseudoWindow';
   import { ref, toRef } from 'vue';
   import { store, mutations } from '@store';
   import { actions } from '@api';
@@ -12,21 +13,19 @@
   const stopResizing = () => {
     actions.saveBarWidth();
     dragging.value = false;
-    removeEventListener('mousemove', resize, { passive: true });
-    removeEventListener('mouseup', stopResizing, { passive: true });
-  };
-  const startResizing = () => {
-    dragging.value = true;
-    addEventListener('mousemove', resize, { passive: true });
-    addEventListener('mouseup', stopResizing, { passive: true });
   };
 </script>
 
 <template>
+  <PseudoWindow
+    v-if="dragging"
+    @mousemove.passive="resize"
+    @mouseup.passive="stopResizing"
+  />
   <div
     class="resizer"
     :class="{ 'resizer--right': barLeft, 'resizer--resizing': dragging }"
-    @mousedown.passive="startResizing"
+    @mousedown.passive="dragging = true"
   />
 </template>
 

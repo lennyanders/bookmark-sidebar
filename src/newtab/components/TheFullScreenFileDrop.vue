@@ -1,4 +1,5 @@
 <script setup>
+  import PseudoWindow from '@shared/components/PseudoWindow';
   import { reactive, ref, toRef } from 'vue';
 
   const visible = ref(false);
@@ -6,16 +7,7 @@
   const hideOverlay = () => (visible.value = false);
   const showOverlay = () => (visible.value = true);
 
-  addEventListener('dragenter', showOverlay, { passive: true });
-  addEventListener('dragover', (event) => event.preventDefault());
-  addEventListener(
-    'dragleave',
-    (event) => !event.relatedTarget && hideOverlay(),
-    { passive: true },
-  );
-  addEventListener('dragend', hideOverlay, { passive: true });
-  addEventListener('dragexit', hideOverlay, { passive: true });
-  addEventListener('drop', hideOverlay, { passive: true });
+  const dragleave = (event) => !event.relatedTarget && hideOverlay();
 
   const tinEyeFrom = reactive({
     fileFieldName: 'image',
@@ -96,6 +88,14 @@
 </script>
 
 <template>
+  <PseudoWindow
+    @dragenter.passive="showOverlay"
+    @dragover.prevent
+    @dragleave.passive="dragleave"
+    @dragend.passive="hideOverlay"
+    @dragexit.passive="hideOverlay"
+    @drop.passive="hideOverlay"
+  />
   <Transition
     name="file-overlay"
     enter-active-class="file-overlay--appearing"

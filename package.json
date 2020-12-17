@@ -10,9 +10,9 @@
   "author": "Lenny Anders",
   "license": "ISC",
   "devDependencies": {
-    "@types/chrome": "0.0.126",
+    "@types/chrome": "0.0.127",
     "@vue/compiler-sfc": "^3.0.4",
-    "esbuild": "^0.8.20",
+    "esbuild": "^0.8.23",
     "esm": "^3.2.25",
     "node-watch": "^0.7.1",
     "sass": "^1.30.0"

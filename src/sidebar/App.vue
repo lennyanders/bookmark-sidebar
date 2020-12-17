@@ -1,10 +1,11 @@
 <script setup>
+  import PseudoWindow from '@shared/components/PseudoWindow';
   import TheHeader from '@components/TheHeader.vue';
   import BaseBookmark from '@components/bookmark/BaseBookmark.vue';
   import TheModal from '@components/modal/TheModal.vue';
   import TheResizer from '@components/TheResizer.vue';
 
-  import { ref, toRef, onBeforeUnmount, computed, useCssVars } from 'vue';
+  import { ref, toRef, computed, useCssVars } from 'vue';
   import { store, mutations } from '@store';
 
   const barVisible = ref(
@@ -27,14 +28,6 @@
     if (command === 'toggle-bm-bar') toggleBarVisibility();
   });
 
-  addEventListener('click', hideBar, { passive: true });
-  addEventListener('blur', hideBar, { passive: true });
-
-  onBeforeUnmount(() => {
-    removeEventListener('click', hideBar, { passive: true });
-    removeEventListener('blur', hideBar, { passive: true });
-  });
-
   const root = ref(null);
   const focusBar = () => root.value?.focus();
 
@@ -47,6 +40,7 @@
 </script>
 
 <template>
+  <PseudoWindow @click.passive="hideBar" @blur.passive="hideBar" />
   <Transition
     name="bookmark-bar"
     enter-active-class="bookmark-bar--appearing"
