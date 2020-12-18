@@ -31,8 +31,7 @@
 
     let { selectionStart, selectionEnd, value } = input;
 
-    const newValue =
-      value.substring(0, selectionStart) + key + value.substring(selectionEnd);
+    const newValue = value.substring(0, selectionStart) + key + value.substring(selectionEnd);
 
     emit('update:modelValue', newValue);
     await nextTick();

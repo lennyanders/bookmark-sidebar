@@ -119,9 +119,7 @@
         <input
           type="file"
           :name="form.fileFieldName"
-          @input="
-            $event.target.form.requestSubmit(), $event.target.form.reset()
-          "
+          @input="$event.target.form.requestSubmit(), $event.target.form.reset()"
         />
       </form>
     </div>

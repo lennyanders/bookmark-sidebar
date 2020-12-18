@@ -28,11 +28,7 @@
           title="Close"
           aria-label="close modal"
         />
-        <component
-          :is="state.component"
-          v-bind="state.componentProps"
-          class="modal__content"
-        />
+        <component :is="state.component" v-bind="state.componentProps" class="modal__content" />
       </div>
     </div>
   </transition>

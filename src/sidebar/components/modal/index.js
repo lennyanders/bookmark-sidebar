@@ -12,9 +12,8 @@ export const showModal = (component, componentProps) => {
   state.component = component;
   state.componentProps = componentProps;
   state.prevFocus =
-    document.activeElement
-      ?.closest('.bookmark')
-      ?.querySelector('.bookmark__link') || document.activeElement;
+    document.activeElement?.closest('.bookmark')?.querySelector('.bookmark__link') ||
+    document.activeElement;
 };
 
 export const hideModal = () => {

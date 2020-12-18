@@ -66,10 +66,7 @@ const updateTree = () => {
     const newFaviconUrls = getNewFaviconUrls(bmsToLoad, faviconUrls);
     if (newFaviconUrls.size) {
       faviconUrls = new Set([...faviconUrls, ...newFaviconUrls]);
-      faviconDataUrls = new Map([
-        ...faviconDataUrls,
-        ...(await loadFavicons(newFaviconUrls)),
-      ]);
+      faviconDataUrls = new Map([...faviconDataUrls, ...(await loadFavicons(newFaviconUrls))]);
     }
     // add favicon data urls to bookmarks that appear in the sidebar
     bmsToLoad.map((bm) => {
@@ -87,13 +84,7 @@ watch(() => data.shownBmId, updateTree);
 
 export const generateData = async () => {
   chrome.storage.sync.get(
-    [
-      'barLeft',
-      'shownBmId',
-      'barWidth',
-      'barTheme',
-      'editBookmarkOnRightClick',
-    ],
+    ['barLeft', 'shownBmId', 'barWidth', 'barTheme', 'editBookmarkOnRightClick'],
     ({
       shownBmId = '0',
       barLeft = false,

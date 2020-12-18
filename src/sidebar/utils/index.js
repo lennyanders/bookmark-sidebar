@@ -9,15 +9,10 @@ export const findFocusableBm = (
   for (let i = 0; i < bms.length; i++) {
     if (bms[i].id === id) {
       if (delta > 0) {
-        if (
-          includeChildren &&
-          bms[i].childrenVisible &&
-          bms[i].children.length
-        ) {
+        if (includeChildren && bms[i].childrenVisible && bms[i].children.length) {
           return bms[i].children[0];
         }
-        const res =
-          bms[i + delta] || findFocusableBm(bms[i].parentId, 1, false);
+        const res = bms[i + delta] || findFocusableBm(bms[i].parentId, 1, false);
         if (res) return res;
       }
 
@@ -35,11 +30,7 @@ export const findFocusableBm = (
   }
 };
 
-export const findBmToMoveIn = (
-  id,
-  delta = 0,
-  bms = store.filteredBms.children,
-) => {
+export const findBmToMoveIn = (id, delta = 0, bms = store.filteredBms.children) => {
   for (let i = 0; i < bms.length; i++) {
     if (bms[i].id === id) {
       if (delta) {

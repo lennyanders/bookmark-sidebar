@@ -44,13 +44,7 @@
     <h2 class="modal__headline">Lesezeichen bearbeiten</h2>
 
     <BaseInput v-model="newTitle" text="Titel" required />
-    <BaseInput
-      v-if="typeof newUrl === 'string'"
-      v-model="newUrl"
-      type="url"
-      text="Link"
-      required
-    >
+    <BaseInput v-if="typeof newUrl === 'string'" v-model="newUrl" type="url" text="Link" required>
       <SetCurrentUrl @click.passive="setCurrentUrl" />
     </BaseInput>
 

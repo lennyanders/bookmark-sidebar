@@ -17,10 +17,7 @@ export default (props) => {
   };
 
   const moveIn = (delta) => {
-    const { id, parentId, children, index } = findBmToMoveIn(
-      props.bm.id,
-      delta,
-    );
+    const { id, parentId, children, index } = findBmToMoveIn(props.bm.id, delta);
 
     if (!children) return moveBy(delta);
 
@@ -40,8 +37,7 @@ export default (props) => {
   };
 
   const keydown = (event) => {
-    const delta =
-      event.code === 'ArrowDown' ? 1 : event.code === 'ArrowUp' && -1;
+    const delta = event.code === 'ArrowDown' ? 1 : event.code === 'ArrowUp' && -1;
 
     if (!delta) return;
 

@@ -2,9 +2,7 @@
   <button class="header__icon header__icon--secondary">
     <svg viewBox="0 0 24 24">
       <title>Leave Search View</title>
-      <path
-        d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"
-      />
+      <path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z" />
     </svg>
   </button>
 </template>

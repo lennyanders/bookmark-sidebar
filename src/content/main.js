@@ -11,8 +11,6 @@ const NOOP = () => {};
 shadowRoot.removeAttribute = NOOP;
 shadowRoot.setAttribute = NOOP;
 
-createApp(() => [h('style', window.styles), h(TheBookmarkBar)]).mount(
-  shadowRoot,
-);
+createApp(() => [h('style', window.styles), h(TheBookmarkBar)]).mount(shadowRoot);
 
 document.body.append(bmBar);

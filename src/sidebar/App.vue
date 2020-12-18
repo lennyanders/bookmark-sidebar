@@ -9,8 +9,7 @@
   import { store, mutations } from '@store';
 
   const barVisible = ref(
-    !location.href.startsWith('chrome-extension') ||
-      location.href.endsWith('?bar=open'),
+    !location.href.startsWith('chrome-extension') || location.href.endsWith('?bar=open'),
   );
   const hideBar = (event) => {
     if (event.type === 'blur' && document.activeElement.tagName !== 'IFRAME') {

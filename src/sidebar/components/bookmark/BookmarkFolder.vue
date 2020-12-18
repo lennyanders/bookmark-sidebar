@@ -70,11 +70,7 @@
       <EditBm :bm="bm" />
     </div>
     <TransitionExpand v-if="bm.children.length">
-      <ul
-        class="bookmark__children"
-        :hidden="!childrenVisible"
-        :key="!childrenVisible"
-      >
+      <ul class="bookmark__children" :hidden="!childrenVisible" :key="!childrenVisible">
         <BaseBookmark v-for="bm of bm.children" :key="bm.id" :bm="bm" />
       </ul>
     </TransitionExpand>
