@@ -37,6 +37,7 @@ export default defineComponent({
         target.removeEventListener(name, callback, options);
       }
     });
+
+    return () => {};
   },
-  render: () => null,
 });
