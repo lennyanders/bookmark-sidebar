@@ -1,7 +1,8 @@
-import { watch } from '@vue-reactivity/watch';
+import { watchEffect } from '@vue-reactivity/watch';
 
 import { scriptRunsOnTab } from './insertAndToggleBmBar';
 import { data } from './data';
+import { defaults } from '@shared/settings.json';
 
 const actions = {
   remove({ id }) {
@@ -40,8 +41,11 @@ const actions = {
   setBarTheme({ barTheme }) {
     chrome.storage.sync.set({ barTheme });
   },
-  seteditBookmarkOnRightClick({ editBookmarkOnRightClick }) {
+  setEditBookmarkOnRightClick({ editBookmarkOnRightClick }) {
     chrome.storage.sync.set({ editBookmarkOnRightClick });
+  },
+  reset() {
+    chrome.storage.sync.set(defaults);
   },
 };
 
@@ -53,40 +57,7 @@ export const startMiddleware = () => {
 
     port.onMessage.addListener((msg) => actions[msg.type]?.(msg));
 
-    port.postMessage(data);
-
-    const stopWatch = watch(
-      [
-        () => data.bm,
-        () => data.allFolders,
-        () => data.barLeft,
-        () => data.barWidth,
-        () => data.barTheme,
-        () => data.editBookmarkOnRightClick,
-      ],
-      (
-        [bm, allFolders, barLeft, barWidth, barTheme, editBookmarkOnRightClick],
-        [
-          oldBm,
-          oldAllFolders,
-          oldBarLeft,
-          oldBarWidth,
-          oldbarTheme,
-          oldEditBookmarkOnRightClick,
-        ],
-      ) => {
-        port.postMessage({
-          ...(bm !== oldBm && { bm }),
-          ...(allFolders !== oldAllFolders && { allFolders }),
-          ...(barLeft !== oldBarLeft && { barLeft }),
-          ...(barWidth !== oldBarWidth && { barWidth }),
-          ...(barTheme !== oldbarTheme && { barTheme }),
-          ...(editBookmarkOnRightClick !== oldEditBookmarkOnRightClick && {
-            editBookmarkOnRightClick,
-          }),
-        });
-      },
-    );
+    const stopWatch = watchEffect(() => port.postMessage(data));
 
     port.onDisconnect.addListener(() => {
       stopWatch();

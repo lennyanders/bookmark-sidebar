@@ -3,80 +3,58 @@
   import BaseSelect from '@components/form/BaseSelect.vue';
   import BaseCheckbox from '@components/form/BaseCheckbox.vue';
   import BaseRadio from '@components/form/BaseRadio.vue';
+  import BaseButton from '@components/form/BaseButton.vue';
 
-  import { toRef, computed } from 'vue';
-  import { store, mutations } from '@store';
+  import { computed } from 'vue';
+  import { store } from '@store';
   import { actions } from '@api';
+  import { themes } from '@shared/settings.json';
 
-  const shownBm = computed({
-    get: () => store.bm.id,
-    set: actions.updateRootBm,
-  });
-  const allFolders = computed(() => {
-    return store.allFolders.map(({ id, title }) => ({
+  const allFolders = computed(() =>
+    store.allFolders.map(({ id, title }) => ({
       value: id,
       text: title,
-    }));
-  });
-
-  const barLeft = computed({
-    get: () => store.barLeft,
-    set: (value) => {
-      store.barLeft = value;
-      actions.saveBarLeft();
-    },
-  });
-
-  const editBookmarkOnRightClick = computed({
-    get: () => store.editBookmarkOnRightClick,
-    set: (value) => {
-      store.editBookmarkOnRightClick = value;
-      actions.saveEditBookmarkOnRightClick();
-    },
-  });
-
-  const themes = store.themes;
-  const activeTheme = computed({
-    get: () => store.activeTheme,
-    set: (value) => {
-      store.activeTheme = value;
-      actions.saveActiveTheme();
-    },
-  });
-
-  const barWidth = computed({
-    get: () => store.barWidth,
-    set: (value) => {
-      store.barWidth = value;
-      actions.saveBarWidth();
-    },
-  });
+    })),
+  );
 </script>
 
 <template>
-  <div>
+  <form @reset.prevent="actions.reset">
     <BaseSelect
-      v-model="shownBm"
+      :modelValue="store.bm.id"
+      @update:modelValue="actions.setRootBm"
       :options="allFolders"
       text="Choose the folder that you want to display:"
     />
 
     <BaseCheckbox
-      v-model="barLeft"
+      :modelValue="store.barLeft"
+      @update:modelValue="actions.setBarLeft"
       text="Should the Sidebar be on the left side?"
     />
 
     <BaseCheckbox
-      v-model="editBookmarkOnRightClick"
+      :modelValue="store.editBookmarkOnRightClick"
+      @update:modelValue="actions.setEditBookmarkOnRightClick"
       text="Open boomark options on right click?"
     />
 
     <BaseRadio
-      v-model="activeTheme"
+      :modelValue="store.activeTheme"
+      @update:modelValue="actions.setActiveTheme"
       :options="themes"
       text="Choose your preferred color theme"
     />
 
-    <BaseInput v-model="barWidth" text="Set width of Sidebar" type="number" />
-  </div>
+    <BaseInput
+      :modelValue="store.barWidth"
+      @update:modelValue="actions.setBarWidth"
+      text="Set width of Sidebar"
+      type="number"
+    />
+
+    <div class="modal__actions">
+      <BaseButton type="reset" text="Reset" />
+    </div>
+  </form>
 </template>

@@ -6,14 +6,7 @@ const port = chrome.runtime.connect({ name: 'bmBar' });
 
 // listen to events and update data
 port.onMessage.addListener(
-  async ({
-    bm,
-    allFolders,
-    barLeft,
-    barWidth,
-    barTheme,
-    editBookmarkOnRightClick,
-  }) => {
+  async ({ bm, allFolders, barLeft, barWidth, barTheme, editBookmarkOnRightClick }) => {
     Object.assign(store, {
       ...(bm && { bm }),
       ...(allFolders && { allFolders }),
@@ -36,7 +29,7 @@ port.onMessage.addListener(
 
 // communicate with middleware (background script)
 export const actions = {
-  updateRootBm(id) {
+  setRootBm(id) {
     port.postMessage({ type: 'setShownBm', id });
   },
   createBm(bm) {
@@ -52,22 +45,25 @@ export const actions = {
     port.postMessage({ type: 'remove', id });
   },
 
-  saveBarLeft() {
-    port.postMessage({ type: 'setBarLeft', barLeft: store.barLeft });
+  setBarLeft(barLeft) {
+    port.postMessage({ type: 'setBarLeft', barLeft });
   },
-  saveBarWidth() {
-    port.postMessage({ type: 'setBarWidth', barWidth: store.barWidth });
+  setBarWidth(barWidth) {
+    port.postMessage({ type: 'setBarWidth', barWidth });
   },
-  saveActiveTheme() {
+  setActiveTheme(barTheme) {
     port.postMessage({
       type: 'setBarTheme',
-      barTheme: store.activeTheme,
+      barTheme,
     });
   },
-  saveEditBookmarkOnRightClick() {
+  setEditBookmarkOnRightClick(editBookmarkOnRightClick) {
     port.postMessage({
-      type: 'seteditBookmarkOnRightClick',
-      editBookmarkOnRightClick: store.editBookmarkOnRightClick,
+      type: 'setEditBookmarkOnRightClick',
+      editBookmarkOnRightClick,
     });
+  },
+  reset() {
+    port.postMessage({ type: 'reset' });
   },
 };

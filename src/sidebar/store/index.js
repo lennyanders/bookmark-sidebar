@@ -4,34 +4,10 @@ import { useClampedRef } from '@use';
 import { flattenBms } from '@shared/utils';
 
 export const store = reactive({
-  barLeft: false,
-  barWidth: useClampedRef(300, 280, window.innerWidth),
-  themes: [
-    {
-      value: 'system',
-      text: 'System Oriented',
-    },
-    {
-      value: 'light',
-      text: 'light',
-    },
-    {
-      value: 'dark',
-      text: 'dark',
-    },
-  ],
-  activeTheme: 'system',
-  editBookmarkOnRightClick: false,
-
+  barWidth: useClampedRef(280, window.innerWidth),
   url: location.href,
-
   searchQuery: '',
   searchFocused: false,
-
-  bm: {},
-  allFolders: [],
-  activeBm: '0',
-
   isSearching: computed(() => !!store.searchQuery.trim()),
   flattenedBms: computed(() => flattenBms(store.bm.children)),
   filteredBms: computed(() => {

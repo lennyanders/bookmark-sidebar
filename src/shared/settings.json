@@ -1,0 +1,23 @@
+{
+  "defaults": {
+    "shownBmId": "0",
+    "barLeft": false,
+    "barWidth": 320,
+    "barTheme": "system",
+    "editBookmarkOnRightClick": false
+  },
+  "themes": [
+    {
+      "value": "system",
+      "text": "System Oriented"
+    },
+    {
+      "value": "light",
+      "text": "light"
+    },
+    {
+      "value": "dark",
+      "text": "dark"
+    }
+  ]
+}

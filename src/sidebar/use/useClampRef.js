@@ -6,7 +6,7 @@ const clamp = (num, min, max) => {
   return num;
 };
 
-export const useClampedRef = (value, min, max) => {
+export const useClampedRef = (min, max, value = min) => {
   return customRef((track, trigger) => ({
     get() {
       track();

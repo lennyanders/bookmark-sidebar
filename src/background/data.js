@@ -1,6 +1,7 @@
 import { shallowReactive } from '@vue/reactivity';
 import { watch } from '@vue-reactivity/watch';
 import { flattenBms } from '@shared/utils';
+import { defaults } from '@shared/settings.json';
 
 export const data = shallowReactive({});
 
@@ -84,32 +85,18 @@ watch(() => data.shownBmId, updateTree);
 
 export const generateData = async () => {
   chrome.storage.sync.get(
-    ['barLeft', 'shownBmId', 'barWidth', 'barTheme', 'editBookmarkOnRightClick'],
-    ({
-      shownBmId = '0',
-      barLeft = false,
-      barWidth = 320,
-      barTheme = 'system',
-      editBookmarkOnRightClick = false,
-    }) => {
-      Object.assign(data, {
-        barLeft,
-        barWidth,
-        barTheme,
-        editBookmarkOnRightClick,
-        shownBmId,
-      });
-    },
+    ['shownBmId', 'barLeft', 'barWidth', 'barTheme', 'editBookmarkOnRightClick'],
+    (settings) => Object.assign(data, defaults, settings),
   );
 
   chrome.storage.onChanged.addListener(
     ({ shownBmId, barLeft, barWidth, barTheme, editBookmarkOnRightClick }) => {
       Object.assign(data, {
         ...(shownBmId && { shownBmId: shownBmId.newValue }),
-        ...(barLeft && { barLeft: barLeft.newValue }),
+        ...(barLeft !== undefined && { barLeft: barLeft.newValue }),
         ...(barWidth && { barWidth: barWidth.newValue }),
         ...(barTheme && { barTheme: barTheme.newValue }),
-        ...(editBookmarkOnRightClick && {
+        ...(editBookmarkOnRightClick !== undefined && {
           editBookmarkOnRightClick: editBookmarkOnRightClick.newValue,
         }),
       });

@@ -11,17 +11,13 @@
     store.barWidth = store.barLeft ? x : document.body.scrollWidth - x;
   };
   const stopResizing = () => {
-    actions.saveBarWidth();
+    actions.setBarWidth(store.barWidth);
     dragging.value = false;
   };
 </script>
 
 <template>
-  <PseudoWindow
-    v-if="dragging"
-    @mousemove.passive="resize"
-    @mouseup.passive="stopResizing"
-  />
+  <PseudoWindow v-if="dragging" @mousemove.passive="resize" @mouseup.passive="stopResizing" />
   <div
     class="resizer"
     :class="{ 'resizer--right': barLeft, 'resizer--resizing': dragging }"
