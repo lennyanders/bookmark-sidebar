@@ -8,9 +8,7 @@ export const data = shallowReactive({});
 let faviconUrls = new Set([]);
 let faviconDataUrls = new Map();
 
-const getFaviconUrl = (url) => {
-  return `chrome://favicon/size/32/${new URL(url).origin}`;
-};
+const getFaviconUrl = (url) => `chrome://favicon/size/32/${new URL(url).origin}`;
 
 const getNewFaviconUrls = (bms, curFaviconUrls) => {
   return bms.reduce((res, { url }) => {
@@ -22,7 +20,7 @@ const getNewFaviconUrls = (bms, curFaviconUrls) => {
 
 const loadFavicons = (faviconUrls) => {
   if (!faviconUrls.size) return [];
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve, _reject) => {
     let faviconDataUrls = new Map();
 
     for (const faviconUrl of faviconUrls) {
@@ -50,15 +48,13 @@ const updateTree = () => {
     let bmsToLoad = [];
     let folders = [];
 
+    bookmark.title = 'Root';
     const flattenedBms = [bookmark, ...flattenBms(bookmark.children)];
     for (const bm of flattenedBms) {
       if (!bm.url) {
         if (bm.id === data.shownBmId) shownFolder = bm;
 
-        folders.push({
-          title: bm.id === '0' ? 'Root' : bm.title,
-          id: bm.id,
-        });
+        folders.push({ title: bm.title, id: bm.id });
       } else if (shownFolder) {
         bmsToLoad.push(bm);
       }
