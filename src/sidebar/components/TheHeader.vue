@@ -114,6 +114,7 @@
     }
 
     &__icon {
+      display: grid;
       width: 1.5em;
       height: 1.5em;
       fill: #fafafa;
