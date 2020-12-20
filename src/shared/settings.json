@@ -7,17 +7,25 @@
     "editBookmarkOnRightClick": false
   },
   "themes": [
-    {
-      "value": "system",
-      "text": "System Oriented"
-    },
-    {
-      "value": "light",
-      "text": "light"
-    },
-    {
-      "value": "dark",
-      "text": "dark"
-    }
-  ]
+    { "value": "system", "text": "System Oriented" },
+    { "value": "light", "text": "light" },
+    { "value": "dark", "text": "dark" }
+  ],
+  "search": {
+    "sort": [
+      { "value": "relevance", "text": "relevance" },
+      { "value": "alphabetical", "text": "alphabetical" },
+      { "value": "created", "text": "date" }
+    ],
+    "location": [
+      { "value": "everywhere", "text": "everywhere" },
+      { "value": "title", "text": "in title" },
+      { "value": "url", "text": "in url" }
+    ],
+    "filter": [
+      { "value": "all", "text": "all" },
+      { "value": "bookmarks", "text": "bookmarks" },
+      { "value": "folders", "text": "folders" }
+    ]
+  }
 }
