@@ -1,18 +1,12 @@
 <script setup>
-  import { ref, watchEffect, nextTick } from 'vue';
+  import { ref } from 'vue';
   import { state, hideModal } from './';
 
   const modal = ref(null);
-  watchEffect(async () => {
-    if (!state.visible) return;
-
-    await nextTick();
-    modal.value.focus();
-  });
 </script>
 
 <template>
-  <transition name="modal">
+  <Transition name="modal" @after-enter="modal.focus()">
     <div
       v-if="state.visible"
       class="modal"
@@ -31,7 +25,7 @@
         <component :is="state.component" v-bind="state.componentProps" class="modal__content" />
       </div>
     </div>
-  </transition>
+  </Transition>
 </template>
 
 <style lang="scss">
