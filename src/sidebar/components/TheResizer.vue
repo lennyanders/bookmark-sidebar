@@ -1,11 +1,12 @@
 <script setup>
   import PseudoWindow from '@shared/components/PseudoWindow';
-  import { ref, toRef } from 'vue';
+  import { ref, computed } from 'vue';
   import { store, mutations } from '@store';
   import { actions } from '@api';
 
   const dragging = ref(false);
-  const barLeft = toRef(store, 'barLeft');
+  const cssLeft = computed(() => (store.barLeft ? '100%' : '0'));
+  const cssScaleX = computed(() => (dragging.value ? '4' : '1'));
 
   const resize = ({ x }) => {
     store.barWidth = store.barLeft ? x : document.body.scrollWidth - x;
@@ -18,11 +19,7 @@
 
 <template>
   <PseudoWindow v-if="dragging" @mousemove.passive="resize" @mouseup.passive="stopResizing" />
-  <div
-    class="resizer"
-    :class="{ 'resizer--right': barLeft, 'resizer--resizing': dragging }"
-    @mousedown.passive="dragging = true"
-  />
+  <div class="resizer" @mousedown.passive="dragging = true" />
 </template>
 
 <style lang="scss">
@@ -30,20 +27,10 @@
     position: absolute;
     top: 0;
     bottom: 0;
-    left: 0;
+    left: v-bind(cssLeft);
     width: 0.25em;
-    transform: translateX(-50%);
+    transform: translateX(-50%) scaleX(v-bind(cssScaleX));
     cursor: col-resize;
     z-index: 2;
-
-    &--right {
-      left: auto;
-      right: 0;
-      transform: translateX(50%);
-    }
-
-    &--resizing {
-      width: 1.25em;
-    }
   }
 </style>

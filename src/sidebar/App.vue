@@ -5,12 +5,13 @@
   import TheModal from '@components/modal/TheModal.vue';
   import TheResizer from '@components/TheResizer.vue';
 
-  import { ref, toRef, computed, useCssVars } from 'vue';
+  import { ref, toRef, computed } from 'vue';
   import { store, mutations } from '@store';
 
   const barVisible = ref(
     !location.href.startsWith('chrome-extension') || location.href.endsWith('?bar=open'),
   );
+
   const hideBar = (event) => {
     if (event.type === 'blur' && document.activeElement.tagName !== 'IFRAME') {
       return;
@@ -32,28 +33,29 @@
 
   const stopSearching = mutations.stopSearching;
 
-  const barLeft = toRef(store, 'barLeft');
   const activeTheme = toRef(store, 'activeTheme');
   const bm = toRef(store, 'filteredBms');
-  const barWidth = computed(() => `${store.barWidth}px`);
+
+  const cssWidth = computed(() => `${store.barWidth}px`);
+  const cssRight = computed(() => (store.barLeft ? '100%' : '0'));
+  const cssInvisibleTranslateX = computed(() =>
+    store.barLeft ? '-0.5rem' : 'calc(100% + 0.5rem)',
+  );
 </script>
 
 <template>
   <PseudoWindow @click.passive="hideBar" @blur.passive="hideBar" />
   <Transition
     name="bookmark-bar"
-    enter-active-class="bookmark-bar--appearing"
-    leave-active-class="bookmark-bar--disappearing"
     enter-from-class="bookmark-bar--invisible"
     leave-to-class="bookmark-bar--invisible"
     @after-enter="focusBar"
   >
     <div
-      v-if="bm && bm.id"
+      v-if="bm"
       v-show="barVisible"
       class="bookmark-bar"
       :class="{
-        'bookmark-bar--left': barLeft,
         'bookmark-bar--light': activeTheme === 'light',
         'bookmark-bar--dark': activeTheme === 'dark',
       }"
@@ -114,15 +116,6 @@
   }
 
   :host,
-  html {
-    @include lightTheme();
-
-    @media (prefers-color-scheme: dark) {
-      @include darkTheme();
-    }
-  }
-
-  :host,
   body {
     font-size: 16px !important;
     font-family: 'Lato', Arial, Helvetica, sans-serif !important;
@@ -139,14 +132,25 @@
   .bookmark-bar {
     position: fixed;
     top: 0;
-    right: 0;
+    right: v-bind(cssRight);
     bottom: 0;
     display: grid;
     grid-template-rows: auto 1fr;
-    width: v-bind(barWidth);
+    width: v-bind(cssWidth);
     background-color: var(--bg-color);
     box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.25);
     will-change: scroll-position;
+    transform: translateX(v-bind(cssRight));
+    transition: transform 0.25s ease;
+
+    &--invisible {
+      transform: translateX(v-bind(cssInvisibleTranslateX));
+    }
+
+    @include lightTheme();
+    @media (prefers-color-scheme: dark) {
+      @include darkTheme();
+    }
 
     &--light {
       @include lightTheme();
@@ -154,24 +158,6 @@
 
     &--dark {
       @include darkTheme();
-    }
-
-    &--left {
-      right: auto;
-      left: 0;
-    }
-
-    &--appearing,
-    &--disappearing {
-      transition: transform 0.25s ease;
-    }
-
-    &--invisible {
-      transform: translateX(calc(100% + 0.5em));
-
-      &.bookmark-bar--left {
-        transform: translateX(calc(-100% - 0.5em));
-      }
     }
   }
 
