@@ -1,5 +1,6 @@
 <script setup>
   import { markRaw, defineProps } from 'vue';
+  import { i18n } from '@shared/utils';
   import { showModal } from '@components/modal';
   import ModalAddBm from '@components/modal/ModalAddBm.vue';
 
@@ -24,7 +25,7 @@
 <template>
   <button :class="btnClasses" @click.passive="addBm">
     <svg :class="icnClasses" viewBox="0 0 24 24">
-      <title>Add bookmark or folder</title>
+      <title>{{ i18n('addBookmarkTooltip') }}</title>
       <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
     </svg>
   </button>

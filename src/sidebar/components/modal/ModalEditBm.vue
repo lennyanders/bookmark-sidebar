@@ -4,6 +4,7 @@
   import SetCurrentUrl from '@components/actions/SetCurrentUrl.vue';
 
   import { ref, defineProps } from 'vue';
+  import { i18n } from '@shared/utils';
   import { actions } from '@api';
   import { hideModal } from '@components/modal';
 
@@ -41,16 +42,16 @@
 
 <template>
   <form @submit.prevent="updateBm">
-    <h2 class="modal__headline">Lesezeichen bearbeiten</h2>
+    <h2 class="modal__headline">{{ i18n(props.bm.url ? 'editBookmark' : 'editFolder') }}</h2>
 
-    <BaseInput v-model="newTitle" text="Titel" required />
-    <BaseInput v-if="typeof newUrl === 'string'" v-model="newUrl" type="url" text="Link" required>
+    <BaseInput v-model="newTitle" :text="i18n('title')" required />
+    <BaseInput v-if="props.bm.url" v-model="newUrl" type="url" :text="i18n('url')" required>
       <SetCurrentUrl @click.passive="setCurrentUrl" />
     </BaseInput>
 
     <div class="modal__actions">
-      <BaseButton @click.passive="removeBm" text="delete" />
-      <BaseButton type="submit" text="update" />
+      <BaseButton @click.passive="removeBm" :text="i18n('delete')" />
+      <BaseButton type="submit" :text="i18n('update')" />
     </div>
   </form>
 </template>

@@ -1,5 +1,85 @@
 {
   "extensionName": {
     "message": "Bookmark Sidebar & New Tab"
+  },
+
+  "searchPlaceholder": {
+    "message": "Search bookmarks"
+  },
+
+  "title": {
+    "message": "Title"
+  },
+  "url": {
+    "message": "Url"
+  },
+  "update": {
+    "message": "Update"
+  },
+  "delete": {
+    "message": "Delete"
+  },
+  "reset": {
+    "message": "Reset"
+  },
+
+  "addBookmark": {
+    "message": "Add bookmark"
+  },
+  "addFolder": {
+    "message": "Add folder"
+  },
+  "addBookmarkTooltip": {
+    "message": "Add bookmark or folder"
+  },
+
+  "editBookmark": {
+    "message": "Edit bookmark"
+  },
+  "editFolder": {
+    "message": "Edit folder"
+  },
+
+  "leaveSearchView": {
+    "message": "Leave search view"
+  },
+  "openSearchSettings": {
+    "message": "Open search settings"
+  },
+  "openSettings": {
+    "message": "Open settings"
+  },
+  "setCurrentUrlToBookmark": {
+    "message": "Set current url to bookmark"
+  },
+
+  "closeModal": {
+    "message": "Close Modal"
+  },
+
+  "sortOrder": {
+    "message": "Sort order:"
+  },
+  "searchLocation": {
+    "message": "Search location:"
+  },
+  "searchFilter": {
+    "message": "Search filter:"
+  },
+
+  "displayedFolder": {
+    "message": "Displayed folder:"
+  },
+  "sidebarOnTheLeft": {
+    "message": "Sidebar on the left?"
+  },
+  "editBoomarkOrFolderOnRightClick": {
+    "message": "Edit boomark or folder on right click?"
+  },
+  "colorTheme": {
+    "message": "Color theme:"
+  },
+  "widthOfSidebar": {
+    "message": "Width of sidebar:"
   }
 }

@@ -1,5 +1,6 @@
 <script setup>
   import { ref } from 'vue';
+  import { i18n } from '@shared/utils';
   import { state, hideModal } from './';
 
   const modal = ref(null);
@@ -16,12 +17,7 @@
       ref="modal"
     >
       <div @click.passive.stop class="modal__layer">
-        <button
-          class="modal__close"
-          @click.passive="hideModal"
-          title="Close"
-          aria-label="close modal"
-        />
+        <button class="modal__close" @click.passive="hideModal" :title="i18n('closeModal')" />
         <component :is="state.component" v-bind="state.componentProps" class="modal__content" />
       </div>
     </div>

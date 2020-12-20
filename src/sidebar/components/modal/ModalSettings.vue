@@ -9,6 +9,7 @@
   import { store } from '@store';
   import { actions } from '@api';
   import { themes } from '@shared/settings.json';
+  import { i18n } from '@shared/utils';
 
   const allFolders = computed(() =>
     store.allFolders.map(({ id, title }) => ({
@@ -24,37 +25,37 @@
       :modelValue="store.bm.id"
       @update:modelValue="actions.setRootBm"
       :options="allFolders"
-      text="Choose the folder that you want to display:"
+      :text="i18n('displayedFolder')"
     />
 
     <BaseCheckbox
       :modelValue="store.barLeft"
       @update:modelValue="actions.setBarLeft"
-      text="Should the Sidebar be on the left side?"
+      :text="i18n('sidebarOnTheLeft')"
     />
 
     <BaseCheckbox
       :modelValue="store.editBookmarkOnRightClick"
       @update:modelValue="actions.setEditBookmarkOnRightClick"
-      text="Open boomark options on right click?"
+      :text="i18n('editBoomarkOrFolderOnRightClick')"
     />
 
     <BaseRadio
       :modelValue="store.activeTheme"
       @update:modelValue="actions.setActiveTheme"
       :options="themes"
-      text="Choose your preferred color theme"
+      :text="i18n('colorTheme')"
     />
 
     <BaseInput
       :modelValue="store.barWidth"
       @update:modelValue="actions.setBarWidth"
-      text="Set width of Sidebar"
+      :text="i18n('widthOfSidebar')"
       type="number"
     />
 
     <div class="modal__actions">
-      <BaseButton type="reset" text="Reset" />
+      <BaseButton type="reset" :text="i18n('reset')" />
     </div>
   </form>
 </template>

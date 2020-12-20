@@ -6,6 +6,7 @@
 
   import { ref, toRef, defineProps, useCssVars } from 'vue';
   import { store, mutations } from '@store';
+  import { i18n } from '@shared/utils';
 
   const props = defineProps({
     bm: {
@@ -13,8 +14,6 @@
       required: true,
     },
   });
-
-  const placeholder = chrome.i18n.getMessage('searchPlaceholder');
 
   const searchFocused = toRef(store, 'searchFocused');
   const searchQuery = toRef(store, 'searchQuery');
@@ -37,7 +36,7 @@
     <input
       class="header__search"
       type="text"
-      :placeholder="placeholder"
+      :placeholder="i18n('searchPlaceholder')"
       v-model="searchQuery"
       @focus.passive="searchFocused = true"
       @keyup.passive.esc="leaveSearchView"

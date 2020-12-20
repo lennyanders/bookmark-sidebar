@@ -7,3 +7,5 @@ export const flattenBms = (bms) => {
   }
   return result;
 };
+
+export const i18n = chrome.i18n.getMessage;
