@@ -21,7 +21,7 @@
       :checked="modelValue"
       @change.passive="$emit('update:modelValue', $event.target.checked)"
     />
-    <span class="checkbox__label" v-text="text" />
+    <span class="checkbox__label">{{ text }}</span>
   </label>
 </template>
 

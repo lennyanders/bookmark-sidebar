@@ -22,15 +22,16 @@
 
 <template inherit-attrs="false">
   <label class="select">
-    <span class="select__label" v-text="text" />
+    <span class="select__label">{{ text }}</span>
     <select class="select__el" @change.passive="emit('update:modelValue', $event.target.value)">
       <option
         v-for="{ text, value } of options"
         :key="value"
         :value="value"
         :selected="value === modelValue"
-        v-text="text"
-      />
+      >
+        {{ text }}
+      </option>
     </select>
   </label>
 </template>

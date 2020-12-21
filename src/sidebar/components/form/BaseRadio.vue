@@ -22,7 +22,7 @@
 
 <template inherit-attrs="false">
   <fieldset class="radios">
-    <legend class="radios__label" v-text="text" />
+    <legend class="radios__label">{{ text }}</legend>
     <label class="radio" v-for="{ value, text } of options" :key="value">
       <input
         class="radio__el"
@@ -31,7 +31,7 @@
         :checked="value === modelValue"
         @change.passive="emit('update:modelValue', $event.target.value)"
       />
-      <span class="radio__label" v-text="text" />
+      <span class="radio__label">{{ text }}</span>
     </label>
   </fieldset>
 </template>

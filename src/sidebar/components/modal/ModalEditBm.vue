@@ -42,10 +42,10 @@
 
 <template>
   <form @submit.prevent="updateBm">
-    <h2 class="modal__headline">{{ i18n(props.bm.url ? 'editBookmark' : 'editFolder') }}</h2>
+    <h2 class="modal__headline">{{ i18n(bm.url ? 'editBookmark' : 'editFolder') }}</h2>
 
     <BaseInput v-model="newTitle" :text="i18n('title')" required />
-    <BaseInput v-if="props.bm.url" v-model="newUrl" type="url" :text="i18n('url')" required>
+    <BaseInput v-if="bm.url" v-model="newUrl" type="url" :text="i18n('url')" required>
       <SetCurrentUrl @click.passive="setCurrentUrl" />
     </BaseInput>
 
