@@ -1,6 +1,14 @@
 {
   "extensionName": {
-    "message": "Bookmark Sidebar & New Tab"
+    "message": "Bookmark sidebar & new tab"
+  },
+
+  "description": {
+    "message": "An easy to use bookmark sidebar/manager"
+  },
+
+  "toggleBookmarkSidebarVisibility": {
+    "message": "Toggle bookmark sidebar visibility"
   },
 
   "searchPlaceholder": {

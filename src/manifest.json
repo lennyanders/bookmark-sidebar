@@ -1,7 +1,7 @@
 {
   "default_locale": "en",
   "name": "__MSG_extensionName__",
-  "description": "Bookmarkbar backend",
+  "description": "__MSG_description__",
   "permissions": ["storage", "activeTab", "bookmarks", "chrome://favicon/*/"],
   "content_security_policy": "img-src chrome://favicon/ data:;",
   "commands": {
@@ -10,7 +10,7 @@
         "default": "Ctrl+Shift+Y",
         "mac": "Command+Shift+Y"
       },
-      "description": "toggle Bookmarkbar visibility"
+      "description": "__MSG_toggleBookmarkSidebarVisibility__"
     }
   },
   "background": {
@@ -23,7 +23,7 @@
       "24": "icons/browser-action-24.png",
       "32": "icons/browser-action-32.png"
     },
-    "default_title": "Lesezeichen"
+    "default_title": "__MSG_bookmarks__"
   },
   "chrome_url_overrides": {
     "newtab": "newtab.html"

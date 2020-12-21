@@ -3,7 +3,129 @@
     "message": "Lesezeichenleiste & Neuer Tab"
   },
 
+  "description": {
+    "message": "Eine einfach zu benutzende Lesezeichnleiste"
+  },
+
+  "toggleBookmarkSidebarVisibility": {
+    "message": "Lesezeichnleiste Ein/Aus-blenden"
+  },
+
   "searchPlaceholder": {
     "message": "Lesezeichen suchen"
+  },
+
+  "newTab": {
+    "message": "Neuer Tab"
+  },
+
+  "title": {
+    "message": "Titel"
+  },
+  "url": {
+    "message": "Link"
+  },
+  "update": {
+    "message": "Aktualisieren"
+  },
+  "delete": {
+    "message": "Löschen"
+  },
+  "reset": {
+    "message": "Zurücksetzen"
+  },
+
+  "addBookmark": {
+    "message": "Lesezeichen hinzufügen"
+  },
+  "addFolder": {
+    "message": "Ordner hinzufügen"
+  },
+  "addBookmarkTooltip": {
+    "message": "Lesezeichen oder Ordner hinzufügen"
+  },
+
+  "editBookmark": {
+    "message": "Lesezeichen bearbeiten"
+  },
+  "editFolder": {
+    "message": "Ordner bearbeiten"
+  },
+
+  "leaveSearchView": {
+    "message": "Suchansicht verlassen"
+  },
+  "openSearchSettings": {
+    "message": "Sucheinstellungen öffnen"
+  },
+  "openSettings": {
+    "message": "Einstellungen öffnen"
+  },
+  "setCurrentUrlToBookmark": {
+    "message": "Setze den aktuellen Link auf das Lesezeichen"
+  },
+
+  "closeModal": {
+    "message": "Modal schließen"
+  },
+
+  "sortOrder": {
+    "message": "Anzeigereihenfolge:"
+  },
+  "searchLocation": {
+    "message": "Suchort:"
+  },
+  "searchFilter": {
+    "message": "Suchfilter:"
+  },
+
+  "displayedFolder": {
+    "message": "Anzeigeordner:"
+  },
+  "sidebarOnTheLeft": {
+    "message": "Seitenleiste links?"
+  },
+  "editBoomarkOrFolderOnRightClick": {
+    "message": "Lesezeichen und Ordner mit Rechtsclick bearbeiten?"
+  },
+  "colorTheme": {
+    "message": "Farbschema:"
+  },
+  "widthOfSidebar": {
+    "message": "Breite der Seitenleiste:"
+  },
+
+  "systemOriented": {
+    "message": "Systemorientiert"
+  },
+  "light": {
+    "message": "Hell"
+  },
+  "dark": {
+    "message": "Dunkel"
+  },
+
+  "relevance": {
+    "message": "Relevanz"
+  },
+  "alphabetical": {
+    "message": "Alphabetisch"
+  },
+  "date": {
+    "message": "Datum"
+  },
+
+  "everywhere": {
+    "message": "Überall"
+  },
+
+  "none": {
+    "message": "Keiner"
+  },
+  "bookmarks": {
+    "message": "Lesezeichen"
+  },
+  "folders": {
+    "message": "Ordner"
   }
 }
