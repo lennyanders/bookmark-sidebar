@@ -4,7 +4,7 @@
   import AddBm from '@components/actions/AddBm.vue';
   import OpenSearchSettings from '@components/actions/OpenSearchSettings.vue';
 
-  import { ref, toRef, defineProps, useCssVars } from 'vue';
+  import { toRef, defineProps } from 'vue';
   import { store, mutations } from '@store';
   import { i18n } from '@shared/utils';
 
@@ -17,21 +17,18 @@
 
   const searchFocused = toRef(store, 'searchFocused');
   const searchQuery = toRef(store, 'searchQuery');
-
-  const searchInput = ref(null);
-  const leaveSearchView = () => {
-    searchInput.value?.blur();
-    mutations.stopSearching();
-  };
-
   const barWidth = toRef(store, 'barWidth');
 </script>
 
 <template>
-  <header class="header" :class="{ 'header--searching': searchFocused }">
+  <header
+    class="header"
+    :class="{ 'header--searching': searchFocused }"
+    @keyup.passive.esc="mutations.stopSearching"
+  >
     <div class="header__icons header__icons--left">
       <OpenSettings />
-      <LeaveSearch @click.passive="leaveSearchView" />
+      <LeaveSearch />
     </div>
     <input
       class="header__search"
@@ -39,13 +36,12 @@
       :placeholder="i18n('searchPlaceholder')"
       v-model="searchQuery"
       @focus.passive="searchFocused = true"
-      @keyup.passive.esc="leaveSearchView"
+      @keyup.passive.esc="$event.target.blur()"
       @blur.passive="!searchQuery && (searchFocused = false)"
-      ref="searchInput"
     />
     <div class="header__icons header__icons--right">
       <AddBm :btn-classes="['header__icon', 'header__icon--primary']" :icn-classes="[]" :bm="bm" />
-      <OpenSearchSettings />
+      <OpenSearchSettings :tabindex="searchQuery ? 0 : -1" />
     </div>
   </header>
 </template>

@@ -1,15 +1,15 @@
 import { reactive, computed } from 'vue';
 import { fuzzy } from 'fast-fuzzy';
-import { useClampedRef } from '@use';
+import { useClampedRef, useTrimRef } from '@use';
 import { flattenBms } from '@shared/utils';
 import { search } from '@shared/settings';
 
 export const store = reactive({
   barWidth: useClampedRef(280, window.innerWidth),
   url: location.href,
-  searchQuery: '',
+  searchQuery: useTrimRef(),
   searchFocused: false,
-  isSearching: computed(() => !!store.searchQuery.trim()),
+  isSearching: computed(() => !!store.searchQuery),
   searchSortOrder: search.sort.relevance.value,
   searchLocation: search.location.everywhere.value,
   searchFilter: search.filter.none.value,

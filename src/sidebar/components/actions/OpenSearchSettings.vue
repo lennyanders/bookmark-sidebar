@@ -5,7 +5,7 @@
   import { store } from '@store';
   import ModalSearchSettings from '@components/modal/ModalSearchSettings.vue';
 
-  const showSettings = () => store.isSearching && showModal(markRaw(ModalSearchSettings));
+  const showSettings = () => showModal(markRaw(ModalSearchSettings));
 </script>
 
 <template>
@@ -16,3 +16,9 @@
     </svg>
   </button>
 </template>
+
+<style lang="scss" scoped>
+  button[tabindex='-1'] {
+    pointer-events: none;
+  }
+</style>
