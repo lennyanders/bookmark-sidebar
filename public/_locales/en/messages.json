@@ -81,5 +81,39 @@
   },
   "widthOfSidebar": {
     "message": "Width of sidebar:"
+  },
+
+  "systemOriented": {
+    "message": "System oriented"
+  },
+  "light": {
+    "message": "Light"
+  },
+  "dark": {
+    "message": "Dark"
+  },
+
+  "relevance": {
+    "message": "Relevance"
+  },
+  "alphabetical": {
+    "message": "Alphabetical"
+  },
+  "date": {
+    "message": "Date"
+  },
+
+  "everywhere": {
+    "message": "Everywhere"
+  },
+
+  "none": {
+    "message": "None"
+  },
+  "bookmarks": {
+    "message": "Bookmarks"
+  },
+  "folders": {
+    "message": "Folders"
   }
 }

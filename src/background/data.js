@@ -1,7 +1,7 @@
 import { shallowReactive } from '@vue/reactivity';
 import { watch } from '@vue-reactivity/watch';
 import { flattenBms } from '@shared/utils';
-import { defaults } from '@shared/settings.json';
+import { defaults } from '@shared/settings';
 
 export const data = shallowReactive({});
 

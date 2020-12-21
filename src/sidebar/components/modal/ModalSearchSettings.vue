@@ -1,7 +1,7 @@
 <script setup>
   import BaseRadio from '@components/form/BaseRadio.vue';
 
-  import { search } from '@shared/settings.json';
+  import { search } from '@shared/settings';
   import { store } from '@store';
   import { i18n } from '@shared/utils';
 </script>

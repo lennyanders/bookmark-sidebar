@@ -2,7 +2,7 @@ import { watchEffect } from '@vue-reactivity/watch';
 
 import { scriptRunsOnTab } from './insertAndToggleBmBar';
 import { data } from './data';
-import { defaults } from '@shared/settings.json';
+import { defaults } from '@shared/settings';
 
 const actions = {
   remove({ id }) {

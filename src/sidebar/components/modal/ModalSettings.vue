@@ -8,7 +8,7 @@
   import { computed } from 'vue';
   import { store } from '@store';
   import { actions } from '@api';
-  import { themes } from '@shared/settings.json';
+  import { themes } from '@shared/settings';
   import { i18n } from '@shared/utils';
 
   const allFolders = computed(() =>

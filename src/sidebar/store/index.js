@@ -11,7 +11,7 @@ export const store = reactive({
   isSearching: computed(() => !!store.searchQuery.trim()),
   searchSortOrder: 'relevance',
   searchLocation: 'everywhere',
-  searchFilter: 'all',
+  searchFilter: 'none',
   flattenedBms: computed(() => flattenBms(store.bm.children)),
   filteredBms: computed(() => {
     const searchQuery = store.searchQuery.trim();
