@@ -66,9 +66,7 @@ const updateTree = () => {
       faviconDataUrls = new Map([...faviconDataUrls, ...(await loadFavicons(newFaviconUrls))]);
     }
     // add favicon data urls to bookmarks that appear in the sidebar
-    bmsToLoad.map((bm) => {
-      bm.faviconDataUrl = faviconDataUrls.get(getFaviconUrl(bm.url));
-    });
+    bmsToLoad.forEach((bm) => (bm.faviconDataUrl = faviconDataUrls.get(getFaviconUrl(bm.url))));
 
     data.bm = shownFolder;
     data.allFolders = folders;

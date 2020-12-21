@@ -12,10 +12,7 @@
   import { i18n } from '@shared/utils';
 
   const allFolders = computed(() =>
-    store.allFolders.map(({ id, title }) => ({
-      value: id,
-      text: title,
-    })),
+    store.allFolders.map(({ id, title }) => ({ value: id, text: title })),
   );
 </script>
 

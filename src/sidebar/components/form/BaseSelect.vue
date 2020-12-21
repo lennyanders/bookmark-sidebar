@@ -7,9 +7,12 @@
       required: true,
     },
     options: {
-      type: Array,
       required: true,
-      validator: (array) => array.every((item) => item.value && item.text),
+      validator: (prop) => {
+        if (!Array.isArray(prop)) prop = Object.values(prop);
+
+        return prop.every((item) => item.value && item.text);
+      },
     },
     modelValue: {
       type: String,

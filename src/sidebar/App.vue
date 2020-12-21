@@ -7,6 +7,7 @@
 
   import { ref, toRef, computed } from 'vue';
   import { store, mutations } from '@store';
+  import { themes } from '@shared/settings';
 
   const barVisible = ref(
     !location.href.startsWith('chrome-extension') || location.href.endsWith('?bar=open'),
@@ -56,8 +57,8 @@
       v-show="barVisible"
       class="bookmark-bar"
       :class="{
-        'bookmark-bar--light': activeTheme === 'light',
-        'bookmark-bar--dark': activeTheme === 'dark',
+        'bookmark-bar--light': activeTheme === themes.light.value,
+        'bookmark-bar--dark': activeTheme === themes.dark.value,
       }"
       tabindex="-1"
       @click.passive.stop
