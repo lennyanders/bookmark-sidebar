@@ -24,11 +24,6 @@
     "persistent": true
   },
   "browser_action": {
-    "default_icon": {
-      "16": "icons/browser-action-16.png",
-      "24": "icons/browser-action-24.png",
-      "32": "icons/browser-action-32.png"
-    },
     "default_title": "__MSG_bookmarks__"
   },
   "chrome_url_overrides": {
