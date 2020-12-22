@@ -5,11 +5,17 @@ export const updateActionIcon = () => {
   const image = new Image();
 
   image.onload = () => {
-    const { width, height } = image;
-    canvas.width = width;
-    canvas.height = height;
-    context.drawImage(image, 0, 0);
-    chrome.browserAction.setIcon({ imageData: context.getImageData(0, 0, width, height) });
+    const imageData = [16, 24, 32].reduce((res, size) => {
+      image.width = size;
+      image.height = size;
+      canvas.width = size;
+      canvas.width = size;
+      context.drawImage(image, 0, 0);
+      res[size] = context.getImageData(0, 0, size, size);
+      return res;
+    }, {});
+
+    chrome.browserAction.setIcon({ imageData });
   };
 
   const setActionIcon = () => {
