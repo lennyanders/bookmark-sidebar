@@ -34,6 +34,12 @@
   "reset": {
     "message": "Zurücksetzen"
   },
+  "yes": {
+    "message": "Ja"
+  },
+  "no": {
+    "message": "Nein"
+  },
 
   "addBookmark": {
     "message": "Lesezeichen hinzufügen"
@@ -82,8 +88,14 @@
   "displayedFolder": {
     "message": "Anzeigeordner:"
   },
-  "sidebarOnTheLeft": {
-    "message": "Seitenleiste links?"
+  "position": {
+    "message": "Position:"
+  },
+  "left": {
+    "message": "Links"
+  },
+  "right": {
+    "message": "Rechts"
   },
   "editBoomarkOrFolderOnRightClick": {
     "message": "Lesezeichen und Ordner mit Rechtsclick bearbeiten?"

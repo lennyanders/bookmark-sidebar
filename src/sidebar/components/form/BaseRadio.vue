@@ -11,11 +11,12 @@
       validator: (prop) => {
         if (!Array.isArray(prop)) prop = Object.values(prop);
 
-        return prop.every((item) => item.value && item.text);
+        return prop.every(
+          (item) => typeof item.value !== 'undefined' && typeof item.text === 'string',
+        );
       },
     },
     modelValue: {
-      type: [String, Number],
       required: true,
     },
   });

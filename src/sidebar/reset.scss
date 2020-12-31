@@ -25,7 +25,10 @@ div:focus {
 
 button {
   all: unset;
-  cursor: pointer;
+
+  &:not([disabled]) {
+    cursor: pointer;
+  }
 
   &:focus {
     outline: -webkit-focus-ring-color auto 1px;

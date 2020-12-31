@@ -34,6 +34,12 @@
   "reset": {
     "message": "Reset"
   },
+  "yes": {
+    "message": "Yes"
+  },
+  "no": {
+    "message": "No"
+  },
 
   "addBookmark": {
     "message": "Add bookmark"
@@ -82,8 +88,14 @@
   "displayedFolder": {
     "message": "Displayed folder:"
   },
-  "sidebarOnTheLeft": {
-    "message": "Sidebar on the left?"
+  "position": {
+    "message": "Position:"
+  },
+  "left": {
+    "message": "Left"
+  },
+  "right": {
+    "message": "Right"
   },
   "editBoomarkOrFolderOnRightClick": {
     "message": "Edit boomark or folder on right click?"

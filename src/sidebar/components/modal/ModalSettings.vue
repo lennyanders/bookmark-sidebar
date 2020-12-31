@@ -1,7 +1,7 @@
 <script setup>
   import BaseInput from '@components/form/BaseInput.vue';
   import BaseSelect from '@components/form/BaseSelect.vue';
-  import BaseCheckbox from '@components/form/BaseCheckbox.vue';
+  import RadioBoxes from '@components/form/RadioBoxes.vue';
   import BaseRadio from '@components/form/BaseRadio.vue';
   import BaseButton from '@components/form/BaseButton.vue';
 
@@ -25,13 +25,17 @@
       :text="i18n('displayedFolder')"
     />
 
-    <BaseCheckbox
+    <RadioBoxes
       :modelValue="store.barLeft"
       @update:modelValue="actions.setBarLeft"
-      :text="i18n('sidebarOnTheLeft')"
+      :options="[
+        { value: true, text: i18n('left') },
+        { value: false, text: i18n('right') },
+      ]"
+      :text="i18n('position')"
     />
 
-    <BaseCheckbox
+    <RadioBoxes
       :modelValue="store.editBookmarkOnRightClick"
       @update:modelValue="actions.setEditBookmarkOnRightClick"
       :text="i18n('editBoomarkOrFolderOnRightClick')"
