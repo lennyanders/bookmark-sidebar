@@ -15,7 +15,11 @@
 </script>
 
 <template>
-  <button class="bookmark__option" @click.passive="editBm">
+  <button
+    v-if="['1', '2'].every((id) => id !== bm.id)"
+    class="bookmark__option"
+    @click.passive="editBm"
+  >
     <svg class="bookmark__icon" viewBox="0 0 24 24">
       <title>{{ i18n(bm.url ? 'editBookmark' : 'editFolder') }}</title>
       <path

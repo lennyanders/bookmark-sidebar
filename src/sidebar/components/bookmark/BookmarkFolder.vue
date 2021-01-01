@@ -5,13 +5,6 @@
   import TransitionExpand from '@components/TransitionExpand.vue';
   const BaseBookmark = defineAsyncComponent(() => import('./BaseBookmark.vue'));
 
-  const props = defineProps({
-    bm: {
-      type: Object,
-      required: true,
-    },
-  });
-
   import useEditBm from './useEditBm';
   import useKeyboard from './useKeyboard';
   import useDragAndDrop from './useDragAndDrop';
@@ -19,6 +12,13 @@
   import useIsSearching from './useIsSearching';
   import useEditBookmarkOnRightClick from './useEditBookmarkOnRightClick';
   import useChildren from './useChildren';
+
+  const props = defineProps({
+    bm: {
+      type: Object,
+      required: true,
+    },
+  });
 
   const { childrenVisible, openChildren, hideChildren } = useChildren(props);
   const { contextmenu } = useEditBm(props);

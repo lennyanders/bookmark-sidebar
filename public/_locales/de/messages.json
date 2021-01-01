@@ -19,6 +19,9 @@
     "message": "Neuer Tab"
   },
 
+  "parentFolder": {
+    "message": "Elternordner"
+  },
   "title": {
     "message": "Titel"
   },

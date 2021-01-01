@@ -1,12 +1,14 @@
 <script setup>
+  import BaseSelect from '@components/form/BaseSelect.vue';
   import BaseInput from '@components/form/BaseInput.vue';
   import BaseButton from '@components/form/BaseButton.vue';
   import SetCurrentUrl from '@components/actions/SetCurrentUrl.vue';
 
-  import { ref, defineProps } from 'vue';
-  import { i18n } from '@shared/utils';
+  import { defineProps, ref, computed } from 'vue';
   import { actions } from '@api';
+  import { store } from '@store';
   import { hideModal } from '@components/modal';
+  import { i18n } from '@shared/utils';
 
   const props = defineProps({
     bm: {
@@ -17,6 +19,7 @@
 
   const newTitle = ref(props.bm.title);
   const newUrl = ref(props.bm.url);
+  const newParentFolder = ref(props.bm.parentId);
 
   const setCurrentUrl = () => {
     newUrl.value = location.href;
@@ -31,6 +34,9 @@
         url: newUrl.value,
       });
     }
+    if (newParentFolder !== props.bm.parentId) {
+      actions.moveBm({ id: props.bm.id, parentId: newParentFolder.value });
+    }
     if (eventOrCloseModal !== false) hideModal();
   };
 
@@ -38,11 +44,19 @@
     actions.removeBm(props.bm.id);
     hideModal();
   };
+
+  const folders = computed(() =>
+    store.allFolders
+      .filter(({ id }) => id !== '0')
+      .map(({ id, title }) => ({ value: id, text: title })),
+  );
 </script>
 
 <template>
   <form @submit.prevent="updateBm">
     <h2 class="modal__headline">{{ i18n(bm.url ? 'editBookmark' : 'editFolder') }}</h2>
+
+    <BaseSelect v-model="newParentFolder" :options="folders" :text="i18n('parentfolder')" />
 
     <BaseInput v-model="newTitle" :text="i18n('title')" required />
     <BaseInput v-if="bm.url" v-model="newUrl" type="url" :text="i18n('url')" required>

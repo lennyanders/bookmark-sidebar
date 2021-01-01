@@ -101,7 +101,6 @@
 
     &__icons {
       position: relative;
-      display: flex;
       padding: 0.5em;
       transition: transform 0.125s;
       z-index: 1;
@@ -118,7 +117,10 @@
         opacity: 0;
         visibility: hidden;
         transform: scale(-1);
-        margin-left: -1.5em;
+      }
+
+      &:nth-child(2) {
+        margin-top: -1.5rem;
       }
     }
 

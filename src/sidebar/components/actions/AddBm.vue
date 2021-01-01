@@ -23,7 +23,7 @@
 </script>
 
 <template>
-  <button :class="btnClasses" @click.passive="addBm">
+  <button v-if="bm.id !== '0'" :class="btnClasses" @click.passive="addBm">
     <svg :class="icnClasses" viewBox="0 0 24 24">
       <title>{{ i18n('addBookmarkTooltip') }}</title>
       <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
