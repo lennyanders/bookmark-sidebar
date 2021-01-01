@@ -43,7 +43,7 @@
 
 <template inherit-attrs="false">
   <div class="radio-checkbox">
-    <span class="radio-checkbox__label">{{ text }}</span>
+    <span class="radio-checkbox__label">{{ text }}:</span>
     <div class="radio-checkbox__options">
       <button
         type="button"

@@ -41,7 +41,7 @@
 
 <template inherit-attrs="false">
   <label class="input">
-    <span class="input__label">{{ text }}</span>
+    <span class="input__label">{{ text }}:</span>
     <input
       class="input__el"
       type="text"

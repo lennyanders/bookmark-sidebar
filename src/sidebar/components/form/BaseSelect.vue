@@ -26,7 +26,7 @@
 
 <template inherit-attrs="false">
   <label class="select">
-    <span class="select__label">{{ text }}</span>
+    <span class="select__label">{{ text }}:</span>
     <select class="select__el" @change.passive="emit('update:modelValue', $event.target.value)">
       <option
         v-for="{ text, value } of options"

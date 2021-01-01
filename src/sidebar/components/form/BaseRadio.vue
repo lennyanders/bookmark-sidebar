@@ -26,7 +26,7 @@
 
 <template inherit-attrs="false">
   <fieldset class="radios">
-    <legend class="radios__label">{{ text }}</legend>
+    <legend class="radios__label">{{ text }}:</legend>
     <label class="radio" v-for="{ value, text } of options" :key="value">
       <input
         class="radio__el"

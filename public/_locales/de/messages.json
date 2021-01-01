@@ -79,20 +79,20 @@
   },
 
   "sortOrder": {
-    "message": "Anzeigereihenfolge:"
+    "message": "Anzeigereihenfolge"
   },
   "searchLocation": {
-    "message": "Suchort:"
+    "message": "Suchort"
   },
   "searchFilter": {
-    "message": "Suchfilter:"
+    "message": "Suchfilter"
   },
 
   "displayedFolder": {
-    "message": "Anzeigeordner:"
+    "message": "Anzeigeordner"
   },
   "position": {
-    "message": "Position:"
+    "message": "Position"
   },
   "left": {
     "message": "Links"
@@ -104,10 +104,10 @@
     "message": "Lesezeichen und Ordner mit Rechtsclick bearbeiten?"
   },
   "colorTheme": {
-    "message": "Farbschema:"
+    "message": "Farbschema"
   },
   "widthOfSidebar": {
-    "message": "Breite der Seitenleiste:"
+    "message": "Breite der Seitenleiste"
   },
 
   "systemOriented": {

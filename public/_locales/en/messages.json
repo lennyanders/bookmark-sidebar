@@ -79,20 +79,20 @@
   },
 
   "sortOrder": {
-    "message": "Sort order:"
+    "message": "Sort order"
   },
   "searchLocation": {
-    "message": "Search location:"
+    "message": "Search location"
   },
   "searchFilter": {
-    "message": "Search filter:"
+    "message": "Search filter"
   },
 
   "displayedFolder": {
-    "message": "Displayed folder:"
+    "message": "Displayed folder"
   },
   "position": {
-    "message": "Position:"
+    "message": "Position"
   },
   "left": {
     "message": "Left"
@@ -104,10 +104,10 @@
     "message": "Edit boomark or folder on right click?"
   },
   "colorTheme": {
-    "message": "Color theme:"
+    "message": "Color theme"
   },
   "widthOfSidebar": {
-    "message": "Width of sidebar:"
+    "message": "Width of sidebar"
   },
 
   "systemOriented": {
