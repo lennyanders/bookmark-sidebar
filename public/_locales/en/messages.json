@@ -19,6 +19,9 @@
     "message": "New tab"
   },
 
+  "noBookmarkFound": {
+    "message": "No bookmark found."
+  },
   "parentFolder": {
     "message": "Parent folder"
   },

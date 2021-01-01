@@ -19,6 +19,9 @@
     "message": "Neuer Tab"
   },
 
+  "noBookmarkFound": {
+    "message": "Keine Lesezeichen gefunden."
+  },
   "parentFolder": {
     "message": "Elternordner"
   },

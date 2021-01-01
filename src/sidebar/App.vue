@@ -8,6 +8,7 @@
   import { ref, toRef, computed } from 'vue';
   import { store, mutations } from '@store';
   import { themes } from '@shared/settings';
+  import { i18n } from '@shared/utils';
 
   const barVisible = ref(
     !location.href.startsWith('chrome-extension') || location.href.endsWith('?bar=open'),
@@ -71,7 +72,7 @@
         <ul v-if="bm.children.length" @keyup.esc="stopSearching">
           <BaseBookmark v-for="bm of bm.children" :key="bm.id" :bm="bm" />
         </ul>
-        <span v-else>Nothing found</span>
+        <span v-else>{{ i18n('noBookmarkFound') }}</span>
       </main>
       <TheModal />
       <TheResizer />
