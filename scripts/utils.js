@@ -7,16 +7,10 @@ export const copyDir = async (entry, target) => {
   await Promise.all(
     dir.map(async (dirent) => {
       if (dirent.isDirectory()) {
-        await copyDir(
-          resolve(entry, dirent.name),
-          resolve(target, dirent.name),
-        );
+        await copyDir(resolve(entry, dirent.name), resolve(target, dirent.name));
       } else {
         await mkdir(target, { recursive: true });
-        await copyFile(
-          resolve(entry, dirent.name),
-          resolve(target, dirent.name),
-        );
+        await copyFile(resolve(entry, dirent.name), resolve(target, dirent.name));
       }
     }),
   );
@@ -47,7 +41,5 @@ const deepAssign = (obj1, obj2) => {
  * @param {esbuild.BuildOptions} defaultOptions
  * @returns {Builder}
  */
-export const createBuilder = (defaultOptions) => (
-  esbuildOrEsbuildService,
-  options,
-) => esbuildOrEsbuildService.build(deepAssign(defaultOptions, options));
+export const createBuilder = (defaultOptions) => (esbuildOrEsbuildService, options) =>
+  esbuildOrEsbuildService.build(deepAssign(defaultOptions, options));

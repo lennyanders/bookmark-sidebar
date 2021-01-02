@@ -41,15 +41,7 @@ const [
 ]);
 
 watch(['src/background', 'src/shared'], { recursive: true }, rebuildBackground);
-watch(
-  ['src/content', 'src/sidebar', 'src/shared'],
-  { recursive: true },
-  rebuildContent,
-);
-watch(
-  ['src/newtab', 'src/sidebar', 'src/shared'],
-  { recursive: true },
-  rebuildNewtab,
-);
+watch(['src/content', 'src/sidebar', 'src/shared'], { recursive: true }, rebuildContent);
+watch(['src/newtab', 'src/sidebar', 'src/shared'], { recursive: true }, rebuildNewtab);
 watch('public', { recursive: true }, copyPublicFiles);
 watch('src/manifest.json', writeManifest);

@@ -14,10 +14,7 @@ export const emptyDist = async () => {
 export const copyPublicFiles = () => copyDir('public', 'dist');
 
 export const writeManifest = () => {
-  return writeFile(
-    'dist/manifest.json',
-    JSON.stringify({ ...manifest, version }),
-  );
+  return writeFile('dist/manifest.json', JSON.stringify({ ...manifest, version }));
 };
 
 export const buildBackground = createBuilder({
@@ -54,9 +51,6 @@ export const buildNewtab = createBuilder({
 export const inlineContentCss = async () => {
   const css = await readFile('dist/content.css', 'utf8');
   const js = await readFile('dist/content.js', 'utf8');
-  await writeFile(
-    'dist/content.js',
-    js.replace('window.styles', JSON.stringify(css)),
-  );
+  await writeFile('dist/content.js', js.replace('window.styles', JSON.stringify(css)));
   await rm('dist/content.css');
 };

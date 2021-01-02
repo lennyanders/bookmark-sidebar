@@ -13,10 +13,7 @@ const esbuildPluginSass = {
         file: path,
       });
 
-      return {
-        loader: 'css',
-        contents: css,
-      };
+      return { loader: 'css', contents: css };
     });
   },
 };

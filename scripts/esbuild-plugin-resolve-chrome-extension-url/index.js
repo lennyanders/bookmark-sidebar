@@ -7,10 +7,10 @@ import * as esbuild from 'esbuild';
 const esbuildPluginResolveChromeExtensionUrl = {
   name: 'esbuild-plugin-resolve-chrome-extension-url',
   setup(build) {
-    build.onResolve(
-      { filter: /^chrome-extension:\/\/__MSG_@@extension_id__\// },
-      ({ path }) => ({ path, external: true }),
-    );
+    build.onResolve({ filter: /^chrome-extension:\/\/__MSG_@@extension_id__\// }, ({ path }) => ({
+      path,
+      external: true,
+    }));
   },
 };
 

@@ -1,11 +1,6 @@
 import { readFile } from 'fs/promises';
 import { basename } from 'path';
-import {
-  parse,
-  compileScript,
-  compileTemplate,
-  compileStyleAsync,
-} from '@vue/compiler-sfc';
+import { parse, compileScript, compileTemplate, compileStyleAsync } from '@vue/compiler-sfc';
 import hashsum from 'hash-sum';
 import * as esbuild from 'esbuild';
 
