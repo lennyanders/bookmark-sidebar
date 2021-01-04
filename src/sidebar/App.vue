@@ -40,9 +40,7 @@
 
   const cssWidth = computed(() => `${store.barWidth}px`);
   const cssRight = computed(() => (store.barLeft ? '100%' : '0'));
-  const cssInvisibleTranslateX = computed(() =>
-    store.barLeft ? '-0.5rem' : 'calc(100% + 0.5rem)',
-  );
+  const cssInvisibleTranslateX = computed(() => (store.barLeft ? '-0.5em' : 'calc(100% + 0.5em)'));
 </script>
 
 <template>

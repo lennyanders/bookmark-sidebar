@@ -81,7 +81,7 @@
 
     &__actions {
       grid-area: actions;
-      padding-left: 0.5rem;
+      padding-left: 0.5em;
       display: flex;
       align-items: center;
     }

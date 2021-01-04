@@ -15,8 +15,8 @@
 
 <style lang="scss" scoped>
   button {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 1.5em;
+    height: 1.5em;
   }
 
   path {

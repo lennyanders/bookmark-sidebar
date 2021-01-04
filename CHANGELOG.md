@@ -1,5 +1,6 @@
 ## Next
 
+- Fix layout bugs in some pages
 - Parent folder of bookmark is now changable in the edit modal.
 - Settings for sidebar position and bookmark right click editability are now radiobox like buttons.
 
