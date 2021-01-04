@@ -34,7 +34,7 @@
         url: newUrl.value,
       });
     }
-    if (newParentFolder !== props.bm.parentId) {
+    if (newParentFolder.value !== props.bm.parentId) {
       actions.moveBm({ id: props.bm.id, parentId: newParentFolder.value });
     }
     if (eventOrCloseModal !== false) hideModal();
