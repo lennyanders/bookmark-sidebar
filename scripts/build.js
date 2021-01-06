@@ -10,19 +10,21 @@ import {
   inlineContentCss,
 } from './shared';
 
-await emptyDist();
+(async () => {
+  await emptyDist();
 
-const esbuildOptions = {
-  minify: true,
-  define: {
-    'process.env.NODE_ENV': JSON.stringify('production'),
-  },
-};
+  const esbuildOptions = {
+    minify: true,
+    define: {
+      'process.env.NODE_ENV': JSON.stringify('production'),
+    },
+  };
 
-await Promise.all([
-  buildBackground(esbuild, esbuildOptions),
-  buildContent(esbuild, esbuildOptions).then(inlineContentCss),
-  buildNewtab(esbuild, esbuildOptions),
-  copyPublicFiles(),
-  writeManifest(),
-]);
+  await Promise.all([
+    buildBackground(esbuild, esbuildOptions),
+    buildContent(esbuild, esbuildOptions).then(inlineContentCss),
+    buildNewtab(esbuild, esbuildOptions),
+    copyPublicFiles(),
+    writeManifest(),
+  ]);
+})();

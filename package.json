@@ -4,16 +4,16 @@
   "description": "cool bookmark sidebar for Chromium based browsers.",
   "private": true,
   "scripts": {
-    "start": "node -r esm scripts/serve.js",
-    "build": "node -r esm scripts/build.js"
+    "start": "esno scripts/serve.js",
+    "build": "esno scripts/build.js"
   },
   "author": "Lenny Anders",
   "license": "ISC",
   "devDependencies": {
     "@types/chrome": "0.0.127",
     "@vue/compiler-sfc": "^3.0.5",
-    "esbuild": "^0.8.29",
-    "esm": "^3.2.25",
+    "esbuild": "^0.8.30",
+    "esno": "^0.4.0",
     "node-watch": "^0.7.1",
     "sass": "^1.32.0"
   },
@@ -22,8 +22,5 @@
     "@vue/reactivity": "^3.0.5",
     "fast-fuzzy": "^1.10.8",
     "vue": "^3.0.5"
-  },
-  "esm": {
-    "await": true
   }
 }
