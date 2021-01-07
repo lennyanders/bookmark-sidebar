@@ -6,9 +6,18 @@ const port = chrome.runtime.connect({ name: 'bmBar' });
 
 // listen to events and update data
 port.onMessage.addListener(
-  async ({ bm, allFolders, barLeft, barWidth, barTheme, editBookmarkOnRightClick }) => {
+  async ({
+    bm,
+    faviconDataUrls,
+    allFolders,
+    barLeft,
+    barWidth,
+    barTheme,
+    editBookmarkOnRightClick,
+  }) => {
     Object.assign(store, {
       ...(bm && { bm }),
+      ...(faviconDataUrls && { faviconDataUrls }),
       ...(allFolders && { allFolders }),
       ...(barLeft !== undefined && { barLeft }),
       ...(barWidth && { barWidth }),

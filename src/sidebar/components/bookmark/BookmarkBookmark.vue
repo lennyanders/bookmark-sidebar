@@ -3,6 +3,7 @@
   import EditBm from '@components/actions/EditBm.vue';
 
   import { store } from '@store';
+  import { getBaseUrl } from '@shared/utils';
   import useEditBm from './useEditBm';
   import useKeyboard from './useKeyboard';
   import useDragAndDrop from './useDragAndDrop';
@@ -22,7 +23,9 @@
   const { keydown } = useKeyboard(bmId, bmIndex);
   const { dragstart, dragenter } = useDragAndDrop(props);
   const { focusableBmPart, setActiveBm } = useFocus(bmId);
+
   const isOpen = computed(() => props.bm.url === store.url);
+  const faviconDataUrl = computed(() => store.faviconDataUrls[getBaseUrl(props.bm.url)]);
 </script>
 
 <template>
@@ -50,7 +53,7 @@
         @focus.passive="setActiveBm"
         ref="focusableBmPart"
       >
-        <img class="bookmark__icon" :src="bm.faviconDataUrl" />
+        <img class="bookmark__icon" :src="faviconDataUrl" />
         <span class="bookmark__title">{{ bm.title }}</span>
       </a>
       <EditBm :bm="bm" />

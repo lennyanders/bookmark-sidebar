@@ -9,3 +9,11 @@ export const flattenBms = (bms) => {
 };
 
 export const i18n = chrome.i18n.getMessage;
+
+const baseUrlCache = {};
+export const getBaseUrl = (url) => {
+  const cacheResult = baseUrlCache[url];
+  if (cacheResult) return cacheResult;
+
+  return (baseUrlCache[url] = new URL(url).origin);
+};

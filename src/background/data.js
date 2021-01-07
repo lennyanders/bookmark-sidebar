@@ -1,29 +1,18 @@
 import { shallowReactive } from '@vue/reactivity';
 import { watch } from '@vue-reactivity/watch';
-import { flattenBms } from '@shared/utils';
+import { flattenBms, getBaseUrl } from '@shared/utils';
 import { defaults } from '@shared/settings';
 
 export const data = shallowReactive({});
 
-let faviconUrls = new Set([]);
 let faviconDataUrls = new Map();
 
-const getFaviconUrl = (url) => `chrome://favicon/size/32/${new URL(url).origin}`;
-
-const getNewFaviconUrls = (bms, curFaviconUrls) => {
-  return bms.reduce((res, { url }) => {
-    const faviconUrl = getFaviconUrl(url);
-    if (!curFaviconUrls.has(faviconUrl)) res.add(faviconUrl);
-    return res;
-  }, new Set([]));
-};
-
-const loadFavicons = (faviconUrls) => {
-  if (!faviconUrls.size) return [];
+const loadFavicons = (baseUrls) => {
+  if (!baseUrls.length) return [];
   return new Promise((resolve, _reject) => {
     let faviconDataUrls = new Map();
 
-    for (const faviconUrl of faviconUrls) {
+    for (const baseUrl of baseUrls) {
       const favicon = new Image();
       const canvas = document.createElement('canvas');
       const context = canvas.getContext('2d');
@@ -33,11 +22,11 @@ const loadFavicons = (faviconUrls) => {
         canvas.height = favicon.height;
         context.drawImage(favicon, 0, 0);
 
-        faviconDataUrls.set(faviconUrl, canvas.toDataURL('image/png'));
+        faviconDataUrls.set(baseUrl, canvas.toDataURL('image/png'));
 
-        if (faviconDataUrls.size === faviconUrls.size) resolve(faviconDataUrls);
+        if (faviconDataUrls.size === baseUrls.length) resolve(faviconDataUrls);
       };
-      favicon.src = faviconUrl;
+      favicon.src = `chrome://favicon/size/32/${baseUrl}`;
     }
   });
 };
@@ -60,14 +49,16 @@ const updateTree = () => {
       }
     }
 
-    const newFaviconUrls = getNewFaviconUrls(bmsToLoad, faviconUrls);
-    if (newFaviconUrls.size) {
-      faviconUrls = new Set([...faviconUrls, ...newFaviconUrls]);
-      faviconDataUrls = new Map([...faviconDataUrls, ...(await loadFavicons(newFaviconUrls))]);
+    const curBaseUrls = [...new Set(bmsToLoad.map(({ url }) => getBaseUrl(url)))];
+    const newBaseUrls = curBaseUrls.filter((baseUrl) => !faviconDataUrls.has(baseUrl));
+    if (newBaseUrls.length) {
+      faviconDataUrls = new Map([...faviconDataUrls, ...(await loadFavicons(newBaseUrls))]);
     }
-    // add favicon data urls to bookmarks that appear in the sidebar
-    bmsToLoad.forEach((bm) => (bm.faviconDataUrl = faviconDataUrls.get(getFaviconUrl(bm.url))));
 
+    data.faviconDataUrls = curBaseUrls.reduce(
+      (res, url) => ({ ...res, [url]: faviconDataUrls.get(url) }),
+      {},
+    );
     data.bm = shownFolder;
     data.allFolders = folders;
 
