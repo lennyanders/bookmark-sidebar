@@ -2,22 +2,21 @@ import { ref, watchEffect, watch } from 'vue';
 
 import { store } from '@store';
 
-export default (props, childrenVisible) => {
+export default (bmId, childrenVisible) => {
   const focusableBmPart = ref(null);
 
   watchEffect(() => {
-    if (props.bm.id === store.activeBm) focusableBmPart.value?.focus();
+    if (bmId.value === store.activeBm) focusableBmPart.value?.focus();
   });
 
+  const setActiveBm = () => (store.activeBm = bmId.value);
+
+  // mark current bm as active when folder gets closed
   if (childrenVisible) {
     watch(childrenVisible, (newVal, oldVal) => {
-      if (oldVal && !newVal) store.activeBm = props.bm.id;
+      if (oldVal && !newVal) setActiveBm();
     });
   }
-
-  const setActiveBm = () => {
-    store.activeBm = props.bm.id;
-  };
 
   return { focusableBmPart, setActiveBm };
 };

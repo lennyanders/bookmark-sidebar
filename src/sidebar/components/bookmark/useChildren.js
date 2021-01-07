@@ -1,26 +1,19 @@
-import { watch, watchEffect, ref } from 'vue';
+import { watch, ref } from 'vue';
 
-export default (props) => {
+export default (childrenLength) => {
   const childrenVisible = ref(false);
 
-  const hideChildren = (e) => {
+  const hideChildren = (event) => {
     if (!childrenVisible.value) return;
-    e.stopPropagation();
+
+    event.stopPropagation();
     childrenVisible.value = false;
   };
 
-  watchEffect(() => {
-    props.bm.childrenVisible = childrenVisible.value;
+  // open folder when bookmark gets added in focused window
+  watch(childrenLength, (newVal, oldVal) => {
+    if (document.hasFocus() && newVal > oldVal) childrenVisible.value = true;
   });
-
-  watch(
-    () => props.bm.children.length,
-    (newVal, oldVal) => {
-      if (document.hasFocus() && newVal > oldVal) {
-        childrenVisible.value = true;
-      }
-    },
-  );
 
   return { childrenVisible, hideChildren };
 };

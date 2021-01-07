@@ -1,14 +1,12 @@
 <script setup>
+  import { defineProps, computed, toRef } from 'vue';
   import EditBm from '@components/actions/EditBm.vue';
 
-  import { computed, defineProps } from 'vue';
   import { store } from '@store';
   import useEditBm from './useEditBm';
   import useKeyboard from './useKeyboard';
   import useDragAndDrop from './useDragAndDrop';
   import useFocus from './useFocus';
-  import useIsSearching from './useIsSearching';
-  import useEditBookmarkOnRightClick from './useEditBookmarkOnRightClick';
 
   const props = defineProps({
     bm: {
@@ -17,12 +15,13 @@
     },
   });
 
-  const { contextmenu } = useEditBm(props);
-  const { keydown } = useKeyboard(props);
+  const bmId = toRef(props.bm, 'id');
+  const bmIndex = toRef(props.bm, 'index');
+
+  const { contextmenu } = useEditBm(props.bm);
+  const { keydown } = useKeyboard(bmId, bmIndex);
   const { dragstart, dragenter } = useDragAndDrop(props);
-  const { focusableBmPart, setActiveBm } = useFocus(props);
-  const { isSearching } = useIsSearching();
-  const { editBookmarkOnRightClick } = useEditBookmarkOnRightClick();
+  const { focusableBmPart, setActiveBm } = useFocus(bmId);
   const isOpen = computed(() => props.bm.url === store.url);
 </script>
 
@@ -30,14 +29,14 @@
   <li class="bookmark">
     <div
       class="bookmark__content"
-      :draggable="!isSearching"
+      :draggable="!store.isSearching"
       @dragenter.stop
       v-on="{
         keydownPassive: keydown,
-        ...(editBookmarkOnRightClick && {
+        ...(store.editBookmarkOnRightClick && {
           contextmenu,
         }),
-        ...(!isSearching && {
+        ...(!store.isSearching && {
           dragstartPassive: dragstart,
           dragenterPassive: dragenter,
         }),
