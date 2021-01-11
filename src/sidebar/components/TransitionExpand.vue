@@ -1,28 +1,18 @@
-<script>
-  import { h, Transition } from 'vue';
-
-  const heightPropertyName = 'height';
+<script setup>
   const setHeight = (el) => {
-    el.style.setProperty(heightPropertyName, el.scrollHeight + 'px');
+    el.style.height = `${el.scrollHeight}px`;
   };
 
-  export default (props, { slots }) => {
-    return h(
-      Transition,
-      {
-        ...props,
-        onEnter: setHeight,
-        onAfterEnter(el) {
-          el.style.removeProperty(heightPropertyName);
-        },
-        onLeave: setHeight,
-      },
-      slots,
-    );
+  const removeStyle = (el) => {
+    el.style.height = '';
   };
 </script>
 
-<style lang="scss">
+<template>
+  <Transition @enter="setHeight" @after-enter="removeStyle" @leave="setHeight"><slot /></Transition>
+</template>
+
+<style lang="scss" scoped>
   .v-enter-from,
   .v-leave-to {
     height: 0 !important;

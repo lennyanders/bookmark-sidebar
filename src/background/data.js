@@ -5,12 +5,11 @@ import { defaults } from '@shared/settings';
 
 export const data = shallowReactive({});
 
-let faviconDataUrls = new Map();
+const faviconDataUrls = new Map();
 
-const loadFavicons = (baseUrls) => {
-  if (!baseUrls.length) return [];
-  return new Promise((resolve, _reject) => {
-    let faviconDataUrls = new Map();
+const loadFavicons = (baseUrls) =>
+  new Promise((resolve, _reject) => {
+    const prevSize = faviconDataUrls.size;
 
     for (const baseUrl of baseUrls) {
       const favicon = new Image();
@@ -24,12 +23,11 @@ const loadFavicons = (baseUrls) => {
 
         faviconDataUrls.set(baseUrl, canvas.toDataURL('image/png'));
 
-        if (faviconDataUrls.size === baseUrls.length) resolve(faviconDataUrls);
+        if (faviconDataUrls.size - prevSize === baseUrls.length) resolve();
       };
       favicon.src = `chrome://favicon/size/32/${baseUrl}`;
     }
   });
-};
 
 const updateTree = () => {
   chrome.bookmarks.getTree(async ([bookmark]) => {
@@ -51,9 +49,7 @@ const updateTree = () => {
 
     const curBaseUrls = [...new Set(bmsToLoad.map(({ url }) => getBaseUrl(url)))];
     const newBaseUrls = curBaseUrls.filter((baseUrl) => !faviconDataUrls.has(baseUrl));
-    if (newBaseUrls.length) {
-      faviconDataUrls = new Map([...faviconDataUrls, ...(await loadFavicons(newBaseUrls))]);
-    }
+    if (newBaseUrls.length) await loadFavicons(newBaseUrls);
 
     data.faviconDataUrls = curBaseUrls.reduce(
       (res, url) => ({ ...res, [url]: faviconDataUrls.get(url) }),
@@ -73,7 +69,6 @@ export const generateData = async () => {
     ['shownBmId', 'barLeft', 'barWidth', 'barTheme', 'editBookmarkOnRightClick'],
     (settings) => Object.assign(data, defaults, settings),
   );
-
   chrome.storage.onChanged.addListener(
     ({ shownBmId, barLeft, barWidth, barTheme, editBookmarkOnRightClick }) => {
       Object.assign(data, {
