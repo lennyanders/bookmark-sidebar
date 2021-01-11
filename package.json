@@ -10,12 +10,12 @@
   "author": "Lenny Anders",
   "license": "ISC",
   "devDependencies": {
-    "@types/chrome": "0.0.127",
+    "@types/chrome": "0.0.128",
     "@vue/compiler-sfc": "^3.0.5",
-    "esbuild": "^0.8.30",
+    "esbuild": "^0.8.31",
     "esno": "^0.4.0",
     "node-watch": "^0.7.1",
-    "sass": "^1.32.0"
+    "sass": "^1.32.2"
   },
   "dependencies": {
     "@vue-reactivity/watch": "^0.1.6",
