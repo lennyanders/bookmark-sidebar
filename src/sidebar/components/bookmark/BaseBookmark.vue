@@ -9,6 +9,27 @@
 
 <style lang="scss">
   .bookmark {
+    &:focus-within {
+      position: relative;
+      z-index: 1;
+    }
+
+    &--dragging {
+      position: absolute;
+      box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.5);
+      width: calc(100% - 0.75rem);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    &--clone {
+      outline: 2px dotted red;
+
+      > * {
+        opacity: 0;
+      }
+    }
+
     &__content {
       display: flex;
 

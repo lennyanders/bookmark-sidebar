@@ -1,13 +1,11 @@
 <script setup>
-  import { defineAsyncComponent, defineProps, computed, watchEffect, toRef, isReactive } from 'vue';
   import EditBm from '@components/actions/EditBm.vue';
   import AddBm from '@components/actions/AddBm.vue';
   import TransitionExpand from '@components/TransitionExpand.vue';
-  const BaseBookmark = defineAsyncComponent(() => import('./BaseBookmark.vue'));
-
+  import BookmarkList from '@components/bookmark/BookmarkList.vue';
+  import { defineProps, defineEmit, computed } from 'vue';
   import { store } from '@store';
   import useEditBm from './useEditBm';
-  import useKeyboard from './useKeyboard';
   import useDragAndDrop from './useDragAndDrop';
   import useFocus from './useFocus';
   import useChildren from './useChildren';
@@ -19,32 +17,37 @@
     },
   });
 
-  const bmId = toRef(props.bm, 'id');
-  const bmIndex = toRef(props.bm, 'index');
+  const emit = defineEmit(['go', 'move']);
+
+  const bmId = computed(() => props.bm.id);
+  const bmIndex = computed(() => props.bm.index);
 
   const { childrenVisible, hideChildren } = useChildren(computed(() => props.bm.children.length));
-  watchEffect(() => (props.bm.childrenVisible = childrenVisible.value));
-
   const { contextmenu } = useEditBm(props.bm);
-  const { keydown } = useKeyboard(bmId, bmIndex);
-  const { dragstart, dragenter } = useDragAndDrop(props, childrenVisible);
+  const { dragstart, dragenter, pointerDown } = useDragAndDrop(props, childrenVisible);
   const { focusableBmPart, setActiveBm } = useFocus(bmId, childrenVisible);
 </script>
 
 <template>
-  <li class="bookmark" @keyup.passive.arrow-left="hideChildren">
+  <li
+    class="bookmark"
+    @keyup.passive.arrow-left="hideChildren"
+    @keydown.down.passive.exact="emit('go', $event, bm, 1)"
+    @keydown.up.passive.exact="emit('go', $event, bm, 0)"
+    @keydown.alt.ctrl.down.passive.exact="emit('move', $event, bm.children.slice(-1)[0], 1, 2)"
+    @keydown.alt.ctrl.up.passive.exact="emit('move', $event, bm.children[0], 0, 2)"
+  >
     <div
       class="bookmark__content"
-      :draggable="!store.isSearching"
-      @dragenter.stop
+      @keydown.down.passive.exact="emit('go', $event, bm, 1, childrenVisible)"
+      @keydown.up.passive.exact="emit('go', $event, bm, -1)"
+      @keydown.alt.down.passive.exact="emit('move', $event, bm, 1)"
+      @keydown.alt.up.passive.exact="emit('move', $event, bm, -1)"
+      @keydown.alt.ctrl.down.passive.exact="emit('move', $event, bm, 1, 1)"
+      @keydown.alt.ctrl.up.passive.exact="emit('move', $event, bm, -1, 1)"
       v-on="{
-        keydownPassive: keydown,
         ...(store.editBookmarkOnRightClick && {
           contextmenu,
-        }),
-        ...(!store.isSearching && {
-          dragstartPassive: dragstart,
-          dragenterPassive: dragenter,
         }),
       }"
     >
@@ -71,9 +74,12 @@
       <EditBm :bm="bm" />
     </div>
     <TransitionExpand v-if="bm.children.length">
-      <ul class="bookmark__children" :hidden="!childrenVisible" :key="!childrenVisible">
-        <BaseBookmark v-for="bm of bm.children" :key="bm.id" :bm="bm" />
-      </ul>
+      <BookmarkList
+        class="bookmark__children"
+        :bms="bm.children"
+        :hidden="!childrenVisible"
+        :key="!childrenVisible"
+      />
     </TransitionExpand>
   </li>
 </template>

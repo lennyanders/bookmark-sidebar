@@ -1,7 +1,7 @@
 <script setup>
   import PseudoWindow from '@shared/components/PseudoWindow';
   import TheHeader from '@components/TheHeader.vue';
-  import BaseBookmark from '@components/bookmark/BaseBookmark.vue';
+  import BookmarkList from '@components/bookmark/BookmarkList.vue';
   import TheModal from '@components/modal/TheModal.vue';
   import TheResizer from '@components/TheResizer.vue';
 
@@ -67,9 +67,7 @@
     >
       <TheHeader :bm="bm" />
       <main class="main">
-        <ul v-if="bm.children.length" @keyup.esc="stopSearching">
-          <BaseBookmark v-for="bm of bm.children" :key="bm.id" :bm="bm" />
-        </ul>
+        <BookmarkList v-if="bm.children.length" @keyup.esc="stopSearching" :bms="bm.children" />
         <span v-else>{{ i18n('noBookmarkFound') }}</span>
       </main>
       <TheModal />
@@ -165,6 +163,7 @@
     padding: 0.5em 0.25em 0.5em 0.5em;
     overflow: hidden scroll;
     will-change: transform;
+    position: relative;
 
     &::-webkit-scrollbar {
       width: 0.25em;

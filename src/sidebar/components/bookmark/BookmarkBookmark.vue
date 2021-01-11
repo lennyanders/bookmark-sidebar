@@ -1,11 +1,9 @@
 <script setup>
-  import { defineProps, computed, toRef } from 'vue';
   import EditBm from '@components/actions/EditBm.vue';
-
+  import { defineProps, defineEmit, computed } from 'vue';
   import { store } from '@store';
   import { getBaseUrl } from '@shared/utils';
   import useEditBm from './useEditBm';
-  import useKeyboard from './useKeyboard';
   import useDragAndDrop from './useDragAndDrop';
   import useFocus from './useFocus';
 
@@ -16,12 +14,13 @@
     },
   });
 
-  const bmId = toRef(props.bm, 'id');
-  const bmIndex = toRef(props.bm, 'index');
+  const emit = defineEmit(['go', 'move']);
+
+  const bmId = computed(() => props.bm.id);
+  const bmIndex = computed(() => props.bm.index);
 
   const { contextmenu } = useEditBm(props.bm);
-  const { keydown } = useKeyboard(bmId, bmIndex);
-  const { dragstart, dragenter } = useDragAndDrop(props);
+  const { dragstart, dragenter, pointerDown } = useDragAndDrop(props);
   const { focusableBmPart, setActiveBm } = useFocus(bmId);
 
   const isOpen = computed(() => props.bm.url === store.url);
@@ -32,16 +31,15 @@
   <li class="bookmark">
     <div
       class="bookmark__content"
-      :draggable="!store.isSearching"
-      @dragenter.stop
+      @keydown.down.passive.exact="emit('go', $event, bm, 1)"
+      @keydown.up.passive.exact="emit('go', $event, bm, -1)"
+      @keydown.alt.down.passive.exact="emit('move', $event, bm, 1)"
+      @keydown.alt.up.passive.exact="emit('move', $event, bm, -1)"
+      @keydown.alt.ctrl.down.passive.exact="emit('move', $event, bm, 1, 1)"
+      @keydown.alt.ctrl.up.passive.exact="emit('move', $event, bm, -1, 1)"
       v-on="{
-        keydownPassive: keydown,
         ...(store.editBookmarkOnRightClick && {
           contextmenu,
-        }),
-        ...(!store.isSearching && {
-          dragstartPassive: dragstart,
-          dragenterPassive: dragenter,
         }),
       }"
     >
