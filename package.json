@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "start": "esno scripts/serve.js",
-    "build": "esno --trace-warnings scripts/build.js"
+    "build": "esno scripts/build.js"
   },
   "author": "Lenny Anders",
   "license": "ISC",
@@ -14,6 +14,7 @@
     "@vue/compiler-sfc": "^3.0.6",
     "esbuild": "^0.8.53",
     "esno": "^0.4.4",
+    "hash-sum": "^2.0.0",
     "node-watch": "^0.7.1",
     "sass": "^1.32.8"
   },
