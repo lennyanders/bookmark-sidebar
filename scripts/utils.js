@@ -1,6 +1,5 @@
 import { copyFile, readdir, mkdir } from 'fs/promises';
 import { resolve } from 'path';
-import * as esbuild from 'esbuild';
 
 export const copyDir = async (entry, target) => {
   const dir = await readdir(entry, { withFileTypes: true });
@@ -32,13 +31,13 @@ const deepAssign = (obj1, obj2) => {
 
 /**
  * @callback Builder
- * @param {esbuild|esbuild.Service} esbuildOrEsbuildService
- * @param {esbuild.BuildOptions} options
- * @returns {Promise<esbuild.BuildResult>}
+ * @param {import('esbuild')|import('esbuild').Service} esbuildOrEsbuildService
+ * @param {import('esbuild').BuildOptions} options
+ * @returns {Promise<import('esbuild').BuildResult>}
  */
 
 /**
- * @param {esbuild.BuildOptions} defaultOptions
+ * @param {import('esbuild').BuildOptions} defaultOptions
  * @returns {Builder}
  */
 export const createBuilder = (defaultOptions) => (esbuildOrEsbuildService, options) =>
