@@ -15,9 +15,11 @@ import {
 (async () => {
   const [service] = await Promise.all([startService(), emptyDist()]);
 
+  /** @type {import('esbuild').BuildOptions} */
   const esbuildOptions = {
     sourcemap: 'inline',
     incremental: true,
+    watch: true,
     define: {
       'process.env.NODE_ENV': JSON.stringify('development'),
     },
@@ -29,11 +31,7 @@ import {
     }
   });
 
-  const [
-    { rebuild: rebuildBackground },
-    { rebuild: rebuildContent },
-    { rebuild: rebuildNewtab },
-  ] = await Promise.all([
+  await Promise.all([
     buildBackground(service, esbuildOptions),
     buildContent(service, esbuildOptions),
     buildNewtab(service, esbuildOptions),
@@ -41,9 +39,6 @@ import {
     writeManifest(),
   ]);
 
-  watch(['src/background', 'src/shared'], { recursive: true }, rebuildBackground);
-  watch(['src/content', 'src/sidebar', 'src/shared'], { recursive: true }, rebuildContent);
-  watch(['src/newtab', 'src/sidebar', 'src/shared'], { recursive: true }, rebuildNewtab);
   watch('public', { recursive: true }, copyPublicFiles);
   watch('src/manifest.json', writeManifest);
 })();
