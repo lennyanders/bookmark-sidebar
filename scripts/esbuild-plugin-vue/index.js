@@ -2,7 +2,6 @@ import { readFile } from 'fs/promises';
 import { basename } from 'path';
 import { parse, compileScript, compileTemplate, compileStyleAsync } from '@vue/compiler-sfc';
 import hashsum from 'hash-sum';
-import * as esbuild from 'esbuild';
 
 const withMap = (code, map, forCss) => {
   if (!map) return code;
@@ -16,12 +15,14 @@ const withMap = (code, map, forCss) => {
 
 // typing export default dosn't work =(
 /**
- * @type {esbuild.Plugin}
+ * @type {import('esbuild').Plugin}
  */
 const esbuildPluginVue = {
   name: 'esbuild-plugin-vue',
   setup(build) {
     const stylesStore = new Map();
+
+    build.onResolve({ filter: /\.vue\.[0-9]*\.css$/ }, ({ path }) => ({ path }));
 
     build.onLoad({ filter: /\.vue\.[0-9]*\.css$/ }, ({ path }) => {
       const contents = stylesStore.get(path);

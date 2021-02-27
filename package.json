@@ -12,7 +12,7 @@
   "devDependencies": {
     "@types/chrome": "0.0.133",
     "@vue/compiler-sfc": "^3.0.6",
-    "esbuild": "^0.8.50",
+    "esbuild": "^0.8.53",
     "esno": "^0.4.4",
     "node-watch": "^0.7.1",
     "sass": "^1.32.8"
