@@ -5,22 +5,22 @@
   "private": true,
   "scripts": {
     "start": "esno scripts/serve.js",
-    "build": "esno scripts/build.js"
+    "build": "esno --trace-warnings scripts/build.js"
   },
   "author": "Lenny Anders",
   "license": "ISC",
   "devDependencies": {
-    "@types/chrome": "0.0.128",
-    "@vue/compiler-sfc": "^3.0.5",
-    "esbuild": "^0.8.31",
-    "esno": "^0.4.0",
+    "@types/chrome": "0.0.133",
+    "@vue/compiler-sfc": "^3.0.6",
+    "esbuild": "^0.8.50",
+    "esno": "^0.4.4",
     "node-watch": "^0.7.1",
-    "sass": "^1.32.2"
+    "sass": "^1.32.8"
   },
   "dependencies": {
     "@vue-reactivity/watch": "^0.1.6",
-    "@vue/reactivity": "^3.0.5",
+    "@vue/reactivity": "^3.0.6",
     "fast-fuzzy": "^1.10.8",
-    "vue": "^3.0.5"
+    "vue": "^3.0.6"
   }
 }
