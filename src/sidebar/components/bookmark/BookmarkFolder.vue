@@ -32,19 +32,19 @@
   <li
     class="bookmark"
     @keyup.passive.arrow-left="hideChildren"
-    @keydown.down.passive.exact="emit('go', $event, bm, 1)"
-    @keydown.up.passive.exact="emit('go', $event, bm, 0)"
-    @keydown.alt.ctrl.down.passive.exact="emit('move', $event, bm.children.slice(-1)[0], 1, 2)"
-    @keydown.alt.ctrl.up.passive.exact="emit('move', $event, bm.children[0], 0, 2)"
+    @keydown.down.prevent.exact="emit('go', $event, bm, 1)"
+    @keydown.up.prevent.exact="emit('go', $event, bm, 0)"
+    @keydown.alt.ctrl.down.prevent.exact="emit('move', $event, bm.children.slice(-1)[0], 1, 2)"
+    @keydown.alt.ctrl.up.prevent.exact="emit('move', $event, bm.children[0], 0, 2)"
   >
     <div
       class="bookmark__content"
-      @keydown.down.passive.exact="emit('go', $event, bm, 1, childrenVisible)"
-      @keydown.up.passive.exact="emit('go', $event, bm, -1)"
-      @keydown.alt.down.passive.exact="emit('move', $event, bm, 1)"
-      @keydown.alt.up.passive.exact="emit('move', $event, bm, -1)"
-      @keydown.alt.ctrl.down.passive.exact="emit('move', $event, bm, 1, 1)"
-      @keydown.alt.ctrl.up.passive.exact="emit('move', $event, bm, -1, 1)"
+      @keydown.down.prevent.exact="emit('go', $event, bm, 1, childrenVisible)"
+      @keydown.up.prevent.exact="emit('go', $event, bm, -1)"
+      @keydown.alt.down.prevent.exact="emit('move', $event, bm, 1)"
+      @keydown.alt.up.prevent.exact="emit('move', $event, bm, -1)"
+      @keydown.alt.ctrl.down.prevent.exact="emit('move', $event, bm, 1, 1)"
+      @keydown.alt.ctrl.up.prevent.exact="emit('move', $event, bm, -1, 1)"
       v-on="{
         ...(store.editBookmarkOnRightClick && {
           contextmenu,

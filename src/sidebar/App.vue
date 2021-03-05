@@ -59,7 +59,7 @@
         'bookmark-bar--light': activeTheme === themes.light.value,
         'bookmark-bar--dark': activeTheme === themes.dark.value,
       }"
-      tabindex="-1"
+      :tabindex="-1"
       @click.passive.stop
       @keydown.passive.stop
       @keydown.up.down.prevent

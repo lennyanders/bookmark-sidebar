@@ -31,12 +31,12 @@
   <li class="bookmark">
     <div
       class="bookmark__content"
-      @keydown.down.passive.exact="emit('go', $event, bm, 1)"
-      @keydown.up.passive.exact="emit('go', $event, bm, -1)"
-      @keydown.alt.down.passive.exact="emit('move', $event, bm, 1)"
-      @keydown.alt.up.passive.exact="emit('move', $event, bm, -1)"
-      @keydown.alt.ctrl.down.passive.exact="emit('move', $event, bm, 1, 1)"
-      @keydown.alt.ctrl.up.passive.exact="emit('move', $event, bm, -1, 1)"
+      @keydown.down.prevent.exact="emit('go', $event, bm, 1)"
+      @keydown.up.prevent.exact="emit('go', $event, bm, -1)"
+      @keydown.alt.down.prevent.exact="emit('move', $event, bm, 1)"
+      @keydown.alt.up.prevent.exact="emit('move', $event, bm, -1)"
+      @keydown.alt.ctrl.down.prevent.exact="emit('move', $event, bm, 1, 1)"
+      @keydown.alt.ctrl.up.prevent.exact="emit('move', $event, bm, -1, 1)"
       v-on="{
         ...(store.editBookmarkOnRightClick && {
           contextmenu,
