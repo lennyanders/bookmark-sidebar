@@ -11,17 +11,17 @@
   "license": "ISC",
   "devDependencies": {
     "@types/chrome": "0.0.133",
-    "@vue/compiler-sfc": "^3.0.6",
-    "esbuild": "^0.8.53",
-    "esno": "^0.4.4",
+    "@vue/compiler-sfc": "^3.0.7",
+    "esbuild": "^0.8.56",
+    "esno": "^0.4.6",
     "hash-sum": "^2.0.0",
     "node-watch": "^0.7.1",
     "sass": "^1.32.8"
   },
   "dependencies": {
     "@vue-reactivity/watch": "^0.1.6",
-    "@vue/reactivity": "^3.0.6",
+    "@vue/reactivity": "^3.0.7",
     "fast-fuzzy": "^1.10.8",
-    "vue": "^3.0.6"
+    "vue": "^3.0.7"
   }
 }
