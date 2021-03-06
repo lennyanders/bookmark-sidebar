@@ -67,7 +67,7 @@
     >
       <TheHeader :bm="bm" />
       <main class="main">
-        <BookmarkList v-if="bm.children.length" @keyup.esc="stopSearching" :bms="bm.children" />
+        <BookmarkList v-if="bm.children.length" @keyup.esc="stopSearching" :bm="bm" />
         <span v-else>{{ i18n('noBookmarkFound') }}</span>
       </main>
       <TheModal />

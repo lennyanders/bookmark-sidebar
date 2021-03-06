@@ -6,7 +6,6 @@
   import { defineProps, defineEmit, computed } from 'vue';
   import { store } from '@store';
   import useEditBm from './useEditBm';
-  import useDragAndDrop from './useDragAndDrop';
   import useFocus from './useFocus';
   import useChildren from './useChildren';
 
@@ -24,13 +23,30 @@
 
   const { childrenVisible, hideChildren } = useChildren(computed(() => props.bm.children.length));
   const { contextmenu } = useEditBm(props.bm);
-  const { dragstart, dragenter, pointerDown } = useDragAndDrop(props, childrenVisible);
   const { focusableBmPart, setActiveBm } = useFocus(bmId, childrenVisible);
+
+  let draggingOver = false;
+  const dragenter = () => {
+    draggingOver = true;
+
+    setTimeout(() => {
+      if (!draggingOver) return;
+
+      childrenVisible.value = true;
+      dragleave();
+    }, 500);
+  };
+
+  const dragleave = () => {
+    draggingOver = false;
+  };
 </script>
 
 <template>
   <li
     class="bookmark"
+    @dragenter.passive="dragenter"
+    @dragleave.passive="dragleave"
     @keyup.passive.arrow-left="hideChildren"
     @keydown.down.prevent.exact="emit('go', $event, bm, 1)"
     @keydown.up.prevent.exact="emit('go', $event, bm, 0)"
@@ -76,7 +92,7 @@
     <TransitionExpand v-if="bm.children.length">
       <BookmarkList
         class="bookmark__children"
-        :bms="bm.children"
+        :bm="bm"
         :hidden="!childrenVisible"
         :key="!childrenVisible"
       />

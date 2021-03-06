@@ -4,7 +4,6 @@
   import { store } from '@store';
   import { getBaseUrl } from '@shared/utils';
   import useEditBm from './useEditBm';
-  import useDragAndDrop from './useDragAndDrop';
   import useFocus from './useFocus';
 
   const props = defineProps({
@@ -20,7 +19,6 @@
   const bmIndex = computed(() => props.bm.index);
 
   const { contextmenu } = useEditBm(props.bm);
-  const { dragstart, dragenter, pointerDown } = useDragAndDrop(props);
   const { focusableBmPart, setActiveBm } = useFocus(bmId);
 
   const isOpen = computed(() => props.bm.url === store.url);

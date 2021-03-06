@@ -22,6 +22,7 @@
     "@vue-reactivity/watch": "^0.1.6",
     "@vue/reactivity": "^3.0.7",
     "fast-fuzzy": "^1.10.8",
+    "sortablejs": "^1.13.0",
     "vue": "^3.0.7"
   }
 }
