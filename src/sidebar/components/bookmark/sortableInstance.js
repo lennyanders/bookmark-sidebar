@@ -1,34 +1,38 @@
 import Sortable from 'sortablejs';
 import { actions } from '@api';
+import { store } from '@store';
+import { watchEffect } from 'vue';
 
 /**
  * @param {HTMLElement} newContainer
  */
 export const addFolder = (newContainer) => {
-  new Sortable(newContainer, {
+  const sortable = new Sortable(newContainer, {
     group: 'nested',
     draggable: '.bookmark',
     animation: 100,
     swapThreshold: 0.5,
     onEnd({ from, to, oldDraggableIndex, newDraggableIndex, item }) {
-      const draggedBm = item.__vueParentComponent.props.bm;
+      const bmId = item.__vueParentComponent.props.bm.id;
 
       let newIndex = newDraggableIndex;
       let newParentId;
 
       if (from === to) {
-        newParentId = draggedBm.parentId;
-
         if (newDraggableIndex > oldDraggableIndex) newIndex++;
       } else {
         newParentId = to.__vueParentComponent.props.bm.id;
       }
 
       actions.moveBm({
-        id: draggedBm.id,
+        id: bmId,
         index: newIndex,
         parentId: newParentId,
       });
     },
+  });
+
+  watchEffect(() => {
+    sortable.option('disabled', store.isSearching);
   });
 };
