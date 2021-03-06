@@ -1,4 +1,3 @@
-import { nextTick } from 'vue';
 import { store } from '@store';
 
 // connect to middleware (background script)
@@ -26,13 +25,6 @@ port.onMessage.addListener(
         editBookmarkOnRightClick,
       }),
     });
-    if (bm) {
-      // unset and set activeBm to maintain focus
-      const activeBm = store.activeBm;
-      store.activeBm = null;
-      await nextTick();
-      store.activeBm = activeBm;
-    }
   },
 );
 
