@@ -23,8 +23,6 @@
 
     if (!nextBm) return;
 
-    transitionSorting.value = true;
-
     if (action === 1 && nextBm.children) {
       actions.moveBm({
         id: bm.id,

@@ -29,6 +29,8 @@ export const addFolder = (newContainer) => {
       }
 
       transitionSorting.value = false;
+      setTimeout(() => (transitionSorting.value = true), 0);
+
       actions.moveBm({
         id: bm.id,
         index: newIndex,
