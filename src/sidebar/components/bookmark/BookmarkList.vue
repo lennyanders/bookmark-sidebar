@@ -1,6 +1,6 @@
 <script setup>
   import BaseBookmark from '@components/bookmark/BaseBookmark.vue';
-  import { addFolder } from './sortableInstance';
+  import { addFolder, transitionSorting } from './sortableInstance';
   import { ref, onMounted, defineProps } from 'vue';
   import { store } from '@store';
   import { actions } from '@api';
@@ -22,6 +22,8 @@
         : props.bm.children[bm.index + delta];
 
     if (!nextBm) return;
+
+    transitionSorting.value = true;
 
     if (action === 1 && nextBm.children) {
       actions.moveBm({
@@ -62,7 +64,7 @@
 
 <template>
   <ul ref="root">
-    <TransitionGroup>
+    <TransitionGroup :name="transitionSorting ? 'v' : 'no'">
       <BaseBookmark v-for="bm of bm.children" :key="bm.id" :bm="bm" @go="go" @move="move" />
     </TransitionGroup>
   </ul>

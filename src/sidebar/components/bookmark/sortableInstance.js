@@ -1,7 +1,7 @@
-import Sortable from 'sortablejs';
+import Sortable from 'sortablejs/modular/sortable.core.esm';
 import { actions } from '@api';
 import { store } from '@store';
-import { watchEffect } from 'vue';
+import { ref, watchEffect } from 'vue';
 
 /**
  * @param {HTMLElement} newContainer
@@ -13,7 +13,7 @@ export const addFolder = (newContainer) => {
     animation: 100,
     swapThreshold: 0.5,
     onEnd({ from, to, oldDraggableIndex, newDraggableIndex, item }) {
-      const bmId = item.__vueParentComponent.props.bm.id;
+      const bm = item.__vueParentComponent.props.bm;
 
       let newIndex = newDraggableIndex;
       let newParentId;
@@ -21,11 +21,16 @@ export const addFolder = (newContainer) => {
       if (from === to) {
         if (newDraggableIndex > oldDraggableIndex) newIndex++;
       } else {
-        newParentId = to.__vueParentComponent.props.bm.id;
+        const newParentBm = to.__vueParentComponent.props.bm;
+        newParentId = newParentBm.id;
+
+        newParentBm.children.splice(newDraggableIndex, 0, bm);
+        item.remove();
       }
 
+      transitionSorting.value = false;
       actions.moveBm({
-        id: bmId,
+        id: bm.id,
         index: newIndex,
         parentId: newParentId,
       });
@@ -36,3 +41,5 @@ export const addFolder = (newContainer) => {
     sortable.option('disabled', store.isSearching);
   });
 };
+
+export const transitionSorting = ref(true);
