@@ -2,6 +2,7 @@ import { onMessage } from '@chrome/runtime/port';
 import { Positions, Themes } from '@shared/consts/settings';
 import { $, $$ } from '@utils/dom';
 import { removeBookmark, createBookmark, moveBookmark, changeBookmark } from '@shared/bookmark';
+import { newFolder, folderRemoved } from '@shared/settings';
 import { root, shadowRoot, sidebar, setSidebar } from '@sidebar-root';
 import { port } from '@port';
 import { enableResizer } from '@components/resizer';
@@ -39,17 +40,8 @@ onMessage(port, 'sidebar', ({ bookmarkSidebarHtml }) => {
   onMessage(port, 'createBookmark', createBookmark);
   onMessage(port, 'moveBookmark', moveBookmark);
   onMessage(port, 'changeBookmark', changeBookmark);
-
-  onMessage(port, 'newFolder', ({ newFolderHtml }) => {
-    $('.js-modal-settings [name="sidebarShwonBookmark"]').insertAdjacentHTML(
-      'beforeend',
-      newFolderHtml,
-    );
-  });
-
-  onMessage(port, 'folderRemoved', ({ folderId }) => {
-    $(`.js-modal-settings [name="sidebarShwonBookmark"] > [value="${folderId}"]`).remove();
-  });
+  onMessage(port, 'newFolder', newFolder);
+  onMessage(port, 'folderRemoved', folderRemoved);
 
   onMessage(port, 'settingsChanged', (changes) => {
     /** @type {HTMLFormElement} */

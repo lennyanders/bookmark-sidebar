@@ -9,6 +9,7 @@ import {
   moveBookmark,
   changeBookmark,
 } from '@shared/bookmark';
+import { newFolder, folderRemoved } from '@shared/settings';
 import { loadFavicons, faviconDataUrls } from '../favicon';
 import { postMessageToAll } from '../middleware';
 import { getBookmarkHtml, html } from './html';
@@ -49,7 +50,7 @@ const bgCreateBookmark = async (bookmark) => {
 
 onRemoved((bookmarkId, removeInfo) => {
   if (!removeInfo.node.url) {
-    $(`.js-modal-settings [name="sidebarShwonBookmark"] > [value="${bookmarkId}"]`).remove();
+    folderRemoved({ folderId: bookmarkId });
     postMessageToAll('folderRemoved', { folderId: bookmarkId });
   }
   bgRemoveBookmark(bookmarkId);
@@ -58,10 +59,7 @@ onRemoved((bookmarkId, removeInfo) => {
 onCreated(async (bookmark) => {
   if (!bookmark.url) {
     const newFolderHtml = html`<option value="${bookmark.id}">${bookmark.title}</option>`;
-    $('.js-modal-settings [name="sidebarShwonBookmark"]').insertAdjacentHTML(
-      'beforeend',
-      newFolderHtml,
-    );
+    newFolder({ newFolderHtml });
     postMessageToAll('newFolder', { newFolderHtml });
   }
   await bgCreateBookmark(bookmark);
