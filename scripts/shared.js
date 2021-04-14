@@ -22,6 +22,9 @@ export const buildBackground = createBuilder({
   bundle: true,
   logLevel: 'info',
   plugins: [sass],
+  define: {
+    'process.env.ESBUILD_BUILD': JSON.stringify('background'),
+  },
 });
 
 export const buildContent = createBuilder({
@@ -30,6 +33,9 @@ export const buildContent = createBuilder({
   format: 'esm',
   bundle: true,
   logLevel: 'info',
+  define: {
+    'process.env.ESBUILD_BUILD': JSON.stringify('content'),
+  },
 });
 
 export const buildNewtab = createBuilder({

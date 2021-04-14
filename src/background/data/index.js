@@ -1,16 +1,12 @@
 import { sendMessage } from '@chrome/runtime';
 import { getTree } from '@chrome/bookmarks';
 import { flattenArrayOfObjects } from '@utils';
-import { setRoot } from '@utils/dom';
 import { getSidebarHtml } from './html';
 import { getSettings } from '../settings';
 import { getBookmarksHtml } from './html/getBookmarksHtml';
 import './updateBookmarks';
-
-export const root = document.createElement('template');
-export const shadowRoot = root.content;
-
-setRoot(shadowRoot);
+import { root, shadowRoot } from './root';
+export { root, shadowRoot };
 
 (async () => {
   const [bookmark, settings] = await Promise.all([getTree(), getSettings()]);

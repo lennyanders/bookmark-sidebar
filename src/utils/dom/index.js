@@ -1,8 +1,8 @@
-/** @type {DocumentFragment} */
-let root = document;
+import { shadowRoot as backgroundRoot } from '@background/data/root';
+import { shadowRoot as contentRoot } from '@content/sidebarRoot';
 
-/** @param {DocumentFragment} doc */
-export const setRoot = (doc) => (root = doc);
+/** @type {ShadowRoot} */
+const root = process.env.ESBUILD_BUILD === 'background' ? backgroundRoot : contentRoot;
 
 /**
  * @param {string} query

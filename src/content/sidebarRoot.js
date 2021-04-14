@@ -1,11 +1,10 @@
-import { setRoot, $ } from '@utils/dom';
+import { $ } from '@utils/dom';
 
 export const root = Object.assign(document.createElement('div'), {
   style: 'position:fixed;display:block;z-index:2147483647',
 });
 
 export const shadowRoot = root.attachShadow({ mode: 'closed' });
-setRoot(shadowRoot);
 
 /** @type {HTMLElement} */
 export let sidebar;

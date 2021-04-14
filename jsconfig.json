@@ -4,7 +4,9 @@
     "paths": {
       "@chrome/*": ["./chrome/*"],
       "@utils": ["./utils"],
-      "@utils/*": ["./utils/*"]
+      "@utils/*": ["./utils/*"],
+      "@background/*": ["./background/*"],
+      "@content/*": ["./content/*"]
     }
   }
 }
