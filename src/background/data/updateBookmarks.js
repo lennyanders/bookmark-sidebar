@@ -1,27 +1,29 @@
 import { getSubTree, onRemoved, onCreated, onMoved, onChanged } from '@chrome/bookmarks';
 import { flattenArrayOfObjects, getBaseUrl } from '@utils';
-import { $, closest } from '@utils/dom';
-import { getBookmark, getFolderUl, updateFolderIcon } from '@shared/bookmark';
+import { $ } from '@utils/dom';
+import {
+  getBookmark,
+  getFolderUl,
+  removeBookmark,
+  createBookmark,
+  moveBookmark,
+  changeBookmark,
+} from '@shared/bookmark';
 import { loadFavicons, faviconDataUrls } from '../favicon';
 import { postMessageToAll } from '../middleware';
 import { getBookmarkHtml, html } from './html';
-import { shadowRoot } from './index';
 
 /** @param {string} id */
-const removeBookmark = (id) => {
+const bgRemoveBookmark = (id) => {
   const bookmark = getBookmark(id);
-  if (!bookmark) return;
-
-  const parentBookmark = closest(bookmark, '.bookmark');
-  bookmark.remove();
-
-  updateFolderIcon(parentBookmark);
-
-  postMessageToAll('removeBookmark', { id });
+  if (bookmark) {
+    removeBookmark({ id });
+    postMessageToAll('removeBookmark', { id });
+  }
 };
 
 /** @param {chrome.bookmarks.BookmarkTreeNode} bookmark */
-const createBookmark = async (bookmark) => {
+const bgCreateBookmark = async (bookmark) => {
   const parentFolderUl = getFolderUl(bookmark.parentId);
   if (!parentFolderUl) return;
 
@@ -31,14 +33,13 @@ const createBookmark = async (bookmark) => {
       .map((bm) => getBaseUrl(bm.url))
       .filter((url) => !faviconDataUrls.has(url)),
   );
-
   const bookmarkHtml = getBookmarkHtml(bookmark);
 
-  if (!bookmark.index) parentFolderUl.insertAdjacentHTML('afterbegin', bookmarkHtml);
-  else parentFolderUl.children[bookmark.index - 1].insertAdjacentHTML('afterend', bookmarkHtml);
-
-  updateFolderIcon(closest(parentFolderUl, '.bookmark'));
-
+  createBookmark({
+    parentId: bookmark.parentId,
+    index: bookmark.index,
+    bookmarkHtml,
+  });
   postMessageToAll('createBookmark', {
     parentId: bookmark.parentId,
     index: bookmark.index,
@@ -51,8 +52,7 @@ onRemoved((bookmarkId, removeInfo) => {
     $(`.js-modal-settings [name="sidebarShwonBookmark"] > [value="${bookmarkId}"]`).remove();
     postMessageToAll('folderRemoved', { folderId: bookmarkId });
   }
-
-  removeBookmark(bookmarkId);
+  bgRemoveBookmark(bookmarkId);
 });
 
 onCreated(async (bookmark) => {
@@ -64,43 +64,24 @@ onCreated(async (bookmark) => {
     );
     postMessageToAll('newFolder', { newFolderHtml });
   }
-
-  await createBookmark(bookmark);
+  await bgCreateBookmark(bookmark);
 });
 
 onMoved(async (id, { parentId, oldParentId, index, oldIndex }) => {
   const parentFolderUl = getFolderUl(parentId);
-  if (!parentFolderUl) return removeBookmark(id);
+  if (!parentFolderUl) return bgRemoveBookmark(id);
 
   const oldParentFolder = getFolderUl(oldParentId);
-  if (!oldParentFolder) return createBookmark(await getSubTree(id));
+  if (!oldParentFolder) return bgCreateBookmark(await getSubTree(id));
 
-  const bookmark = getBookmark(id);
-  if (parentId === oldParentId) {
-    parentFolderUl.children[index][index > oldIndex ? 'after' : 'before'](bookmark);
-  } else {
-    if (!index) parentFolderUl.prepend(bookmark);
-    else parentFolderUl.children[index - 1].after(bookmark);
-  }
-  updateFolderIcon(getBookmark(oldParentId));
-  updateFolderIcon(getBookmark(parentId));
-
+  moveBookmark({ id, parentId, oldParentId, index, oldIndex });
   postMessageToAll('moveBookmark', { id, parentId, oldParentId, index, oldIndex });
 });
 
 onChanged((id, { title, url }) => {
-  const bookmarkLink = $(`#b${id} .bookmark__link`);
-  if (!bookmarkLink) return;
+  const bookmark = getBookmark(id);
+  if (!bookmark) return;
 
-  if (url) {
-    bookmarkLink.href = url;
-    bookmarkLink.title = `${title} | ${url}`;
-  } else {
-    bookmarkLink.title = title;
-  }
-
-  const bookmarkTitle = $('.bookmark__title', bookmarkLink);
-  bookmarkTitle.textContent = title;
-
+  changeBookmark({ id, title, url });
   postMessageToAll('changeBookmark', { id, title, url });
 });

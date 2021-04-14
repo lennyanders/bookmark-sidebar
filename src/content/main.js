@@ -1,7 +1,7 @@
 import { onMessage } from '@chrome/runtime/port';
 import { Positions, Themes } from '@shared/consts/settings';
-import { $, $$, closest } from '@utils/dom';
-import { getBookmark, getFolderUl, updateFolderIcon } from '@shared/bookmark';
+import { $, $$ } from '@utils/dom';
+import { removeBookmark, createBookmark, moveBookmark, changeBookmark } from '@shared/bookmark';
 import { root, shadowRoot, sidebar, setSidebar } from '@sidebar-root';
 import { port } from '@port';
 import { enableResizer } from '@components/resizer';
@@ -34,52 +34,11 @@ onMessage(port, 'sidebar', ({ bookmarkSidebarHtml }) => {
   shadowRoot.innerHTML = bookmarkSidebarHtml;
   setSidebar();
 
-  onMessage(port, 'toggleSidebarVisibility', () => toggleSidebarVisibility());
-
-  onMessage(port, 'removeBookmark', ({ id }) => {
-    const bookmark = getBookmark(id);
-    const parentBookmark = closest(bookmark, '.bookmark');
-    bookmark.remove();
-    updateFolderIcon(parentBookmark);
-  });
-
-  onMessage(port, 'createBookmark', ({ parentId, index, bookmarkHtml }) => {
-    const parentFolderUl = getFolderUl(parentId);
-
-    if (!index) parentFolderUl.insertAdjacentHTML('afterbegin', bookmarkHtml);
-    else parentFolderUl.children[index - 1].insertAdjacentHTML('afterend', bookmarkHtml);
-
-    updateFolderIcon(closest(parentFolderUl, '.bookmark'));
-    enableDragAndDrop(parentFolderUl);
-  });
-
-  onMessage(port, 'moveBookmark', ({ id, parentId, oldParentId, index, oldIndex }) => {
-    const bookmark = getBookmark(id);
-    const parentFolderUl = getFolderUl(parentId);
-
-    if (parentId === oldParentId) {
-      return parentFolderUl.children[index][index > oldIndex ? 'after' : 'before'](bookmark);
-    }
-
-    if (!index) parentFolderUl.prepend(bookmark);
-    else parentFolderUl.children[index - 1].after(bookmark);
-
-    updateFolderIcon(getBookmark(oldParentId));
-    updateFolderIcon(getBookmark(parentId));
-  });
-
-  onMessage(port, 'changeBookmark', ({ id, title, url }) => {
-    const bookmarkLink = $(`#b${id} .bookmark__link`);
-    if (url) {
-      bookmarkLink.href = url;
-      bookmarkLink.title = `${title} | ${url}`;
-    } else {
-      bookmarkLink.title = title;
-    }
-
-    const bookmarkTitle = $('.bookmark__title', bookmarkLink);
-    bookmarkTitle.textContent = title;
-  });
+  onMessage(port, 'toggleSidebarVisibility', toggleSidebarVisibility);
+  onMessage(port, 'removeBookmark', removeBookmark);
+  onMessage(port, 'createBookmark', createBookmark);
+  onMessage(port, 'moveBookmark', moveBookmark);
+  onMessage(port, 'changeBookmark', changeBookmark);
 
   onMessage(port, 'newFolder', ({ newFolderHtml }) => {
     $('.js-modal-settings [name="sidebarShwonBookmark"]').insertAdjacentHTML(
