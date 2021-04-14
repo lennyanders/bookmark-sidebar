@@ -1,10 +1,5 @@
-import * as esbuild from 'esbuild';
-
-// typing export default dosn't work =(
-/**
- * @return {esbuild.Plugin}
- */
-const esbuildPluginResolveChromeExtensionUrl = {
+/** @type {import('esbuild').Plugin} */
+const plugin = {
   name: 'esbuild-plugin-resolve-chrome-extension-url',
   setup(build) {
     build.onResolve({ filter: /^chrome-extension:\/\/__MSG_@@extension_id__\// }, ({ path }) => ({
@@ -14,4 +9,4 @@ const esbuildPluginResolveChromeExtensionUrl = {
   },
 };
 
-export default esbuildPluginResolveChromeExtensionUrl;
+export default plugin;

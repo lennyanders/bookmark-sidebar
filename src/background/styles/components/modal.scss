@@ -1,0 +1,74 @@
+.modal {
+  position: absolute;
+  left: 0.5em;
+  right: 0.5em;
+  bottom: 3.5em;
+  padding: 0.5em;
+  border-radius: 0.25em;
+  background-color: hsla(var(--font-hsl), 0.5);
+  backdrop-filter: blur(0.25em);
+  color: var(--bg-color);
+  z-index: 1;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0.25s, opacity 0.25s ease;
+
+  &--visible {
+    transition: visibility 0s, opacity 0.25s ease;
+    visibility: visible;
+    opacity: 1;
+  }
+
+  &__close {
+    position: relative;
+    display: block;
+    height: 1.25em;
+    width: 2.5em;
+    margin: 0 auto;
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0.375em;
+      width: 1.25em;
+      height: 0.2em;
+      border-radius: 0.1em;
+      background-color: var(--bg-color);
+      transition: transform 0.25s cubic-bezier(0.5, -0.5, 0.5, 1.5);
+    }
+
+    &::before {
+      right: 50%;
+      margin-right: -0.05em;
+      transform: rotate(-20deg);
+    }
+
+    &::after {
+      left: 50%;
+      margin-left: -0.05em;
+      transform: rotate(20deg);
+    }
+
+    &:hover {
+      &::before {
+        transform: rotate(20deg);
+      }
+      &::after {
+        transform: rotate(-20deg);
+      }
+    }
+  }
+
+  &__content {
+    display: grid;
+    gap: 1.25em;
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.5em;
+  }
+}

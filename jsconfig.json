@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "paths": {
+      "@chrome/*": ["./chrome/*"],
+      "@utils": ["./utils"]
+    }
+  }
+}

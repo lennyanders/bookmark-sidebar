@@ -1,0 +1,13 @@
+.resizer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 0.25em;
+  transform: translateX(-50%) scaleX(var(--resizer-scale, 1));
+  cursor: col-resize;
+  z-index: 2;
+
+  .sidebar--left & {
+    right: 0;
+  }
+}

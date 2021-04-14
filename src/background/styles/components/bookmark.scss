@@ -1,0 +1,59 @@
+.bookmark {
+  &__content {
+    display: flex;
+
+    &:hover,
+    &:focus-within {
+      background-color: hsl(var(--bg-hs), calc(var(--bg-l) + 10% * var(--multiplier)));
+
+      .bookmark__option {
+        display: inherit;
+      }
+    }
+    &:hover {
+      background-color: hsl(var(--bg-hs), calc(var(--bg-l) + 15% * var(--multiplier)));
+    }
+  }
+  &__link {
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    flex: 1;
+    position: relative;
+
+    &--active::after {
+      content: '\02022';
+      position: absolute;
+      top: 1.25em;
+      left: 1.25em;
+      margin: -0.125em 0 0 -0.125em;
+      width: 0.5em;
+      line-height: 0.5em;
+      text-align: center;
+      color: #00cdcd;
+    }
+  }
+  &__icon {
+    flex: 0 0 1em;
+    height: 1em;
+    margin: 0.5em;
+    fill: hsl(var(--font-hs), calc(var(--font-l) - 10% * var(--multiplier)));
+  }
+  &__title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  &__option {
+    display: none;
+    width: 2em;
+
+    & + & {
+      margin-left: -0.25em;
+    }
+  }
+  &__children {
+    padding-left: 1.25em;
+    transition: height 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+}

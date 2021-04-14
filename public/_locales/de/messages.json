@@ -47,6 +47,9 @@
     "message": "Nein"
   },
 
+  "settings": {
+    "message": "Einstellungen"
+  },
   "addBookmark": {
     "message": "Lesezeichen hinzufügen"
   },

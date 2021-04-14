@@ -1,0 +1,14 @@
+.input {
+  display: grid;
+  gap: 0.5em;
+
+  &__label {
+    font-weight: bold;
+  }
+
+  &__el {
+    border: 0;
+    background-color: transparent;
+    transition: color 0.2s ease;
+  }
+}

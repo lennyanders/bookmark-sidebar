@@ -1,7 +1,8 @@
-import { createApp } from 'vue';
-import { i18n } from '@shared/utils';
-import App from './App.vue';
+import { onMessage } from '@chrome/runtime';
+import { getMessage } from '@chrome/i18n';
 
-document.title = i18n('newTab');
+document.title = getMessage('newTab');
 
-createApp(App).mount(document.body);
+if (process.env.NODE_ENV === 'development') {
+  onMessage(({ command }) => command === 'reload-tab' && location.reload());
+}

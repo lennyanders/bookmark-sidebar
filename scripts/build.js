@@ -1,5 +1,3 @@
-import * as esbuild from 'esbuild';
-
 import {
   emptyDist,
   copyPublicFiles,
@@ -7,12 +5,12 @@ import {
   buildBackground,
   buildContent,
   buildNewtab,
-  inlineContentCss,
 } from './shared';
 
 (async () => {
   await emptyDist();
 
+  /** @type {import('esbuild').BuildOptions} */
   const esbuildOptions = {
     minify: true,
     define: {
@@ -21,9 +19,9 @@ import {
   };
 
   await Promise.all([
-    buildBackground(esbuild, esbuildOptions),
-    buildContent(esbuild, esbuildOptions).then(inlineContentCss),
-    buildNewtab(esbuild, esbuildOptions),
+    buildBackground(esbuildOptions),
+    buildContent(esbuildOptions),
+    buildNewtab(esbuildOptions),
     copyPublicFiles(),
     writeManifest(),
   ]);

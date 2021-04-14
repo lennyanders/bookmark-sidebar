@@ -1,8 +1,6 @@
-import { rm, mkdir, writeFile, readFile } from 'fs/promises';
+import { rm, mkdir, writeFile } from 'fs/promises';
 import { copyDir, createBuilder } from './utils';
-import vue from './esbuild-plugin-vue';
 import sass from './esbuild-plugin-sass';
-import resolveChromeExtensionUrl from './esbuild-plugin-resolve-chrome-extension-url';
 import { version } from '../package.json';
 import manifest from '../src/manifest.json';
 
@@ -18,39 +16,26 @@ export const writeManifest = () => {
 };
 
 export const buildBackground = createBuilder({
-  entryPoints: ['src/background/main.js'],
+  entryPoints: ['background/main.js'],
   outfile: 'dist/background.js',
-  format: 'iife',
+  format: 'esm',
   bundle: true,
+  logLevel: 'info',
+  plugins: [sass],
 });
 
 export const buildContent = createBuilder({
-  entryPoints: ['src/content/main.js'],
+  entryPoints: ['content/main.js'],
   outfile: 'dist/content.js',
-  format: 'iife',
+  format: 'esm',
   bundle: true,
-  plugins: [vue],
-  define: {
-    __VUE_OPTIONS_API__: JSON.stringify(false),
-    __VUE_PROD_DEVTOOLS__: JSON.stringify(false),
-  },
+  logLevel: 'info',
 });
 
 export const buildNewtab = createBuilder({
-  entryPoints: ['src/newtab/main.js'],
+  entryPoints: ['newtab/main.js'],
   outfile: 'dist/newtab.js',
-  format: 'iife',
+  format: 'esm',
   bundle: true,
-  plugins: [vue, sass, resolveChromeExtensionUrl],
-  define: {
-    __VUE_OPTIONS_API__: JSON.stringify(false),
-    __VUE_PROD_DEVTOOLS__: JSON.stringify(false),
-  },
+  logLevel: 'info',
 });
-
-export const inlineContentCss = async () => {
-  const css = await readFile('dist/content.css', 'utf8');
-  const js = await readFile('dist/content.js', 'utf8');
-  await writeFile('dist/content.js', js.replace('window.styles', JSON.stringify(css)));
-  await rm('dist/content.css');
-};

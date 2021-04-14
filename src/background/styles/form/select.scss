@@ -1,0 +1,29 @@
+.select {
+  position: relative;
+  display: grid;
+  gap: 0.5em;
+
+  &__label {
+    font-weight: bold;
+  }
+
+  &__el {
+    appearance: none;
+    padding: 0.25em 1.75em 0.25em 0.5em;
+    border: 0;
+    border-radius: 0.25em;
+    color: var(--font-color);
+    background-color: var(--bg-color);
+    cursor: pointer;
+  }
+
+  &__icon {
+    position: absolute;
+    bottom: 0.25em;
+    right: 0.125em;
+    color: var(--font-color);
+    width: 1.5em;
+    height: 1.5em;
+    pointer-events: none;
+  }
+}

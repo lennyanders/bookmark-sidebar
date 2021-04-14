@@ -1,6 +1,11 @@
 import { copyFile, readdir, mkdir } from 'fs/promises';
 import { resolve } from 'path';
+import { build } from 'esbuild';
 
+/**
+ * @param {string} entry
+ * @param {string} target
+ */
 export const copyDir = async (entry, target) => {
   const dir = await readdir(entry, { withFileTypes: true });
   await Promise.all(
@@ -15,23 +20,26 @@ export const copyDir = async (entry, target) => {
   );
 };
 
-const deepAssign = (obj1, obj2) => {
-  if (!obj1) return {};
-  if (!obj2) return obj1;
-
-  for (const key in obj2) {
-    if (Object.prototype.toString.call(obj2[key]) === '[object Object]') {
-      obj1[key] = deepAssign(obj1[key] || {}, obj2[key]);
-    } else {
-      obj1[key] = obj2[key];
+/**
+ * @param  {objects[]} objects
+ * @returns {object}
+ */
+const deepAssign = (...objects) => {
+  const returnObject = {};
+  for (const object of objects) {
+    for (const key in object) {
+      if (Object.prototype.toString.call(object[key]) === '[object Object]') {
+        returnObject[key] = deepAssign(returnObject[key] || {}, object[key]);
+      } else {
+        returnObject[key] = object[key];
+      }
     }
   }
-  return obj1;
+  return returnObject;
 };
 
 /**
  * @callback Builder
- * @param {import('esbuild')|import('esbuild').Service} esbuildOrEsbuildService
  * @param {import('esbuild').BuildOptions} options
  * @returns {Promise<import('esbuild').BuildResult>}
  */
@@ -40,5 +48,6 @@ const deepAssign = (obj1, obj2) => {
  * @param {import('esbuild').BuildOptions} defaultOptions
  * @returns {Builder}
  */
-export const createBuilder = (defaultOptions) => (esbuildOrEsbuildService, options) =>
-  esbuildOrEsbuildService.build(deepAssign(defaultOptions, options));
+export const createBuilder = (defaultOptions) => (options) => {
+  return build(deepAssign(defaultOptions, options));
+};

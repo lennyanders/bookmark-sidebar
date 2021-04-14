@@ -1,67 +1,55 @@
-import { watchEffect } from '@vue-reactivity/watch';
+import { onConnect } from '@chrome/runtime';
+import { postMessage, onMessage, onDisconnect } from '@chrome/runtime/port';
+import { create, update, move, remove } from '@chrome/bookmarks';
+import { set } from '@chrome/storage/sync';
+import { Defaults } from '@shared/consts/settings';
+import { root } from './data';
 
-import { scriptRunsOnTab } from './insertAndToggleBmBar';
-import { data } from './data';
-import { defaults } from '@shared/settings';
+/** @type {Map<number, chrome.runtime.Port>} */
+export const tabToPort = new Map();
 
-const actions = {
-  remove({ id }) {
-    chrome.bookmarks.removeTree(id);
+/**
+ * @param {string} type
+ * @param {Record<string, any} [message]
+ */
+export const postMessageToAll = (type, message) => {
+  tabToPort.forEach((port) => postMessage(port, type, message));
+};
+
+const on = {
+  createBookmark(options) {
+    create(options);
   },
-  create({ parentId, title, url }) {
-    chrome.bookmarks.create({
-      parentId,
-      title,
-      ...(url && { url }),
-    });
+  updateBookmark({ id, title, url }) {
+    update(id, { title, url });
   },
-  async move({ id, index, parentId }) {
-    try {
-      await chrome.bookmarks.move(id, {
-        ...(index !== undefined && { index }),
-        ...(parentId && { parentId }),
-      });
-    } catch (err) {}
+  moveBookmark({ id, index, parentId }) {
+    move(id, { index, parentId });
   },
-  update({ id, title, url }) {
-    chrome.bookmarks.update(id, {
-      ...(title && { title }),
-      ...(url && { url }),
-    });
+  removeBookmark({ id }) {
+    remove(id);
   },
-  setBarLeft({ barLeft }) {
-    chrome.storage.sync.set({ barLeft });
+  updateSettings(settings) {
+    set(settings);
   },
-  setShownBm({ id: shownBmId }) {
-    chrome.storage.sync.set({ shownBmId });
-  },
-  setBarWidth({ barWidth }) {
-    chrome.storage.sync.set({ barWidth });
-  },
-  setBarTheme({ barTheme }) {
-    chrome.storage.sync.set({ barTheme });
-  },
-  setEditBookmarkOnRightClick({ editBookmarkOnRightClick }) {
-    chrome.storage.sync.set({ editBookmarkOnRightClick });
-  },
-  reset() {
-    chrome.storage.sync.set(defaults);
+  resetSettings() {
+    set(Defaults);
   },
 };
 
-export const startMiddleware = () => {
-  chrome.runtime.onConnect.addListener((port) => {
-    if (port.name !== 'bmBar') return;
+onConnect((port) => {
+  if (port.name !== 'bookmark-sidebar') return;
 
-    scriptRunsOnTab.add(port.sender.tab.id);
+  const tabId = port.sender?.tab?.id;
+  if (!tabId) return;
 
-    port.onMessage.addListener((msg) => actions[msg.type]?.(msg));
+  tabToPort.set(tabId, port);
 
-    const stopWatch = watchEffect(() => port.postMessage(data));
-
-    port.onDisconnect.addListener(() => {
-      stopWatch();
-      scriptRunsOnTab.delete(port.sender.tab.id);
-    });
+  postMessage(port, 'sidebar', {
+    bookmarkSidebarHtml: root.innerHTML,
   });
-};
+
+  for (const key in on) onMessage(port, key, on[key]);
+
+  onDisconnect(port, () => tabToPort.delete(tabId));
+});

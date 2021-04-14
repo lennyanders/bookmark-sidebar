@@ -1,18 +1,23 @@
+import { dirname } from 'path';
 import { renderSync } from 'sass';
 
-// typing export default dosn't work =(
-/**
- * @type {import('esbuild').Plugin}
- */
-const esbuildPluginSass = {
+/** @type {import('esbuild').Plugin} */
+const plugin = {
   name: 'esbuild-plugin-sass',
   setup(build) {
-    build.onLoad({ filter: /\.s[a|c]ss$/ }, ({ path }) => {
-      const { css } = renderSync({ file: path });
+    const outputStyle = build.initialOptions.watch ? 'expanded' : 'compressed';
 
-      return { loader: 'css', contents: css };
+    build.onLoad({ filter: /\.s[a|c]ss$/ }, ({ path }) => {
+      const { css, stats } = renderSync({ file: path, outputStyle });
+
+      return {
+        loader: 'text',
+        contents: css,
+        watchFiles: stats.includedFiles,
+        watchDirs: stats.includedFiles.map((filePath) => dirname(filePath)),
+      };
     });
   },
 };
 
-export default esbuildPluginSass;
+export default plugin;

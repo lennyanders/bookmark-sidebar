@@ -1,0 +1,100 @@
+@mixin lightTheme() {
+  --font-h: 0;
+  --font-s: 0%;
+  --font-l: 20%;
+
+  --bg-h: 0;
+  --bg-s: 0%;
+  --bg-l: 100%;
+
+  --multiplier: -1;
+}
+
+@mixin darkTheme() {
+  --font-h: 0;
+  --font-s: 0%;
+  --font-l: 98%;
+
+  --bg-h: 206;
+  --bg-s: 7%;
+  --bg-l: 21%;
+
+  --multiplier: 1;
+}
+
+:host {
+  font-size: medium !important;
+  font-family: 'Lato', Arial, Helvetica, sans-serif !important;
+  line-height: 1.5 !important;
+}
+
+* {
+  font-size: inherit;
+  font-family: inherit;
+  line-height: inherit;
+  color: inherit;
+}
+
+@keyframes appear {
+  from {
+    transform: translateX(calc((100% + 1em) * var(--sidebar-position, 1)));
+  }
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  color: var(--font-color);
+  background-color: var(--bg-color);
+  box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.25);
+  will-change: scroll-position;
+  transition: transform 0.25s ease;
+  animation: appear 0.25s ease;
+
+  @include lightTheme();
+  @media (prefers-color-scheme: dark) {
+    @include darkTheme();
+  }
+
+  --font-hs: var(--font-h), var(--font-s);
+  --font-hsl: var(--font-hs), var(--font-l);
+  --font-color: hsl(var(--font-hsl));
+
+  --bg-hs: var(--bg-h), var(--bg-s);
+  --bg-hsl: var(--bg-hs), var(--bg-l);
+  --bg-color: hsl(var(--bg-hsl));
+
+  &--left {
+    right: auto;
+    left: 0;
+    --sidebar-position: -1;
+  }
+
+  &--light {
+    @include lightTheme();
+  }
+
+  &--dark {
+    @include darkTheme();
+  }
+
+  &--invisible {
+    transform: translateX(calc((100% + 1em) * var(--sidebar-position, 1)));
+  }
+}
+
+main {
+  padding: 0.5em 0.25em 3.5em 0.5em;
+  height: 100%;
+  overflow: hidden scroll;
+
+  &::-webkit-scrollbar {
+    width: 0.25em;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: hsl(var(--bg-hs), calc(var(--bg-l) + 15% * var(--multiplier)));
+    box-shadow: inset 0 0.5em var(--bg-color), inset 0 -3.5em var(--bg-color);
+  }
+}

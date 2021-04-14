@@ -47,6 +47,9 @@
     "message": "No"
   },
 
+  "settings": {
+    "message": "Settings"
+  },
   "addBookmark": {
     "message": "Add bookmark"
   },

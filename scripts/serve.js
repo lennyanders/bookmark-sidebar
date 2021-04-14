@@ -1,5 +1,3 @@
-import { normalize } from 'path';
-import { startService } from 'esbuild';
 import watch from 'node-watch';
 
 import {
@@ -9,32 +7,24 @@ import {
   buildBackground,
   buildContent,
   buildNewtab,
-  inlineContentCss,
 } from './shared';
 
 (async () => {
-  const [service] = await Promise.all([startService(), emptyDist()]);
+  await emptyDist();
 
   /** @type {import('esbuild').BuildOptions} */
   const esbuildOptions = {
     sourcemap: 'inline',
-    incremental: true,
     watch: true,
     define: {
       'process.env.NODE_ENV': JSON.stringify('development'),
     },
   };
 
-  watch('dist', (event, name) => {
-    if (event === 'update' && name === normalize('dist/content.css')) {
-      inlineContentCss();
-    }
-  });
-
   await Promise.all([
-    buildBackground(service, esbuildOptions),
-    buildContent(service, esbuildOptions),
-    buildNewtab(service, esbuildOptions),
+    buildBackground(esbuildOptions),
+    buildContent(esbuildOptions),
+    buildNewtab(esbuildOptions),
     copyPublicFiles(),
     writeManifest(),
   ]);
