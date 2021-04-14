@@ -46,6 +46,7 @@ chrome.runtime.getPackageDirectoryEntry(async (dir) => {
     if (backgroundTimestamp !== previousBackgroundTimestamp) {
       location.reload();
       previousTimestamp = backgroundTimestamp;
+      return; // background already does reload the newtab page
     }
 
     const newTabReloadTimestamp = await getTimeStamps(newTabReloadEntrys);
