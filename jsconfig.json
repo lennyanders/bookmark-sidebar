@@ -3,7 +3,8 @@
     "baseUrl": "./src",
     "paths": {
       "@chrome/*": ["./chrome/*"],
-      "@utils": ["./utils"]
+      "@utils": ["./utils"],
+      "@utils/*": ["./utils/*"]
     }
   }
 }

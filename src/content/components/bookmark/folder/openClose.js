@@ -1,3 +1,4 @@
+import { $, closest } from '@utils/dom';
 import { sidebar } from '@sidebar-root';
 
 /**
@@ -43,10 +44,10 @@ export const enableClickOpenCloseFolder = () => {
   sidebar.addEventListener(
     'click',
     (event) => {
-      const childrenUl = event.target
-        .closest('.js-toggle-folder-children')
-        ?.closest('.bookmark')
-        ?.querySelector('.bookmark__children');
+      const childrenUl = $(
+        '.bookmark__children',
+        closest(event.target.closest('.js-toggle-folder-children'), '.bookmark') || null,
+      );
 
       if (!childrenUl) return;
 
@@ -67,7 +68,7 @@ export const enableDragoverOpenFolder = () => {
     'dragover',
     (event) => {
       const folder = event.target.closest('.bookmark');
-      const childrenUl = folder?.querySelector(':scope > .bookmark__children[hidden]');
+      const childrenUl = $(':scope > .bookmark__children[hidden]', folder);
       dragOverFolder = childrenUl;
       if (!childrenUl || dragoverTimout) return;
 

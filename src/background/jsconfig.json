@@ -3,6 +3,7 @@
     "baseUrl": ".",
     "paths": {
       "@utils": ["../utils"],
+      "@utils/*": ["../utils/*"],
       "@chrome": ["../chrome"],
       "@chrome/*": ["../chrome/*"],
       "@shared/*": ["../shared/*"]

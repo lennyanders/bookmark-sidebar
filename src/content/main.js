@@ -1,5 +1,7 @@
 import { onMessage } from '@chrome/runtime/port';
 import { Positions, Themes } from '@shared/consts/settings';
+import { $, $$, closest } from '@utils/dom';
+import { getBookmark, getFolderUl, updateFolderIcon } from '@shared/bookmark';
 import { root, shadowRoot, sidebar, setSidebar } from '@sidebar-root';
 import { port } from '@port';
 import { enableResizer } from '@components/resizer';
@@ -18,13 +20,14 @@ const toggleSidebarVisibility = (force) => {
 
   sidebar.focus();
   const { href } = location;
-  shadowRoot
-    .querySelectorAll(`.bookmark__link--active:not([href="${href}"])`)
-    .forEach((link) => link.classList.remove('bookmark__link--active'));
 
-  shadowRoot
-    .querySelectorAll(`.bookmark__link[href="${href}"]`)
-    .forEach((link) => link.classList.add('bookmark__link--active'));
+  $$(`.bookmark__link--active:not([href="${href}"])`).forEach((link) => {
+    link.classList.remove('bookmark__link--active');
+  });
+
+  $$(`.bookmark__link[href="${href}"]`).forEach((link) => {
+    link.classList.add('bookmark__link--active');
+  });
 };
 
 onMessage(port, 'sidebar', ({ bookmarkSidebarHtml }) => {
@@ -33,38 +36,26 @@ onMessage(port, 'sidebar', ({ bookmarkSidebarHtml }) => {
 
   onMessage(port, 'toggleSidebarVisibility', () => toggleSidebarVisibility());
 
-  /** @param {HTMLElement} bookmark */
-  const updateFolderIcon = (bookmark) => {
-    bookmark
-      ?.querySelector('.bookmark__icon use')
-      ?.setAttribute(
-        'href',
-        `#folder${
-          bookmark.querySelector('.bookmark__children').children.length ? '' : '-empty'
-        }-icon`,
-      );
-  };
-
   onMessage(port, 'removeBookmark', ({ id }) => {
-    const bookmark = shadowRoot.getElementById(`b${id}`);
-    const parentBookmark = bookmark.parentNode.closest('.bookmark');
+    const bookmark = getBookmark(id);
+    const parentBookmark = closest(bookmark, '.bookmark');
     bookmark.remove();
     updateFolderIcon(parentBookmark);
   });
 
   onMessage(port, 'createBookmark', ({ parentId, index, bookmarkHtml }) => {
-    const parentFolderUl = shadowRoot.querySelector(`#b${parentId} ul`);
+    const parentFolderUl = getFolderUl(parentId);
 
     if (!index) parentFolderUl.insertAdjacentHTML('afterbegin', bookmarkHtml);
     else parentFolderUl.children[index - 1].insertAdjacentHTML('afterend', bookmarkHtml);
 
-    updateFolderIcon(parentFolderUl.closest('.bookmark'));
+    updateFolderIcon(closest(parentFolderUl, '.bookmark'));
     enableDragAndDrop(parentFolderUl);
   });
 
   onMessage(port, 'moveBookmark', ({ id, parentId, oldParentId, index, oldIndex }) => {
-    const bookmark = shadowRoot.getElementById(`b${id}`);
-    const parentFolderUl = shadowRoot.querySelector(`#b${parentId} ul`);
+    const bookmark = getBookmark(id);
+    const parentFolderUl = getFolderUl(parentId);
 
     if (parentId === oldParentId) {
       return parentFolderUl.children[index][index > oldIndex ? 'after' : 'before'](bookmark);
@@ -73,12 +64,12 @@ onMessage(port, 'sidebar', ({ bookmarkSidebarHtml }) => {
     if (!index) parentFolderUl.prepend(bookmark);
     else parentFolderUl.children[index - 1].after(bookmark);
 
-    updateFolderIcon(shadowRoot.getElementById(`b${oldParentId}`));
-    updateFolderIcon(shadowRoot.getElementById(`b${parentId}`));
+    updateFolderIcon(getBookmark(oldParentId));
+    updateFolderIcon(getBookmark(parentId));
   });
 
   onMessage(port, 'changeBookmark', ({ id, title, url }) => {
-    const bookmarkLink = shadowRoot.querySelector(`#b${id} .bookmark__link`);
+    const bookmarkLink = $(`#b${id} .bookmark__link`);
     if (url) {
       bookmarkLink.href = url;
       bookmarkLink.title = `${title} | ${url}`;
@@ -86,33 +77,32 @@ onMessage(port, 'sidebar', ({ bookmarkSidebarHtml }) => {
       bookmarkLink.title = title;
     }
 
-    const bookmarkTitle = bookmarkLink.querySelector('.bookmark__title');
+    const bookmarkTitle = $('.bookmark__title', bookmarkLink);
     bookmarkTitle.textContent = title;
   });
 
   onMessage(port, 'newFolder', ({ newFolderHtml }) => {
-    shadowRoot
-      .querySelector('.js-modal-settings [name="sidebarShwonBookmark"]')
-      .insertAdjacentHTML('beforeend', newFolderHtml);
+    $('.js-modal-settings [name="sidebarShwonBookmark"]').insertAdjacentHTML(
+      'beforeend',
+      newFolderHtml,
+    );
   });
 
   onMessage(port, 'folderRemoved', ({ folderId }) => {
-    shadowRoot
-      .querySelector(`.js-modal-settings [name="sidebarShwonBookmark"] > [value="${folderId}"]`)
-      .remove();
+    $(`.js-modal-settings [name="sidebarShwonBookmark"] > [value="${folderId}"]`).remove();
   });
 
   onMessage(port, 'settingsChanged', (changes) => {
     /** @type {HTMLFormElement} */
-    const modalSettings = shadowRoot.querySelector('.js-modal-settings');
+    const modalSettings = $('.js-modal-settings');
 
     if (changes.sidebarShwonBookmark) {
-      const main = shadowRoot.querySelector('main');
+      const main = $('main');
       if (changes.bookmarksHtml) {
         main.innerHTML = changes.bookmarksHtml;
         enableDragAndDrop();
       } else {
-        const children = shadowRoot.querySelector(`#b${changes.sidebarShwonBookmark} ul`);
+        const children = $(`#b${changes.sidebarShwonBookmark} ul`);
         if (children) {
           children.removeAttribute('class');
           children.hidden = false;

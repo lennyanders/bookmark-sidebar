@@ -1,11 +1,12 @@
 import { postMessage } from '@chrome/runtime/port';
 import { getFormdataAsJson } from '@utils';
+import { $, closest } from '@utils/dom';
 import { sidebar } from '@sidebar-root';
 import { port } from '@port';
 import { showModal, hideModal } from './showHide';
 
 export const enableAddBookmark = () => {
-  const modalAddBookmark = sidebar.querySelector('.js-modal-add-bookmark');
+  const modalAddBookmark = $('.js-modal-add-bookmark');
   sidebar.addEventListener(
     'click',
     (event) => {
@@ -13,7 +14,7 @@ export const enableAddBookmark = () => {
       if (!addButton) return;
 
       const formElements = modalAddBookmark.elements;
-      formElements.parentId.value = addButton.closest('.sidebar, .bookmark').id.slice(1);
+      formElements.parentId.value = closest(addButton, '.sidebar, .bookmark').id.slice(1);
       formElements.title.value = document.title;
       formElements.url.value = location.href;
 
@@ -33,6 +34,6 @@ export const enableAddBookmark = () => {
     createBookmark();
   });
 
-  const addFolderButton = sidebar.querySelector('.js-modal-add-folder');
+  const addFolderButton = $('.js-modal-add-folder');
   addFolderButton.addEventListener('click', () => createBookmark(true), { passive: true });
 };

@@ -1,13 +1,11 @@
 import Sortable from 'sortablejs';
 import { postMessage } from '@chrome/runtime/port';
-import { sidebar } from '@sidebar-root';
+import { $$, closest } from '@utils/dom';
 import { port } from '@port';
 
 /** @param {HTMLElement} [parent] */
-export const enableDragAndDrop = (parent = sidebar) => {
-  parent
-    .querySelectorAll(':not(#b0) main > ul, .bookmark__children')
-    .forEach(enableDragAndDropForFolder);
+export const enableDragAndDrop = (parent) => {
+  $$(':not(#b0) main > ul, .bookmark__children', parent).forEach(enableDragAndDropForFolder);
 };
 
 const enableDragAndDropForFolder = (folder) => {
@@ -29,7 +27,7 @@ const enableDragAndDropForFolder = (folder) => {
       if (from === to) {
         if (newDraggableIndex > oldDraggableIndex) index++;
       } else {
-        parentId = to.closest('.bookmark, .sidebar').id.slice(1);
+        parentId = closest(to, '.bookmark, .sidebar').id.slice(1);
       }
 
       postMessage(port, 'moveBookmark', { id, index, parentId });

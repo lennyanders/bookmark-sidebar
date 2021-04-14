@@ -1,33 +1,18 @@
 import { getSubTree, onRemoved, onCreated, onMoved, onChanged } from '@chrome/bookmarks';
 import { flattenArrayOfObjects, getBaseUrl } from '@utils';
+import { $, closest } from '@utils/dom';
+import { getBookmark, getFolderUl, updateFolderIcon } from '@shared/bookmark';
 import { loadFavicons, faviconDataUrls } from '../favicon';
 import { postMessageToAll } from '../middleware';
 import { getBookmarkHtml, html } from './html';
 import { shadowRoot } from './index';
-
-/** @param {HTMLElement} bookmark */
-const updateFolderIcon = (bookmark) => {
-  bookmark
-    ?.querySelector('.bookmark__icon use')
-    ?.setAttribute(
-      'href',
-      `#folder${
-        bookmark.querySelector('.bookmark__children').children.length ? '' : '-empty'
-      }-icon`,
-    );
-};
-
-/** @param {string} id */
-const getBookmark = (id) => shadowRoot.getElementById(`b${id}`);
-/** @param {string} id */
-const getFolderUl = (id) => shadowRoot.querySelector(`#b${id} ul`);
 
 /** @param {string} id */
 const removeBookmark = (id) => {
   const bookmark = getBookmark(id);
   if (!bookmark) return;
 
-  const parentBookmark = bookmark.parentNode.closest('.bookmark');
+  const parentBookmark = closest(bookmark, '.bookmark');
   bookmark.remove();
 
   updateFolderIcon(parentBookmark);
@@ -52,7 +37,7 @@ const createBookmark = async (bookmark) => {
   if (!bookmark.index) parentFolderUl.insertAdjacentHTML('afterbegin', bookmarkHtml);
   else parentFolderUl.children[bookmark.index - 1].insertAdjacentHTML('afterend', bookmarkHtml);
 
-  updateFolderIcon(parentFolderUl.closest('.bookmark'));
+  updateFolderIcon(closest(parentFolderUl, '.bookmark'));
 
   postMessageToAll('createBookmark', {
     parentId: bookmark.parentId,
@@ -63,10 +48,7 @@ const createBookmark = async (bookmark) => {
 
 onRemoved((bookmarkId, removeInfo) => {
   if (!removeInfo.node.url) {
-    shadowRoot
-      .querySelector(`.js-modal-settings [name="sidebarShwonBookmark"] > [value="${bookmarkId}"]`)
-      .remove();
-
+    $(`.js-modal-settings [name="sidebarShwonBookmark"] > [value="${bookmarkId}"]`).remove();
     postMessageToAll('folderRemoved', { folderId: bookmarkId });
   }
 
@@ -76,10 +58,10 @@ onRemoved((bookmarkId, removeInfo) => {
 onCreated(async (bookmark) => {
   if (!bookmark.url) {
     const newFolderHtml = html`<option value="${bookmark.id}">${bookmark.title}</option>`;
-    shadowRoot
-      .querySelector('.js-modal-settings [name="sidebarShwonBookmark"]')
-      .insertAdjacentHTML('beforeend', newFolderHtml);
-
+    $('.js-modal-settings [name="sidebarShwonBookmark"]').insertAdjacentHTML(
+      'beforeend',
+      newFolderHtml,
+    );
     postMessageToAll('newFolder', { newFolderHtml });
   }
 
@@ -107,7 +89,7 @@ onMoved(async (id, { parentId, oldParentId, index, oldIndex }) => {
 });
 
 onChanged((id, { title, url }) => {
-  const bookmarkLink = shadowRoot.querySelector(`#b${id} .bookmark__link`);
+  const bookmarkLink = $(`#b${id} .bookmark__link`);
   if (!bookmarkLink) return;
 
   if (url) {
@@ -117,7 +99,7 @@ onChanged((id, { title, url }) => {
     bookmarkLink.title = title;
   }
 
-  const bookmarkTitle = bookmarkLink.querySelector('.bookmark__title');
+  const bookmarkTitle = $('.bookmark__title', bookmarkLink);
   bookmarkTitle.textContent = title;
 
   postMessageToAll('changeBookmark', { id, title, url });

@@ -1,12 +1,13 @@
 import { postMessage } from '@chrome/runtime/port';
 import { getFormdataAsJson } from '@utils';
+import { $, closest } from '@utils/dom';
 import { sidebar } from '@sidebar-root';
 import { port } from '@port';
 import { showModal, hideModal } from './showHide';
 
 export const enableEditBookmark = () => {
-  const modalEditBookmark = sidebar.querySelector('.js-modal-edit-bookmark');
-  const modalEditFolder = sidebar.querySelector('.js-modal-edit-folder');
+  const modalEditBookmark = $('.js-modal-edit-bookmark');
+  const modalEditFolder = $('.js-modal-edit-folder');
   sidebar.addEventListener(
     'click',
     (event) => {
@@ -16,14 +17,12 @@ export const enableEditBookmark = () => {
       const form = editButton.classList.contains('js-edit-folder')
         ? modalEditFolder
         : modalEditBookmark;
-      const bookmark = editButton.closest('.bookmark');
+      const bookmark = closest(editButton, '.bookmark');
 
       form.elements.id.value = bookmark.id.slice(1);
-      form.elements.title.value = bookmark.querySelector('.bookmark__title').textContent;
+      form.elements.title.value = $('.bookmark__title', bookmark).textContent;
 
-      if ('url' in form.elements) {
-        form.elements.url.value = bookmark.querySelector('.bookmark__link').href;
-      }
+      if (form.elements.url) form.elements.url.value = $('.bookmark__link', bookmark).href;
 
       showModal(form);
     },

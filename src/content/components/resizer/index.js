@@ -1,8 +1,9 @@
-import { shadowRoot, sidebar } from '@sidebar-root';
+import { $ } from '@utils/dom';
+import { sidebar } from '@sidebar-root';
 import { setSidebarWidth } from '@components/settings/width';
 
 export const enableResizer = () => {
-  const resizer = shadowRoot.querySelector('.resizer');
+  const resizer = $('.resizer');
 
   /** @param {MouseEvent} param */
   const resize = ({ x }) => {

@@ -1,13 +1,13 @@
-import { sidebar } from '@sidebar-root';
+import { $, $$ } from '@utils/dom';
 
 let modal;
 let modalContentChildren;
 
 const setup = () => {
-  modal = sidebar.querySelector('.modal');
-  modalContentChildren = modal.getElementsByClassName('modal__content');
+  modal = $('.modal');
+  modalContentChildren = $$('.modal__content');
 
-  modal.querySelector('.js-close-modal').addEventListener('click', hideModal, { passive: true });
+  $('.js-close-modal').addEventListener('click', hideModal, { passive: true });
 
   modal.addEventListener('keyup', (event) => event.key === 'Escape' && hideModal(), {
     passive: true,
@@ -17,10 +17,8 @@ const setup = () => {
 export const showModal = (modalContentChild) => {
   if (!modal) setup();
 
-  for (const content of Array.from(modalContentChildren)) {
-    if (content === modalContentChild) content.hidden = false;
-    else content.hidden = true;
-  }
+  for (const content of modalContentChildren) content.hidden = content !== modalContentChild;
+
   modal.classList.add('modal--visible');
   modal.focus();
 };

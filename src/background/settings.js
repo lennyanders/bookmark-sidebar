@@ -1,9 +1,10 @@
 import { onChanged } from '@chrome/storage';
 import { get } from '@chrome/storage/sync';
 import { getMessage } from '@chrome/i18n';
+import { $ } from '@utils/dom';
+import { getFolderUl } from '@shared/bookmark';
 import { Positions, Themes, Defaults } from '@shared/consts/settings';
 import { postMessageToAll } from './middleware';
-import { shadowRoot } from './data';
 import { getBookmarksHtml } from './data/html/getBookmarksHtml';
 
 export const positions = {
@@ -27,12 +28,12 @@ export const getSettings = async () => {
 /** @type {HTMLElement} */
 let sidebar;
 const getSidebar = () => {
-  if (!sidebar) sidebar = shadowRoot.querySelector('.sidebar');
+  if (!sidebar) sidebar = $('.sidebar');
   return sidebar;
 };
 onChanged(async (changes) => {
   /** @type {HTMLFormElement} */
-  const modalSettings = shadowRoot.querySelector('.js-modal-settings');
+  const modalSettings = $('.js-modal-settings');
   const settingsChanged = {};
 
   if (changes.theme) {
@@ -70,9 +71,9 @@ onChanged(async (changes) => {
   }
 
   if (changes.sidebarShwonBookmark) {
-    const main = shadowRoot.querySelector('main');
+    const main = $('main');
     const newValue = changes.sidebarShwonBookmark.newValue;
-    const children = shadowRoot.querySelector(`#b${newValue} ul`);
+    const children = getFolderUl(newValue);
     if (children?.hasChildNodes()) {
       children.removeAttribute('class');
       children.hidden = false;

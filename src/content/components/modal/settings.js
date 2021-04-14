@@ -1,16 +1,16 @@
 import { postMessage } from '@chrome/runtime/port';
-import { shadowRoot } from '@sidebar-root';
+import { $ } from '@utils/dom';
 import { port } from '@port';
 import { setSidebarWidth } from '@components/settings/width';
 import { showModal } from './showHide';
 
 export const enableSettings = () => {
   /** @type {HTMLFormElement} */
-  const modalSettings = shadowRoot.querySelector('.js-modal-settings');
+  const modalSettings = $('.js-modal-settings');
 
-  shadowRoot
-    .querySelector('.js-open-settings')
-    .addEventListener('click', () => showModal(modalSettings), { passive: true });
+  $('.js-open-settings').addEventListener('click', () => showModal(modalSettings), {
+    passive: true,
+  });
 
   modalSettings.elements.reset.addEventListener('click', () => postMessage(port, 'resetSettings'), {
     passive: true,

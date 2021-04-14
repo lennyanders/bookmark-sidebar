@@ -1,10 +1,10 @@
-import { sidebar } from '@sidebar-root';
+import { $, $$, closest } from '@utils/dom';
 
 export const enableSearchbar = () => {
   /** @type {HTMLInputElement} */
-  const searchbar = sidebar.querySelector('.js-searchbar');
+  const searchbar = $('.js-searchbar');
 
-  const bookmarkList = sidebar.querySelector('main > ul');
+  const bookmarkList = $('main > ul');
   const searchResultList = document.createElement('ul');
 
   searchbar.addEventListener(
@@ -17,13 +17,11 @@ export const enableSearchbar = () => {
       }
 
       /** @type {NodeListOf<HTMLElement} */
-      const bookmarkLinks = bookmarkList.querySelectorAll(
-        `.bookmark__link[title*="${searchbar.value}" i]`,
-      );
+      const bookmarkLinks = $$(`.bookmark__link[title*="${searchbar.value}" i]`, bookmarkList);
 
       searchResultList.innerHTML = '';
       searchResultList.append(
-        ...[...bookmarkLinks].map((link) => link.closest('.bookmark').cloneNode(true)),
+        ...[...bookmarkLinks].map((link) => closest(link, '.bookmark').cloneNode(true)),
       );
 
       if (!bookmarkLinks.hidden) {

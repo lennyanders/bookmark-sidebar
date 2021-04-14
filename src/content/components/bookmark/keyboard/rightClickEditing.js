@@ -1,3 +1,4 @@
+import { $ } from '@utils/dom';
 import { sidebar } from '@sidebar-root';
 
 export const enableRightClickEditing = () => {
@@ -8,6 +9,6 @@ export const enableRightClickEditing = () => {
     if (!bookmark) return;
 
     event.preventDefault();
-    bookmark.querySelector('.js-edit-bookmark, .js-edit-folder')?.click();
+    $('.js-edit-bookmark, .js-edit-folder', bookmark)?.click();
   });
 };
