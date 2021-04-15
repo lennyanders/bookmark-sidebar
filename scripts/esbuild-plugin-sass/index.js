@@ -1,5 +1,5 @@
 import { dirname } from 'path';
-import { renderSync } from 'sass';
+import sass from 'sass';
 
 /** @type {import('esbuild').Plugin} */
 const plugin = {
@@ -8,7 +8,7 @@ const plugin = {
     const outputStyle = build.initialOptions.watch ? 'expanded' : 'compressed';
 
     build.onLoad({ filter: /\.s[a|c]ss$/ }, ({ path }) => {
-      const { css, stats } = renderSync({ file: path, outputStyle });
+      const { css, stats } = sass.renderSync({ file: path, outputStyle });
 
       return {
         loader: 'text',

@@ -1,7 +1,8 @@
 import { rm, mkdir, writeFile } from 'fs/promises';
-import { copyDir, createBuilder } from './utils';
-import sass from './esbuild-plugin-sass';
-import { version } from '../package.json';
+import { copyDir, createBuilder } from './utils.js';
+import sass from './esbuild-plugin-sass/index.js';
+import crxDictionary from './esbuild-plugin-crx-disctionary/index.js';
+import pkg from '../package.json';
 import manifest from '../src/manifest.json';
 
 export const emptyDist = async () => {
@@ -12,7 +13,7 @@ export const emptyDist = async () => {
 export const copyPublicFiles = () => copyDir('public', 'dist');
 
 export const writeManifest = () => {
-  return writeFile('dist/manifest.json', JSON.stringify({ ...manifest, version }));
+  return writeFile('dist/manifest.json', JSON.stringify({ ...manifest, version: pkg.version }));
 };
 
 export const buildBackground = createBuilder({
@@ -21,7 +22,7 @@ export const buildBackground = createBuilder({
   format: 'esm',
   bundle: true,
   logLevel: 'info',
-  plugins: [sass],
+  plugins: [sass, crxDictionary()],
   define: {
     'process.env.ESBUILD_BUILD': JSON.stringify('background'),
   },

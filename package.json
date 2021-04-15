@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "cool bookmark sidebar for Chromium based browsers.",
   "private": true,
+  "type": "module",
   "scripts": {
-    "start": "esno scripts/serve.js",
-    "build": "esno scripts/build.js"
+    "start": "node --experimental-json-modules --experimental-import-meta-resolve scripts/serve.js",
+    "build": "node --experimental-json-modules --experimental-import-meta-resolve scripts/build.js"
   },
   "author": "Lenny Anders",
   "license": "ISC",
@@ -15,7 +16,6 @@
     "@types/sass": "^1.16.0",
     "@types/sortablejs": "^1.10.6",
     "esbuild": "^0.11.5",
-    "esno": "^0.5.0",
     "node-watch": "^0.7.1",
     "sass": "^1.32.8"
   },

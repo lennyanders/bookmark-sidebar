@@ -7,7 +7,7 @@ import {
   buildBackground,
   buildContent,
   buildNewtab,
-} from './shared';
+} from './shared.js';
 
 (async () => {
   await emptyDist();
