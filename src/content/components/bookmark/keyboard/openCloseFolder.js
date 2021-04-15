@@ -1,4 +1,4 @@
-import { $ } from '@utils/dom';
+import { $, closest } from '@utils/dom';
 import { sidebar } from '@sidebar-root';
 import { openFolder, closeFolder } from '../folder';
 
