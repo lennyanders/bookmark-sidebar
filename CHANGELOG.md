@@ -1,6 +1,7 @@
 ## Next
 
-- Fix layout bugs in some pages
+- fix layout bugs in some pages
+- new icon
 - complete rewrite
   - Vue -> vanilla JavaScript
   - improve performance noticably (way less JavaScript)
