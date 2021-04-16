@@ -6,7 +6,8 @@
       "@utils": ["./utils"],
       "@utils/*": ["./utils/*"],
       "@background/*": ["./background/*"],
-      "@content/*": ["./content/*"]
+      "@content/*": ["./content/*"],
+      "@dictionary": ["./dictionary"]
     }
   }
 }

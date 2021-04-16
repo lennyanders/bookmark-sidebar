@@ -6,7 +6,8 @@
       "@utils/*": ["../utils/*"],
       "@chrome": ["../chrome"],
       "@chrome/*": ["../chrome/*"],
-      "@shared/*": ["../shared/*"]
+      "@shared/*": ["../shared/*"],
+      "@dictionary": ["../dictionary"]
     }
   }
 }

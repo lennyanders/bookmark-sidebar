@@ -16,13 +16,15 @@ export const writeManifest = () => {
   return writeFile('dist/manifest.json', JSON.stringify({ ...manifest, version: pkg.version }));
 };
 
+const dictPlugin = crxDictionary();
+
 export const buildBackground = createBuilder({
   entryPoints: ['background/main.js'],
   outfile: 'dist/background.js',
   format: 'esm',
   bundle: true,
   logLevel: 'info',
-  plugins: [sass, crxDictionary()],
+  plugins: [sass, dictPlugin],
   define: {
     'process.env.ESBUILD_BUILD': JSON.stringify('background'),
   },
@@ -45,4 +47,5 @@ export const buildNewtab = createBuilder({
   format: 'esm',
   bundle: true,
   logLevel: 'info',
+  plugins: [dictPlugin],
 });

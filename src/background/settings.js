@@ -1,6 +1,7 @@
 import { onChanged } from '@chrome/storage';
 import { get } from '@chrome/storage/sync';
 import { getMessage } from '@chrome/i18n';
+import { dictionaryKeys } from '@dictionary';
 import { $ } from '@utils/dom';
 import { getFolderUl } from '@shared/bookmark';
 import { Positions, Themes, Defaults } from '@shared/consts/settings';
@@ -8,14 +9,14 @@ import { postMessageToAll } from './middleware';
 import { getBookmarksHtml } from './data/html/getBookmarksHtml';
 
 export const positions = {
-  [Positions.left]: getMessage('left'),
-  [Positions.right]: getMessage('right'),
+  [Positions.left]: getMessage(dictionaryKeys.left),
+  [Positions.right]: getMessage(dictionaryKeys.right),
 };
 
 export const themes = {
-  [Themes.system]: getMessage('systemOriented'),
-  [Themes.light]: getMessage('light'),
-  [Themes.dark]: getMessage('dark'),
+  [Themes.system]: getMessage(dictionaryKeys.systemOriented),
+  [Themes.light]: getMessage(dictionaryKeys.light),
+  [Themes.dark]: getMessage(dictionaryKeys.dark),
 };
 
 /**

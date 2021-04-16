@@ -1,5 +1,6 @@
 import { getMessage } from '@chrome/i18n';
 import { getSubTree } from '@chrome/bookmarks';
+import { dictionaryKeys } from '@dictionary';
 import { flattenArrayOfObjects, getBaseUrl } from '@utils';
 import { loadFavicons, faviconDataUrls } from '../../favicon';
 import { getBookmarkHtml } from './getBookmarkHtml';
@@ -12,7 +13,9 @@ export const getBookmarksHtml = async (bookmarkIdOrBookmark) => {
       ? await getSubTree(bookmarkIdOrBookmark)
       : bookmarkIdOrBookmark;
 
-  if (!bookmark?.children?.length) return html`<span>${getMessage('noBookmarkFound')}</span>`;
+  if (!bookmark?.children?.length) {
+    return html`<span>${getMessage(dictionaryKeys.noBookmarkFound)}</span>`;
+  }
 
   await loadFavicons(
     flattenArrayOfObjects(bookmark.children, 'children')
