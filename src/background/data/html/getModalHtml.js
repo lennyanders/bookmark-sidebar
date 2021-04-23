@@ -10,7 +10,7 @@ let inputId = 0;
  * @param {chrome.bookmarks.BookmarkTreeNode[]} param.allFolders
  * @param {typeof import('@shared/consts/settings').Defaults} param.settings
  */
-export const getModalHtml = ({ allFolders, settings }) => html`<div class="modal " tabindex="-1">
+export const getModalHtml = ({ allFolders, settings }) => html`<div class="modal" tabindex="-1">
   <button
     class="modal__close js-close-modal"
     title="${getMessage(dictionaryKeys.closeModal)}"
