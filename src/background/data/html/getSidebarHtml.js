@@ -4,6 +4,7 @@ import { Positions, Themes } from '@shared/consts/settings';
 import { html } from './html';
 import { footerHtml } from './footerHtml';
 import { getModalHtml } from './getModalHtml';
+import { deletedBookmarkToastHtml } from './deletedBookmarkToastHtml';
 import styles from '../../styles/main.scss';
 
 /**
@@ -50,6 +51,6 @@ export const getSidebarHtml = ({ bookmarksHtml, allFolders, settings }) => html`
     tabindex="-1"
   >
     <main>${bookmarksHtml}</main>
-    ${footerHtml}${getModalHtml({ allFolders, settings })}
+    ${footerHtml}${getModalHtml({ allFolders, settings })}${deletedBookmarkToastHtml}
     <div class="resizer"></div>
   </div>`;

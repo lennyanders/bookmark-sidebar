@@ -1,9 +1,11 @@
 import { postMessage } from '@chrome/runtime/port';
 import { getFormdataAsJson } from '@utils';
 import { $, closest } from '@utils/dom';
+import { getBookmark } from '@shared/bookmark';
 import { sidebar } from '@sidebar-root';
 import { port } from '@port';
 import { showModal, hideModal } from './showHide';
+import { showDeltedBookmarkToast } from '@components/toast';
 
 export const enableEditBookmark = () => {
   const modalEditBookmark = $('.js-modal-edit-bookmark');
@@ -41,12 +43,19 @@ export const enableEditBookmark = () => {
 
   sidebar.addEventListener(
     'click',
-    (event) => {
+    async (event) => {
       const deleteButton = event.target.closest('.js-modal-delete-bookmark');
       if (!deleteButton) return;
 
-      postMessage(port, 'removeBookmark', { id: deleteButton.form.elements.id.value });
+      const id = deleteButton.form.elements.id.value;
+      const bookmark = getBookmark(id);
+      bookmark.hidden = true;
       hideModal();
+
+      const shouldDelete = await showDeltedBookmarkToast();
+      if (!shouldDelete) return (bookmark.hidden = false);
+
+      postMessage(port, 'removeBookmark', { id: deleteButton.form.elements.id.value });
     },
     { passive: true },
   );

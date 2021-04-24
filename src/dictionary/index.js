@@ -149,6 +149,15 @@ export const dictionary = {
     en: 'Folders',
     de: 'Ordner',
   },
+
+  deltedBookmark: {
+    en: 'Deleted bookmark',
+    de: 'Lesezeichen gelöscht',
+  },
+  undo: {
+    en: 'Undo',
+    de: 'Rückgängig',
+  },
 };
 
 // dummy var to get replaced by esbuild

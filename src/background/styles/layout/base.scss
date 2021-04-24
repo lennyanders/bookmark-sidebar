@@ -58,6 +58,8 @@
     @include darkTheme();
   }
 
+  --primary-color-gradient: linear-gradient(45deg, hsl(231, 99%, 59%), hsl(218, 100%, 58%));
+
   --font-hs: var(--font-h), var(--font-s);
   --font-hsl: var(--font-hs), var(--font-l);
   --font-color: hsl(var(--font-hsl));

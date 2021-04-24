@@ -1,0 +1,47 @@
+@keyframes revealCircle {
+  from {
+    stroke-dashoffset: 1000;
+  }
+}
+
+.toast {
+  position: absolute;
+  left: 0.5em;
+  right: 0.5em;
+  bottom: 3.5em;
+  padding: 0.25em;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  border-radius: 0.25em;
+  color: hsl(0, 0%, 98%);
+  background: var(--primary-color-gradient);
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0.25s, opacity 0.25s ease;
+
+  &--visible {
+    transition: visibility 0s, opacity 0.25s ease;
+    visibility: visible;
+    opacity: 1;
+  }
+
+  &__icon {
+    display: block;
+    margin: 0.25em;
+    width: 1.5em;
+    height: 1.5em;
+  }
+
+  &--visible &__circle circle {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 937;
+    transform-origin: center;
+    transform: rotate(-90deg);
+    animation: revealCircle 2.5s linear;
+  }
+
+  &__message {
+    flex: 1;
+  }
+}
