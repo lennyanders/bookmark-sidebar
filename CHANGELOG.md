@@ -1,5 +1,6 @@
 ## Next
 
+- add toast message to undo bookmark deletion
 - fix layout bugs in some pages
 - new icon
 - complete rewrite
