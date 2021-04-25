@@ -1,8 +1,7 @@
-import { $, $$ } from '@utils/dom';
-import { sidebar } from '@sidebar-root';
+import { $, $$, on } from '@utils/dom';
 
 export const enablePrevNextFocus = () => {
-  sidebar.addEventListener('keydown', (event) => {
+  on('keydown', (event) => {
     const delta = { ArrowDown: 1, ArrowUp: -1 }[event.key];
     if (!delta) return;
 

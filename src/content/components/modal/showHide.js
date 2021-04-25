@@ -1,4 +1,4 @@
-import { $, $$ } from '@utils/dom';
+import { $, $$, on } from '@utils/dom';
 
 let modal;
 let modalContentChildren;
@@ -7,11 +7,8 @@ const setup = () => {
   modal = $('.modal');
   modalContentChildren = $$('.modal__content');
 
-  $('.js-close-modal').addEventListener('click', hideModal, { passive: true });
-
-  modal.addEventListener('keyup', (event) => event.key === 'Escape' && hideModal(), {
-    passive: true,
-  });
+  on($('.js-close-modal'), 'click', hideModal);
+  on(modal, 'keyup', (event) => event.key === 'Escape' && hideModal());
 };
 
 export const showModal = (modalContentChild) => {

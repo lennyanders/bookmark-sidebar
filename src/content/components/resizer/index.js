@@ -1,4 +1,4 @@
-import { $ } from '@utils/dom';
+import { $, on, once } from '@utils/dom';
 import { sidebar } from '@sidebar-root';
 import { setSidebarWidth } from '@components/settings/width';
 
@@ -10,21 +10,14 @@ export const enableResizer = () => {
     setSidebarWidth(sidebar.classList.contains('sidebar--left') ? x : window.innerWidth - x);
   };
 
-  resizer.addEventListener(
-    'mousedown',
-    () => {
-      resizer.style.setProperty('--resizer-scale', '8');
-      window.addEventListener('mousemove', resize, { passive: true });
+  on(resizer, 'mousedown', () => {
+    resizer.style.setProperty('--resizer-scale', '8');
+    const off = on(window, 'mousemove', resize);
 
-      window.addEventListener(
-        'mouseup',
-        () => {
-          window.removeEventListener('mousemove', resize);
-          resizer.style.removeProperty('--resizer-scale');
-        },
-        { once: true, passive: true },
-      );
-    },
-    { passive: true },
-  );
+    once(window, 'mouseup', () => {
+      console.log(1);
+      off();
+      resizer.style.removeProperty('--resizer-scale');
+    });
+  });
 };

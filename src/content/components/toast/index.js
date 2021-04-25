@@ -1,4 +1,4 @@
-import { $ } from '@utils/dom';
+import { $, on } from '@utils/dom';
 
 /** @type {HTMLElement} */
 let toast;
@@ -21,16 +21,14 @@ export const showDeltedBookmarkToast = () => {
 
   return new Promise((resolve) => {
     const hideToast = (resolveValue) => {
-      toastClose.removeEventListener('click', yeah);
-      toastUndo.removeEventListener('click', nah);
+      unlistenClose();
+      unlistenUndo();
       toast.classList.remove('toast--visible');
       resolve(resolveValue);
     };
-    const yeah = () => hideToast(true);
-    const nah = () => hideToast(false);
-
-    toastClose.addEventListener('click', yeah, { passive: true });
-    toastUndo.addEventListener('click', nah, { passive: true });
-    setTimeout(yeah, 2500);
+    const accept = () => hideToast(true);
+    const unlistenClose = on(toastClose, 'click', accept);
+    const unlistenUndo = on(toastUndo, 'click', () => hideToast(false));
+    setTimeout(accept, 2500);
   });
 };

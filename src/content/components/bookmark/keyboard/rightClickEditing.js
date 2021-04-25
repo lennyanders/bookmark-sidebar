@@ -1,8 +1,7 @@
-import { $ } from '@utils/dom';
-import { sidebar } from '@sidebar-root';
+import { $, on } from '@utils/dom';
 
 export const enableRightClickEditing = () => {
-  sidebar.addEventListener('contextmenu', (event) => {
+  on('contextmenu', (event) => {
     if (event.altKey || event.ctrlKey || event.metaKey) return;
 
     const bookmark = event.target.closest('.bookmark');

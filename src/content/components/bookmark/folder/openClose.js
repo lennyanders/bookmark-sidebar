@@ -1,5 +1,4 @@
-import { $, closest } from '@utils/dom';
-import { sidebar } from '@sidebar-root';
+import { $, closest, on, once } from '@utils/dom';
 
 /**
  * @param {HTMLUListElement} children
@@ -11,14 +10,10 @@ export const openFolder = (children, min) => {
   children.style.overflow = 'hidden';
 
   children.style.height = `${children.scrollHeight || min || 0}px`;
-  children.addEventListener(
-    'transitionend',
-    () => {
-      if (!min) children.style.height = '';
-      children.style.overflow = '';
-    },
-    { once: true, passive: true },
-  );
+  once(children, 'transitionend', () => {
+    if (!min) children.style.height = '';
+    children.style.overflow = '';
+  });
 };
 
 /** @param {HTMLUListElement} children */
@@ -29,33 +24,25 @@ export const closeFolder = (children) => {
   children.scrollHeight; // tirgger style computation to start transition
   children.style.height = '0';
 
-  children.addEventListener(
-    'transitionend',
-    () => {
-      children.style.height = '';
-      children.style.overflow = '';
-      children.hidden = true;
-    },
-    { once: true, passive: true },
-  );
+  once(children, 'transitionend', () => {
+    children.style.height = '';
+    children.style.overflow = '';
+    children.hidden = true;
+  });
 };
 
 export const enableClickOpenCloseFolder = () => {
-  sidebar.addEventListener(
-    'click',
-    (event) => {
-      const childrenUl = $(
-        '.bookmark__children',
-        closest(event.target.closest('.js-toggle-folder-children'), '.bookmark') || null,
-      );
+  on('click', (event) => {
+    const childrenUl = $(
+      '.bookmark__children',
+      closest(event.target.closest('.js-toggle-folder-children'), '.bookmark') || null,
+    );
 
-      if (!childrenUl) return;
+    if (!childrenUl) return;
 
-      if (childrenUl.hidden) openFolder(childrenUl);
-      else closeFolder(childrenUl);
-    },
-    { passive: true },
-  );
+    if (childrenUl.hidden) openFolder(childrenUl);
+    else closeFolder(childrenUl);
+  });
 };
 
 export const enableDragoverOpenFolder = () => {
@@ -64,19 +51,15 @@ export const enableDragoverOpenFolder = () => {
   /** @type {HTMLElement} */
   let dragOverFolder;
 
-  sidebar.addEventListener(
-    'dragover',
-    (event) => {
-      const folder = event.target.closest('.bookmark');
-      const childrenUl = $(':scope > .bookmark__children[hidden]', folder);
-      dragOverFolder = childrenUl;
-      if (!childrenUl || dragoverTimout) return;
+  on('dragover', (event) => {
+    const folder = event.target.closest('.bookmark');
+    const childrenUl = $(':scope > .bookmark__children[hidden]', folder);
+    dragOverFolder = childrenUl;
+    if (!childrenUl || dragoverTimout) return;
 
-      dragoverTimout = setTimeout(() => {
-        if (childrenUl === dragOverFolder) openFolder(childrenUl, 32);
-        dragoverTimout = null;
-      }, 750);
-    },
-    { passive: true },
-  );
+    dragoverTimout = setTimeout(() => {
+      if (childrenUl === dragOverFolder) openFolder(childrenUl, 32);
+      dragoverTimout = null;
+    }, 750);
+  });
 };

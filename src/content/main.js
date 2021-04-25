@@ -1,6 +1,6 @@
 import { onMessage } from '@chrome/runtime/port';
 import { Positions, Themes } from '@shared/consts/settings';
-import { $, $$ } from '@utils/dom';
+import { $, $$, on } from '@utils/dom';
 import { removeBookmark, createBookmark, moveBookmark, changeBookmark } from '@shared/bookmark';
 import { newFolder, folderRemoved } from '@shared/settings';
 import { root, shadowRoot, sidebar, setSidebar } from '@sidebar-root';
@@ -83,18 +83,13 @@ onMessage(port, 'sidebar', ({ bookmarkSidebarHtml }) => {
     }
   });
 
-  window.addEventListener(
-    'click',
-    (event) => !root.contains(event.target) && toggleSidebarVisibility(false),
-    { passive: true },
-  );
-  window.addEventListener(
+  on(window, 'click', (event) => !root.contains(event.target) && toggleSidebarVisibility(false));
+  on(
+    window,
     'blur',
     () => document.activeElement?.tagName === 'IFRAME' && toggleSidebarVisibility(false),
-    { passive: true },
   );
-
-  sidebar.addEventListener('keydown', (event) => event.stopPropagation(), { passive: true });
+  on('keydown', (event) => event.stopPropagation());
 
   enableBookmarkFeatures();
   enableResizer();
