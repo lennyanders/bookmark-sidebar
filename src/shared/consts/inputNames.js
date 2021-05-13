@@ -1,6 +1,5 @@
 const title = 'title';
 const url = 'url';
-const id = 'id';
 
 export const settingsNames = {
   sidebarShwonBookmark: 'sidebarShwonBookmark',
@@ -12,4 +11,4 @@ export const settingsNames = {
 
 export const addBookmarkNames = { parentId: 'parentId', title, url };
 
-export const editBookmarkNames = { id, title, url };
+export const editBookmarkNames = { id: 'id', title, url };
