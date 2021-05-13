@@ -2,6 +2,7 @@ import { postMessage } from '@chrome/runtime/port';
 import { getFormdataAsJson } from '@utils';
 import { $, closest, on } from '@utils/dom';
 import { getBookmark } from '@shared/bookmark';
+import { editBookmarkNames } from '@shared/consts/inputNames';
 import { port } from '@port';
 import { showModal, hideModal } from './showHide';
 import { showDeltedBookmarkToast } from '@components/toast';
@@ -18,10 +19,12 @@ export const enableEditBookmark = () => {
       : modalEditBookmark;
     const bookmark = closest(editButton, '.bookmark');
 
-    form.elements.id.value = bookmark.id.slice(1);
-    form.elements.title.value = $('.bookmark__title', bookmark).textContent;
+    form.elements[editBookmarkNames.id].value = bookmark.id.slice(1);
+    form.elements[editBookmarkNames.title].value = $('.bookmark__title', bookmark).textContent;
 
-    if (form.elements.url) form.elements.url.value = $('.bookmark__link', bookmark).href;
+    if (form.elements.url) {
+      form.elements[editBookmarkNames.url].value = $('.bookmark__link', bookmark).href;
+    }
 
     showModal(form);
   });
@@ -40,7 +43,7 @@ export const enableEditBookmark = () => {
     const deleteButton = event.target.closest('.js-modal-delete-bookmark');
     if (!deleteButton) return;
 
-    const id = deleteButton.form.elements.id.value;
+    const id = deleteButton.form.elements[editBookmarkNames.id].value;
     const bookmark = getBookmark(id);
     bookmark.hidden = true;
     hideModal();
@@ -48,6 +51,8 @@ export const enableEditBookmark = () => {
     const shouldDelete = await showDeltedBookmarkToast();
     if (!shouldDelete) return (bookmark.hidden = false);
 
-    postMessage(port, 'removeBookmark', { id: deleteButton.form.elements.id.value });
+    postMessage(port, 'removeBookmark', {
+      id: deleteButton.form.elements[editBookmarkNames.id].value,
+    });
   });
 };

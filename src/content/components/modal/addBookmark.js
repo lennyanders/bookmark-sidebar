@@ -1,6 +1,7 @@
 import { postMessage } from '@chrome/runtime/port';
 import { getFormdataAsJson } from '@utils';
 import { $, closest, on } from '@utils/dom';
+import { addBookmarkNames } from '@shared/consts/inputNames';
 import { port } from '@port';
 import { showModal, hideModal } from './showHide';
 
@@ -11,9 +12,12 @@ export const enableAddBookmark = () => {
     if (!addButton) return;
 
     const formElements = modalAddBookmark.elements;
-    formElements.parentId.value = closest(addButton, '.sidebar, .bookmark').id.slice(1);
-    formElements.title.value = document.title;
-    formElements.url.value = location.href;
+    formElements[addBookmarkNames.parentId].value = closest(
+      addButton,
+      '.sidebar, .bookmark',
+    ).id.slice(1);
+    formElements[addBookmarkNames.title].value = document.title;
+    formElements[addBookmarkNames.url].value = location.href;
 
     showModal(modalAddBookmark);
   });

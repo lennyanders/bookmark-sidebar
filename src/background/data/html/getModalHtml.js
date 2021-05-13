@@ -1,5 +1,6 @@
 import { getMessage } from '@chrome/i18n';
 import { dictionaryKeys } from '@dictionary';
+import { settingsNames, addBookmarkNames, editBookmarkNames } from '@shared/consts/inputNames';
 import { html } from './html';
 import { positions, themes } from '../../settings';
 
@@ -22,7 +23,7 @@ export const getModalHtml = ({ allFolders, settings }) => html`<div class="modal
       <label class="select__label" for="i${inputId}">
         ${getMessage(dictionaryKeys.displayedFolder)}
       </label>
-      <select class="select__el" id="i${inputId}" name="sidebarShwonBookmark">
+      <select class="select__el" id="i${inputId}" name="${settingsNames.sidebarShwonBookmark}">
         ${allFolders.map(
           (folder) =>
             html`<option
@@ -44,7 +45,7 @@ export const getModalHtml = ({ allFolders, settings }) => html`<div class="modal
             class="radio-checkbox__el"
             id="i${++inputId}"
             type="radio"
-            name="sidebarPosition"
+            name="${settingsNames.sidebarPosition}"
             value="${key}"
             ${key === settings.sidebarPosition && ' checked'}
           />
@@ -55,7 +56,7 @@ export const getModalHtml = ({ allFolders, settings }) => html`<div class="modal
       <label class="select__label" for="i${++inputId}">
         ${getMessage(dictionaryKeys.colorTheme)}
       </label>
-      <select class="select__el" name="theme">
+      <select class="select__el" name="${settingsNames.theme}">
         ${Object.entries(themes).map(
           ([key, value]) =>
             html`<option value="${key}" ${key === settings.theme && ' selected'}>${value}</option>`,
@@ -73,26 +74,40 @@ export const getModalHtml = ({ allFolders, settings }) => html`<div class="modal
         class="input__el"
         id="i${inputId}"
         type="number"
-        name="sidebarWidth"
+        name="${settingsNames.sidebarWidth}"
         value="${settings.sidebarWidth}"
         required
       />
     </div>
     <div class="modal__actions">
-      <button class="button" type="button" name="reset">${getMessage(dictionaryKeys.reset)}</button>
+      <button class="button" type="button" name="${settingsNames.reset}">
+        ${getMessage(dictionaryKeys.reset)}
+      </button>
     </div>
   </form>
 
   <form class="modal__content js-modal-add-bookmark" hidden>
     <h2 class="modal__headline">${getMessage(dictionaryKeys.addBookmark)}</h2>
-    <input type="hidden" name="parentId" />
+    <input type="hidden" name="${addBookmarkNames.parentId}" />
     <div class="input">
       <label class="input__label" for="i${++inputId}">${getMessage(dictionaryKeys.title)}</label>
-      <input class="input__el" id="i${inputId}" type="text" name="title" required />
+      <input
+        class="input__el"
+        id="i${inputId}"
+        type="text"
+        name="${addBookmarkNames.title}"
+        required
+      />
     </div>
     <div class="input">
       <label class="input__label" for="i${++inputId}">${getMessage(dictionaryKeys.url)}</label>
-      <input class="input__el" id="i${inputId}" type="url" name="url" required />
+      <input
+        class="input__el"
+        id="i${inputId}"
+        type="url"
+        name="${addBookmarkNames.url}"
+        required
+      />
     </div>
     <div class="modal__actions">
       <button class="button js-modal-add-folder" type="button">
@@ -104,14 +119,26 @@ export const getModalHtml = ({ allFolders, settings }) => html`<div class="modal
 
   <form class="modal__content js-modal-edit-bookmark" hidden>
     <h2 class="modal__headline">${getMessage(dictionaryKeys.editBookmark)}</h2>
-    <input type="hidden" name="id" />
+    <input type="hidden" name="${editBookmarkNames.id}" />
     <div class="input">
       <label class="input__label" for="i${++inputId}">${getMessage(dictionaryKeys.title)}</label>
-      <input class="input__el" id="i${inputId}" type="text" name="title" required />
+      <input
+        class="input__el"
+        id="i${inputId}"
+        type="text"
+        name="${editBookmarkNames.title}"
+        required
+      />
     </div>
     <div class="input">
       <label class="input__label" for="i${++inputId}">${getMessage(dictionaryKeys.url)}</label>
-      <input class="input__el" id="i${inputId}" type="url" name="url" required />
+      <input
+        class="input__el"
+        id="i${inputId}"
+        type="url"
+        name="${editBookmarkNames.url}"
+        required
+      />
     </div>
     <div class="modal__actions">
       <button class="button js-modal-delete-bookmark" type="button">
@@ -123,10 +150,16 @@ export const getModalHtml = ({ allFolders, settings }) => html`<div class="modal
 
   <form class="modal__content js-modal-edit-folder" hidden>
     <h2 class="modal__headline">${getMessage(dictionaryKeys.editFolder)}</h2>
-    <input type="hidden" name="id" />
+    <input type="hidden" name="${editBookmarkNames.id}" />
     <div class="input">
       <label class="input__label" for="i${++inputId}">${getMessage(dictionaryKeys.title)}</label>
-      <input class="input__el" id="i${inputId}" type="text" name="title" required />
+      <input
+        class="input__el"
+        id="i${inputId}"
+        type="text"
+        name="${editBookmarkNames.title}"
+        required
+      />
     </div>
     <div class="modal__actions">
       <button class="button js-modal-delete-bookmark" type="button">
