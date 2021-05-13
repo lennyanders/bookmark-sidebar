@@ -11,7 +11,6 @@
   "author": "Lenny Anders",
   "license": "ISC",
   "devDependencies": {
-    "@types/chrome": "^0.0.139",
     "@types/node": "^15.0.3",
     "@types/sass": "^1.16.0",
     "@types/sortablejs": "^1.10.6",
@@ -20,6 +19,7 @@
     "sass": "^1.32.8"
   },
   "dependencies": {
-    "sortablejs": "^1.13.0"
+    "sortablejs": "^1.13.0",
+    "webextension-polyfill-ts": "^0.25.0"
   }
 }

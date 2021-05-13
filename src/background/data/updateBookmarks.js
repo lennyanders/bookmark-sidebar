@@ -1,6 +1,5 @@
-import { getSubTree, onRemoved, onCreated, onMoved, onChanged } from '@chrome/bookmarks';
+import { browser, Bookmarks } from 'webextension-polyfill-ts';
 import { flattenArrayOfObjects, getBaseUrl } from '@utils';
-import { $ } from '@utils/dom';
 import {
   getBookmark,
   getFolderUl,
@@ -23,7 +22,7 @@ const bgRemoveBookmark = (id) => {
   }
 };
 
-/** @param {chrome.bookmarks.BookmarkTreeNode} bookmark */
+/** @param {Bookmarks.BookmarkTreeNode} bookmark */
 const bgCreateBookmark = async (bookmark) => {
   const parentFolderUl = getFolderUl(bookmark.parentId);
   if (!parentFolderUl) return;
@@ -48,7 +47,7 @@ const bgCreateBookmark = async (bookmark) => {
   });
 };
 
-onRemoved((bookmarkId, removeInfo) => {
+browser.bookmarks.onRemoved.addListener((bookmarkId, removeInfo) => {
   if (!removeInfo.node.url) {
     folderRemoved({ folderId: bookmarkId });
     postMessageToAll('folderRemoved', { folderId: bookmarkId });
@@ -56,27 +55,27 @@ onRemoved((bookmarkId, removeInfo) => {
   bgRemoveBookmark(bookmarkId);
 });
 
-onCreated(async (bookmark) => {
+browser.bookmarks.onCreated.addListener(async (id, bookmark) => {
   if (!bookmark.url) {
-    const newFolderHtml = html`<option value="${bookmark.id}">${bookmark.title}</option>`;
+    const newFolderHtml = html`<option value="${id}">${bookmark.title}</option>`;
     newFolder({ newFolderHtml });
     postMessageToAll('newFolder', { newFolderHtml });
   }
   await bgCreateBookmark(bookmark);
 });
 
-onMoved(async (id, { parentId, oldParentId, index, oldIndex }) => {
+browser.bookmarks.onMoved.addListener(async (id, { parentId, oldParentId, index, oldIndex }) => {
   const parentFolderUl = getFolderUl(parentId);
   if (!parentFolderUl) return bgRemoveBookmark(id);
 
   const oldParentFolder = getFolderUl(oldParentId);
-  if (!oldParentFolder) return bgCreateBookmark(await getSubTree(id));
+  if (!oldParentFolder) return bgCreateBookmark(await browser.bookmarks.getSubTree(id));
 
   moveBookmark({ id, parentId, oldParentId, index, oldIndex });
   postMessageToAll('moveBookmark', { id, parentId, oldParentId, index, oldIndex });
 });
 
-onChanged((id, { title, url }) => {
+browser.bookmarks.onChanged.addListener((id, { title, url }) => {
   const bookmark = getBookmark(id);
   if (!bookmark) return;
 

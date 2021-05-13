@@ -1,4 +1,4 @@
-import { getMessage } from '@chrome/i18n';
+import { browser, Bookmarks } from 'webextension-polyfill-ts';
 import { dictionaryKeys } from '@dictionary';
 import { Positions, Themes } from '@shared/consts/settings';
 import { html } from './html';
@@ -10,7 +10,7 @@ import styles from '../../styles/main.scss';
 /**
  * @param {Object} param
  * @param {string} param.bookmarksHtml
- * @param {chrome.bookmarks.BookmarkTreeNode[]} param.allFolders
+ * @param {Bookmarks.BookmarkTreeNode[]} param.allFolders
  * @param {typeof import('@shared/consts/settings').Defaults} param.settings
  */
 export const getSidebarHtml = ({ bookmarksHtml, allFolders, settings }) => html`<style>
@@ -18,11 +18,11 @@ export const getSidebarHtml = ({ bookmarksHtml, allFolders, settings }) => html`
   </style>
   <svg hidden>
     <symbol id="add-icon" viewBox="0 0 24 24">
-      <title>${getMessage(dictionaryKeys.addBookmarkTooltip)}</title>
+      <title>${browser.i18n.getMessage(dictionaryKeys.addBookmarkTooltip)}</title>
       <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"></path>
     </symbol>
     <symbol id="edit-icon" viewBox="0 0 24 24">
-      <title>${getMessage(dictionaryKeys.editBookmark)}</title>
+      <title>${browser.i18n.getMessage(dictionaryKeys.editBookmark)}</title>
       <path
         d="M14.06 9l.94.94L5.92 19H5v-.92L14.06 9m3.6-6c-.25 0-.51.1-.7.29l-1.83 1.83 3.75 3.75 1.83-1.83c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29m-3.6 3.19L3 17.25V21h3.75L17.81 9.94l-3.75-3.75z"
       ></path>

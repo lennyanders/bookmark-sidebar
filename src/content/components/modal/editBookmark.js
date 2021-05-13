@@ -1,4 +1,3 @@
-import { postMessage } from '@chrome/runtime/port';
 import { getFormdataAsJson } from '@utils';
 import { $, closest, on } from '@utils/dom';
 import { getBookmark } from '@shared/bookmark';
@@ -32,7 +31,7 @@ export const enableEditBookmark = () => {
   /** @param {Event} event */
   const editBookmark = (event) => {
     event.preventDefault();
-    postMessage(port, 'updateBookmark', getFormdataAsJson(event.currentTarget));
+    port.postMessage({ type: 'updateBookmark', ...getFormdataAsJson(event.currentTarget) });
     hideModal();
   };
 
@@ -51,7 +50,8 @@ export const enableEditBookmark = () => {
     const shouldDelete = await showDeltedBookmarkToast();
     if (!shouldDelete) return (bookmark.hidden = false);
 
-    postMessage(port, 'removeBookmark', {
+    port.postMessage({
+      type: 'removeBookmark',
       id: deleteButton.form.elements[editBookmarkNames.id].value,
     });
   });

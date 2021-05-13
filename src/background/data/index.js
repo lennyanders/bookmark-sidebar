@@ -1,5 +1,4 @@
-import { sendMessage } from '@chrome/runtime';
-import { getTree } from '@chrome/bookmarks';
+import { browser } from 'webextension-polyfill-ts';
 import { flattenArrayOfObjects } from '@utils';
 import { getSidebarHtml } from './html';
 import { getSettings } from '../settings';
@@ -9,9 +8,9 @@ import { root, shadowRoot } from './root';
 export { root, shadowRoot };
 
 (async () => {
-  const [bookmark, settings] = await Promise.all([getTree(), getSettings()]);
+  const [bookmarks, settings] = await Promise.all([browser.bookmarks.getTree(), getSettings()]);
 
-  const flattenedBookmarks = flattenArrayOfObjects([bookmark], 'children');
+  const flattenedBookmarks = flattenArrayOfObjects(bookmarks, 'children');
   const shownBookmark = flattenedBookmarks.find(
     (bookmark) => bookmark.id === settings.sidebarShwonBookmark,
   );
@@ -24,6 +23,6 @@ export { root, shadowRoot };
 
   if (process.env.NODE_ENV === 'development') {
     console.log(shadowRoot);
-    sendMessage({ command: 'reload-tab' });
+    browser.runtime.sendMessage({ command: 'reload-tab' });
   }
 })();

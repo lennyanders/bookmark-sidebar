@@ -3,7 +3,7 @@ import { html } from './html';
 import { faviconDataUrls } from '../../favicon';
 
 /**
- * @param {chrome.bookmarks.BookmarkTreeNode} bookmark
+ * @param {import('webextension-polyfill-ts').Bookmarks.BookmarkTreeNode} bookmark
  * @returns {string}
  */
 export const getBookmarkHtml = (bookmark) => {

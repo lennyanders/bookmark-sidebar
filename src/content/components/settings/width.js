@@ -1,4 +1,3 @@
-import { postMessage } from '@chrome/runtime/port';
 import { sidebar } from '@sidebar-root';
 import { port } from '@port';
 
@@ -12,6 +11,6 @@ export const setSidebarWidth = (newWidth) => {
 
   clearTimeout(widthTimeout);
   widthTimeout = setTimeout(() => {
-    postMessage(port, 'updateSettings', { sidebarWidth: newWidth });
+    port.postMessage({ type: 'updateSettings', sidebarWidth: newWidth });
   }, 250);
 };

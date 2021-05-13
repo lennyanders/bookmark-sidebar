@@ -1,4 +1,3 @@
-import { postMessage } from '@chrome/runtime/port';
 import { getFormdataAsJson } from '@utils';
 import { $, closest, on } from '@utils/dom';
 import { addBookmarkNames } from '@shared/consts/inputNames';
@@ -24,7 +23,10 @@ export const enableAddBookmark = () => {
 
   /** @param {boolean} [createFolder] */
   const createBookmark = (createFolder) => {
-    postMessage(port, 'createBookmark', getFormdataAsJson(modalAddBookmark, createFolder && 'url'));
+    port.postMessage({
+      type: 'createBookmark',
+      ...getFormdataAsJson(modalAddBookmark, createFolder && 'url'),
+    });
     hideModal();
   };
 

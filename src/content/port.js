@@ -1,3 +1,3 @@
-import { connect } from '@chrome/runtime';
+import { browser } from 'webextension-polyfill-ts';
 
-export const port = connect({ name: 'bookmark-sidebar' });
+export const port = browser.runtime.connect({ name: 'bookmark-sidebar' });

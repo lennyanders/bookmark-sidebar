@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
+    "lib": ["dom"],
     "baseUrl": "./src",
     "paths": {
-      "@chrome/*": ["./chrome/*"],
       "@utils": ["./utils"],
       "@utils/*": ["./utils/*"],
       "@background/*": ["./background/*"],

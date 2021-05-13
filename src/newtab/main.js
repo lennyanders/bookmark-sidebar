@@ -1,9 +1,8 @@
-import { onMessage } from '@chrome/runtime';
-import { getMessage } from '@chrome/i18n';
+import { browser } from 'webextension-polyfill-ts';
 import { dictionaryKeys } from '@dictionary';
 
-document.title = getMessage(dictionaryKeys.newTab);
+document.title = browser.i18n.getMessage(dictionaryKeys.newTab);
 
 if (process.env.NODE_ENV === 'development') {
-  onMessage(({ command }) => command === 'reload-tab' && location.reload());
+  browser.runtime.onMessage.addListener((msg) => msg.command === 'reload-tab' && location.reload());
 }

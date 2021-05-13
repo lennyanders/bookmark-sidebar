@@ -1,4 +1,4 @@
-import { getMessage } from '@chrome/i18n';
+import { browser } from 'webextension-polyfill-ts';
 import { dictionaryKeys } from '@dictionary';
 import { html } from './html';
 
@@ -6,8 +6,8 @@ export const deletedBookmarkToastHtml = html` <div class="toast">
   <svg class="toast__circle toast__icon" viewBox="0 0 24 24">
     <circle cx="12" cy="12" r="10" fill="none" stroke-width="2" stroke="currentcolor"></circle>
   </svg>
-  <span class="toast__message">${getMessage(dictionaryKeys.deltedBookmark)}</span>
-  <button class="toast__undo" type="button">${getMessage(dictionaryKeys.undo)}</button>
+  <span class="toast__message">${browser.i18n.getMessage(dictionaryKeys.deltedBookmark)}</span>
+  <button class="toast__undo" type="button">${browser.i18n.getMessage(dictionaryKeys.undo)}</button>
   <button class="toast__close" type="button">
     <svg class="toast__icon" viewBox="0 0 24 24">
       <path

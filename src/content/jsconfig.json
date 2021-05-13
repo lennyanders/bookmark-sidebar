@@ -4,8 +4,6 @@
     "paths": {
       "@utils": ["../utils"],
       "@utils/*": ["../utils/*"],
-      "@chrome": ["../chrome"],
-      "@chrome/*": ["../chrome/*"],
       "@shared/*": ["../shared/*"],
       "@sidebar-root": ["./sidebarRoot"],
       "@port": ["./port"],

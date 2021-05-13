@@ -1,6 +1,4 @@
-import { onChanged } from '@chrome/storage';
-import { get } from '@chrome/storage/sync';
-import { getMessage } from '@chrome/i18n';
+import { browser } from 'webextension-polyfill-ts';
 import { dictionaryKeys } from '@dictionary';
 import { $ } from '@utils/dom';
 import { getFolderUl } from '@shared/bookmark';
@@ -9,21 +7,21 @@ import { postMessageToAll } from './middleware';
 import { getBookmarksHtml } from './data/html/getBookmarksHtml';
 
 export const positions = {
-  [Positions.left]: getMessage(dictionaryKeys.left),
-  [Positions.right]: getMessage(dictionaryKeys.right),
+  [Positions.left]: browser.i18n.getMessage(dictionaryKeys.left),
+  [Positions.right]: browser.i18n.getMessage(dictionaryKeys.right),
 };
 
 export const themes = {
-  [Themes.system]: getMessage(dictionaryKeys.systemOriented),
-  [Themes.light]: getMessage(dictionaryKeys.light),
-  [Themes.dark]: getMessage(dictionaryKeys.dark),
+  [Themes.system]: browser.i18n.getMessage(dictionaryKeys.systemOriented),
+  [Themes.light]: browser.i18n.getMessage(dictionaryKeys.light),
+  [Themes.dark]: browser.i18n.getMessage(dictionaryKeys.dark),
 };
 
 /**
  * @returns {typeof Defaults}
  */
 export const getSettings = async () => {
-  return Object.assign({}, Defaults, await get(Object.keys(Defaults)));
+  return Object.assign({}, Defaults, await browser.storage.sync.get(Object.keys(Defaults)));
 };
 
 /** @type {HTMLElement} */
@@ -32,7 +30,7 @@ const getSidebar = () => {
   if (!sidebar) sidebar = $('.sidebar');
   return sidebar;
 };
-onChanged(async (changes) => {
+browser.storage.onChanged.addListener(async (changes) => {
   /** @type {HTMLFormElement} */
   const modalSettings = $('.js-modal-settings');
   const settingsChanged = {};

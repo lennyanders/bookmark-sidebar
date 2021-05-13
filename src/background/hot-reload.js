@@ -1,4 +1,4 @@
-import { sendMessage } from '@chrome/runtime';
+import { browser } from 'webextension-polyfill-ts';
 
 /**
  * @param {DirectoryEntry} dir
@@ -31,7 +31,7 @@ const getTimeStamps = async (entrys) => {
   return timestamps.join('');
 };
 
-chrome.runtime.getPackageDirectoryEntry(async (dir) => {
+browser.runtime.getPackageDirectoryEntry(async (dir) => {
   const entries = await getEntries(dir);
 
   const backgroundEntrys = entries.filter((entry) => entry.name === 'background.js');
@@ -51,7 +51,7 @@ chrome.runtime.getPackageDirectoryEntry(async (dir) => {
 
     const newTabReloadTimestamp = await getTimeStamps(newTabReloadEntrys);
     if (newTabReloadTimestamp !== previousNewTabReloadTimestamp) {
-      sendMessage({ command: 'reload-tab' });
+      browser.runtime.sendMessage({ command: 'reload-tab' });
       previousNewTabReloadTimestamp = newTabReloadTimestamp;
     }
   }, 1000);

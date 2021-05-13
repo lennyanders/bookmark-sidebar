@@ -1,20 +1,19 @@
-import { getMessage } from '@chrome/i18n';
-import { getSubTree } from '@chrome/bookmarks';
+import { browser, Bookmarks } from 'webextension-polyfill-ts';
 import { dictionaryKeys } from '@dictionary';
 import { flattenArrayOfObjects, getBaseUrl } from '@utils';
 import { loadFavicons, faviconDataUrls } from '../../favicon';
 import { getBookmarkHtml } from './getBookmarkHtml';
 import { html } from './html';
 
-/** @param {string | chrome.bookmarks.BookmarkTreeNode} bookmarkIdOrBookmark */
+/** @param {string | Bookmarks.BookmarkTreeNode} bookmarkIdOrBookmark */
 export const getBookmarksHtml = async (bookmarkIdOrBookmark) => {
   const bookmark =
     typeof bookmarkIdOrBookmark === 'string'
-      ? await getSubTree(bookmarkIdOrBookmark)
+      ? (await browser.bookmarks.getSubTree(bookmarkIdOrBookmark))[0]
       : bookmarkIdOrBookmark;
 
   if (!bookmark?.children?.length) {
-    return html`<span>${getMessage(dictionaryKeys.noBookmarkFound)}</span>`;
+    return html`<span>${browser.i18n.getMessage(dictionaryKeys.noBookmarkFound)}</span>`;
   }
 
   await loadFavicons(

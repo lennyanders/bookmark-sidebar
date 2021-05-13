@@ -1,30 +1,28 @@
-import { getUrl } from '@chrome/runtime';
-import { postMessage } from '@chrome/runtime/port';
-import { create, query, insertCss, executeScript } from '@chrome/tabs';
-import { onClicked } from '@chrome/browserAction';
-import { onCommand } from '@chrome/commands';
+import { browser, Tabs } from 'webextension-polyfill-ts';
 import { tabToPort } from './middleware';
 
-/** @param {chrome.tabs.Tab} tab */
+/** @param {Tabs.Tab} tab */
 const insertAndToggleBmBar = async (tab) => {
   if (!tab?.id) return;
 
   if (tabToPort.has(tab.id)) {
-    return postMessage(tabToPort.get(tab.id), 'toggleSidebarVisibility');
+    return tabToPort.get(tab.id).postMessage({ type: 'toggleSidebarVisibility' });
   }
 
-  await insertCss({ file: 'fonts/lato.css' });
-
-  const success = await executeScript({ file: 'content.js' });
-  if (success !== undefined) return;
-
-  await create({ index: tab.index + 1, url: getUrl('newtab.html') });
+  try {
+    await browser.tabs.insertCSS({ file: 'fonts/lato.css' });
+    await browser.tabs.executeScript({ file: 'content.js' });
+  } catch (ex) {
+    await browser.tabs.create({ index: tab.index + 1, url: browser.runtime.getURL('newtab.html') });
+  }
 };
 
-onClicked(insertAndToggleBmBar);
+browser.browserAction.onClicked.addListener(insertAndToggleBmBar);
 
-onCommand('toggle-bm-bar', async () => {
-  insertAndToggleBmBar((await query({ active: true, currentWindow: true }))[0]);
+browser.commands.onCommand.addListener(async (command) => {
+  if (command !== 'toggle-bm-bar') return;
+
+  insertAndToggleBmBar((await browser.tabs.query({ active: true, currentWindow: true }))[0]);
 });
 
 if (process.env.NODE_ENV === 'development') import('./hot-reload');

@@ -1,5 +1,4 @@
 import Sortable from 'sortablejs';
-import { postMessage } from '@chrome/runtime/port';
 import { $$, closest } from '@utils/dom';
 import { port } from '@port';
 
@@ -30,7 +29,7 @@ const enableDragAndDropForFolder = (folder) => {
         parentId = closest(to, '.bookmark, .sidebar').id.slice(1);
       }
 
-      postMessage(port, 'moveBookmark', { id, index, parentId });
+      port.postMessage({ type: 'moveBookmark', id, index, parentId });
     },
   });
 };

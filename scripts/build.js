@@ -12,7 +12,10 @@ import {
 
   /** @type {import('esbuild').BuildOptions} */
   const esbuildOptions = {
-    minify: true,
+    // minify: true,
+    minifyWhitespace: true,
+    // minifyIdentifiers: true, // does not work with webextension-polyfill-ts version 0.25.0
+    minifySyntax: true,
     define: {
       'process.env.NODE_ENV': JSON.stringify('production'),
     },
