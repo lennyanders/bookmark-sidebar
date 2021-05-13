@@ -31,6 +31,7 @@ export const createBookmark = ({ parentId, index, bookmarkHtml }) => {
   updateFolderIcon(closest(parentFolderUl, '.bookmark'));
 
   if (process.env.ESBUILD_BUILD === 'content') {
+    import('@content/components/bookmark/activeIcon').then((module) => module.updateActiveIcon());
     import('@content/components/bookmark/dragAndDrop').then((module) => {
       module.enableDragAndDrop(parentFolderUl);
     });
@@ -42,14 +43,16 @@ export const moveBookmark = ({ id, parentId, oldParentId, index, oldIndex }) => 
   const parentFolderUl = getFolderUl(parentId);
 
   if (parentId === oldParentId) {
-    return parentFolderUl.children[index][index > oldIndex ? 'after' : 'before'](bookmark);
+    parentFolderUl.children[index][index > oldIndex ? 'after' : 'before'](bookmark);
+  } else {
+    if (!index) parentFolderUl.prepend(bookmark);
+    else parentFolderUl.children[index - 1].after(bookmark);
+
+    updateFolderIcon(getBookmark(oldParentId));
+    updateFolderIcon(getBookmark(parentId));
   }
 
-  if (!index) parentFolderUl.prepend(bookmark);
-  else parentFolderUl.children[index - 1].after(bookmark);
-
-  updateFolderIcon(getBookmark(oldParentId));
-  updateFolderIcon(getBookmark(parentId));
+  if (process.env.ESBUILD_BUILD === 'content') $('.bookmark__link', bookmark)?.focus();
 };
 
 export const changeBookmark = ({ id, title, url }) => {
@@ -63,4 +66,8 @@ export const changeBookmark = ({ id, title, url }) => {
 
   const bookmarkTitle = $('.bookmark__title', bookmarkLink);
   bookmarkTitle.textContent = title;
+
+  if (process.env.ESBUILD_BUILD === 'content') {
+    import('@content/components/bookmark/activeIcon').then((module) => module.updateActiveIcon());
+  }
 };

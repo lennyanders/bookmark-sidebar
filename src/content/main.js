@@ -1,6 +1,6 @@
 import { onMessage } from '@chrome/runtime/port';
 import { Positions, Themes } from '@shared/consts/settings';
-import { $, $$, on } from '@utils/dom';
+import { $, on } from '@utils/dom';
 import { removeBookmark, createBookmark, moveBookmark, changeBookmark } from '@shared/bookmark';
 import { newFolder, folderRemoved } from '@shared/settings';
 import { root, shadowRoot, sidebar, setSidebar } from '@sidebar-root';
@@ -10,6 +10,7 @@ import { enableBookmarkFeatures } from '@components/bookmark';
 import { enableDragAndDrop } from '@components/bookmark/dragAndDrop';
 import { enableModal } from '@components/modal';
 import { enableSearchbar } from '@components/search';
+import { updateActiveIcon } from '@components/bookmark/activeIcon';
 
 /** @param {boolean} [force] */
 const toggleSidebarVisibility = (force) => {
@@ -19,16 +20,8 @@ const toggleSidebarVisibility = (force) => {
   );
   if (added) return;
 
+  updateActiveIcon();
   sidebar.focus();
-  const { href } = location;
-
-  $$(`.bookmark__link--active:not([href="${href}"])`).forEach((link) => {
-    link.classList.remove('bookmark__link--active');
-  });
-
-  $$(`.bookmark__link[href="${href}"]`).forEach((link) => {
-    link.classList.add('bookmark__link--active');
-  });
 };
 
 onMessage(port, 'sidebar', ({ bookmarkSidebarHtml }) => {
