@@ -31,29 +31,26 @@ const handlers = {
   newFolder,
   folderRemoved,
   settingsChanged,
+  sidebar: (msg) => {
+    shadowRoot.innerHTML = msg.bookmarkSidebarHtml;
+    setSidebar();
+
+    on(window, 'click', (event) => !root.contains(event.target) && toggleSidebarVisibility(false));
+    on(
+      window,
+      'blur',
+      () => document.activeElement?.tagName === 'IFRAME' && toggleSidebarVisibility(false),
+    );
+    on('keydown', (event) => event.stopPropagation());
+
+    enableBookmarkFeatures();
+    enableResizer();
+    enableModal();
+    enableSearchbar();
+
+    document.body.append(root);
+    toggleSidebarVisibility(true);
+  },
 };
 
-port.onMessage.addListener((msg) => {
-  if (msg.type !== 'sidebar') return;
-
-  shadowRoot.innerHTML = msg.bookmarkSidebarHtml;
-  setSidebar();
-
-  port.onMessage.addListener((msg) => handlers[msg.type]?.(delete msg.type && msg));
-
-  on(window, 'click', (event) => !root.contains(event.target) && toggleSidebarVisibility(false));
-  on(
-    window,
-    'blur',
-    () => document.activeElement?.tagName === 'IFRAME' && toggleSidebarVisibility(false),
-  );
-  on('keydown', (event) => event.stopPropagation());
-
-  enableBookmarkFeatures();
-  enableResizer();
-  enableModal();
-  enableSearchbar();
-
-  document.body.append(root);
-  toggleSidebarVisibility(true);
-});
+port.onMessage.addListener((msg) => handlers[msg.type]?.(delete msg.type && msg));
