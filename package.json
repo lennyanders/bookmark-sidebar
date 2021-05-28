@@ -11,12 +11,12 @@
   "author": "Lenny Anders",
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "^15.0.3",
+    "@types/node": "^15.6.1",
     "@types/sass": "^1.16.0",
     "@types/sortablejs": "^1.10.6",
-    "esbuild": "^0.11.5",
+    "esbuild": "^0.12.5",
     "node-watch": "^0.7.1",
-    "sass": "^1.32.8"
+    "sass": "^1.34.0"
   },
   "dependencies": {
     "sortablejs": "^1.13.0",

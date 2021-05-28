@@ -33,7 +33,7 @@ export const buildBackground = createBuilder({
 export const buildContent = createBuilder({
   entryPoints: ['content/main.js'],
   outfile: 'dist/content.js',
-  format: 'esm',
+  format: 'iife',
   bundle: true,
   logLevel: 'info',
   define: {
