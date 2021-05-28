@@ -24,7 +24,7 @@ const on = {
     browser.bookmarks.move(id, { index, parentId });
   },
   removeBookmark({ id }) {
-    browser.bookmarks.remove(id);
+    browser.bookmarks.removeTree(id);
   },
   updateSettings(settings) {
     browser.storage.sync.set(settings);
