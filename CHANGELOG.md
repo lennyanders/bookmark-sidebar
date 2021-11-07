@@ -1,8 +1,9 @@
-## Next
+## 2.0.0
 
+- new icon
+- make new tab optional
 - add toast message to undo bookmark deletion
 - fix layout bugs in some pages
-- new icon
 - complete rewrite
   - Vue -> vanilla JavaScript
   - improve performance noticably (way less JavaScript)
