@@ -1,6 +1,6 @@
 {
   "name": "bookmark-sidebar",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "cool bookmark sidebar for Chromium based browsers.",
   "private": true,
   "type": "module",
