@@ -6,6 +6,7 @@ export const settingsNames = {
   sidebarPosition: 'sidebarPosition',
   theme: 'theme',
   sidebarWidth: 'sidebarWidth',
+  useExtensionsNewTabPage: 'useExtensionsNewTabPage',
   reset: 'reset',
 };
 

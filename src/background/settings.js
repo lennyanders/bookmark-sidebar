@@ -5,6 +5,7 @@ import { getFolderUl } from '@shared/bookmark';
 import { Positions, Themes, Defaults } from '@shared/consts/settings';
 import { postMessageToAll } from './middleware';
 import { getBookmarksHtml } from './data/html/getBookmarksHtml';
+import { setNewTab } from './newTab';
 
 export const positions = {
   [Positions.left]: browser.i18n.getMessage(dictionaryKeys.left),
@@ -89,6 +90,17 @@ browser.storage.onChanged.addListener(async (changes) => {
       else option.setAttribute('selected', '');
     });
     settingsChanged.sidebarShwonBookmark = newValue;
+  }
+
+  if (changes.useExtensionsNewTabPage) {
+    const newValue = changes.useExtensionsNewTabPage.newValue;
+
+    setNewTab(newValue);
+
+    if (newValue) modalSettings.elements.useExtensionsNewTabPage.setAttribute('checked', '');
+    else modalSettings.elements.useExtensionsNewTabPage.removeAttribute('checked');
+
+    settingsChanged.useExtensionsNewTabPage = newValue;
   }
 
   postMessageToAll('settingsChanged', settingsChanged);

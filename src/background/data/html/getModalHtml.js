@@ -79,6 +79,18 @@ export const getModalHtml = ({ allFolders, settings }) => html`<div class="modal
         required
       />
     </div>
+    <div class="checkbox">
+      <label class="checkbox__label" for="i${++inputId}">
+        ${browser.i18n.getMessage(dictionaryKeys.useExtensionsNewTabPage)}
+      </label>
+      <input
+        class="checkbox__el"
+        id="i${inputId}"
+        type="checkbox"
+        name="${settingsNames.useExtensionsNewTabPage}"
+        ${settings.useExtensionsNewTabPage && ' checked'}
+      />
+    </div>
     <div class="modal__actions">
       <button class="button" type="button" name="${settingsNames.reset}">
         ${browser.i18n.getMessage(dictionaryKeys.reset)}

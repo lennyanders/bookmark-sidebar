@@ -37,4 +37,10 @@ export const enableSettings = () => {
   /** @type {HTMLInputElement} */
   const widthInput = modalSettings.elements[settingsNames.sidebarWidth];
   on(widthInput, 'input', () => setSidebarWidth(+widthInput.value));
+
+  /** @type {HTMLInputElement} */
+  const newTabCheckbox = modalSettings.elements[settingsNames.useExtensionsNewTabPage];
+  on(newTabCheckbox, 'change', () => {
+    port.postMessage({ type: 'updateSettings', useExtensionsNewTabPage: newTabCheckbox.checked });
+  });
 };

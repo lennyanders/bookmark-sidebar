@@ -14,4 +14,5 @@ export const Defaults = {
   sidebarShwonBookmark: '2',
   sidebarPosition: Positions.right,
   sidebarWidth: 320,
+  useExtensionsNewTabPage: false,
 };

@@ -41,4 +41,8 @@ export const settingsChanged = (changes) => {
     sidebar.style.width = `${changes.sidebarWidth}px`;
     modalSettings.elements.sidebarWidth.value = changes.sidebarWidth;
   }
+
+  if (changes.useExtensionsNewTabPage !== undefined) {
+    modalSettings.elements.useExtensionsNewTabPage.checked = changes.useExtensionsNewTabPage;
+  }
 };

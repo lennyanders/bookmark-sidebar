@@ -5,10 +5,13 @@ import { getSettings } from '../settings';
 import { getBookmarksHtml } from './html/getBookmarksHtml';
 import './updateBookmarks';
 import { root, shadowRoot } from './root';
+import { setNewTab } from '../newTab';
 export { root, shadowRoot };
 
 (async () => {
   const [bookmarks, settings] = await Promise.all([browser.bookmarks.getTree(), getSettings()]);
+
+  setNewTab(settings.useExtensionsNewTabPage);
 
   const flattenedBookmarks = flattenArrayOfObjects(bookmarks, 'children');
   const shownBookmark = flattenedBookmarks.find(

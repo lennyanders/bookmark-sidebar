@@ -119,6 +119,10 @@ export const dictionary = {
     en: 'Right',
     de: 'Rechts',
   },
+  useExtensionsNewTabPage: {
+    en: 'Use extensions new tab page',
+    de: 'Benutze die "neuer Tab" Seite der Browser-Erweiterung',
+  },
   colorTheme: {
     en: 'Color theme',
     de: 'Farbschema',

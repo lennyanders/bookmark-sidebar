@@ -8,7 +8,7 @@
     "48": "icons/extension-48.png",
     "128": "icons/extension-128.png"
   },
-  "permissions": ["storage", "activeTab", "bookmarks", "chrome://favicon/*/"],
+  "permissions": ["storage", "activeTab", "tabs", "bookmarks", "chrome://favicon/*/"],
   "content_security_policy": "img-src chrome://favicon/ data:;",
   "commands": {
     "toggle-bm-bar": {
@@ -25,9 +25,6 @@
   },
   "browser_action": {
     "default_title": "__MSG_bookmarks__"
-  },
-  "chrome_url_overrides": {
-    "newtab": "newtab.html"
   },
   "web_accessible_resources": ["fonts/*"],
   "manifest_version": 2
