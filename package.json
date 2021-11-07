@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node --experimental-json-modules --experimental-import-meta-resolve scripts/serve.js",
     "build": "node --experimental-json-modules --experimental-import-meta-resolve scripts/build.js",
-    "release": "npm run build && node scripts/release.js"
+    "version": "npm run build && node scripts/release.js"
   },
   "author": "Lenny Anders",
   "license": "ISC",
